@@ -19,7 +19,6 @@ package com.shephertz.app42.paas.sdk.as3.util
 		
 		public static function computeHmac(message:String, key:String):String
 		{
-			trace("in hmac "+ message);
 			// HMAC also support RIPEMD algorithm which is not provided
 			var messageBytes:ByteArray = new ByteArray();
 			
@@ -34,18 +33,37 @@ package com.shephertz.app42.paas.sdk.as3.util
 			
 			var encoder : Base64Encoder = new Base64Encoder();
 			encoder.encodeBytes(encryptedArray);
-			return encoder.toString();
+			return urlEncode(encoder.toString());
 		}
+		
 		public static function getUTCFormattedTimestamp():String {
 			var currentDate:Date = new Date();
 			var timeStamp : String = new String();
 			var month : String  =	new String();
-			if(currentDate.getUTCMonth() < 10)
-				month  = "-0" + currentDate.getUTCMonth();
-			else
+			var date : String  =	new String();
+			var hours : String  =	new String();
+			var minutes : String  =	new String();
+			var seconds : String  =	new String();
+			var milliseconds : String  =	new String();
+			if(currentDate.getUTCMonth() || currentDate.getUTCDate() || currentDate.getUTCHours() || currentDate.getUTCMinutes() || currentDate.getUTCSeconds() || currentDate.getUTCMilliseconds() < 10)
+			{
+				month = "-0" + (currentDate.getUTCMonth()+1);
+				date = "-" + currentDate.getUTCDate();
+				hours = "" + (currentDate.getUTCHours());
+				minutes = "" +(currentDate.getUTCMinutes());
+				seconds = "" + (currentDate.getUTCSeconds());
+				milliseconds = "" + (currentDate.getUTCMilliseconds());
+			}
+			else {
 				month  = "-"+currentDate.getUTCMonth();
-			timeStamp = currentDate.getUTCFullYear() + month + "-" + currentDate.getDate() +"T"+currentDate.getUTCHours()+":"+currentDate.getUTCMinutes()+":" +currentDate.getUTCMinutes()+":"+currentDate.getUTCMilliseconds()+"Z";
-			return "2013-07-24T14:06:00.848Z";
+				date = "-" + currentDate.getUTCDate();
+				hours = "" + currentDate.getUTCHours();
+				minutes = "" +currentDate.getUTCMinutes();
+				seconds = "" + currentDate.getUTCSeconds();
+				milliseconds = "" + currentDate.getUTCMilliseconds();
+			}
+			timeStamp = currentDate.getUTCFullYear() + month + date +"T"+hours+":"+minutes+":"+seconds+"."+milliseconds+"Z";
+			return timeStamp;
 		}
 		
 		
@@ -70,24 +88,23 @@ package com.shephertz.app42.paas.sdk.as3.util
 			return cloned;
 		}
 		public static function sign(secretKey:String, parmasDics:Dictionary):String {
-			
-			for(var key:* in parmasDics) {
-				trace("keys is " + key);
-				var keysParams:String = parmasDics[key];
-				var signature:String = computeHmac(keysParams,secretKey);
-				
-			}return escape(signature); 
+			var sign:String = "";
+			var sortArray:Array = sortDictionaryByValue(parmasDics);
+				for(var keySorted:* in sortArray)
+				{
+					sign= sign.concat(sortArray[keySorted],parmasDics[sortArray[keySorted]]);
+				}	
+				var signature:String = computeHmac(sign,secretKey);
+			return signature; 
 		}
-		public static function sortDictionaryByValue(d:Dictionary):Array
+		
+		public static function sortDictionaryByValue(parmasDics:Dictionary):Array
 		{
-			var a:Array = new Array();
-			for (var dictionaryKey:Object in d)
-			{
-				a.push({key:dictionaryKey,value:d[dictionaryKey]});
-			}
-			a.sortOn("value",[Array.NUMERIC|Array.DESCENDING]);
-			return a;
+			var arraySort:Array = new Array();
+			for (var dictionaryKey:* in parmasDics)	{ arraySort.push(dictionaryKey);}
+			return arraySort.sort();
 		}  
+		
 		public static function urlEncode(string:String):String {
 			var urlString:String = '';
 			

@@ -1,3 +1,8 @@
+import com.shephertz.app42.paas.sdk.as3.App42CallBack;
+import com.shephertz.app42.paas.sdk.as3.App42Exception;
+import com.shephertz.app42.paas.sdk.as3.ServiceAPI;
+import com.shephertz.app42.paas.sdk.as3.game.GameService;
+
 import flash.text.TextField;
 
 var outputField:TextField = new TextField();
@@ -13,19 +18,36 @@ var GREY:uint = 0x999999;
 var BLACK:uint = 0x000000;
 var WHITE:uint = 0xFFFFFF;
 var RED:uint = 0xDF0101;
+var serviceAPI:ServiceAPI ;
+var gameName:String =  "tes111t";
+var description:String =  "description";
+var gameService:GameService;
 
+class app42CallBack implements App42CallBack{
+	
+	serviceAPI = new ServiceAPI("fb91bf00ca1c16af549b2608a8ecc779bf47d858ada8f95e85759c003b0585d3",
+		"5e4ce8138bf151aefeff8d55e1648553a5a384a9b3e1936aa101424e6eb72b73");
+		serviceAPI.setBaseURL("http://","localhost",8082);
+	public function onSuccess(res:Object):void
+	{
+		trace("On Success In TestCase " + res["app42Fault"]["message"]);
+//			["games"]["game"]["name"]);
+	}
+	public function onException(res:App42Exception):void
+	{
+		trace("On Exception in Test Case ")
+	}
+}
 package
 {
-	import com.shephertz.app42.paas.sdk.as3.ServiceAPI;
-	import com.shephertz.app42.paas.sdk.as3.game.GameService;
-	
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
 	
-	public class App42_ActionScript_Test1 extends Sprite
+	
+	public class App42_ActionScript_Test1 extends Sprite 
 	{
 		public function App42_ActionScript_Test1()
 		{
@@ -96,22 +118,13 @@ package
 			postbtn.addEventListener(MouseEvent.CLICK,connect_click);
 			addChild(postbtn);
 			
-			
-			
 		}
+		
 		private function connect_click(e:MouseEvent):void
 		{ 
-			var functio:Function;
-			
-			var serviceAPI:ServiceAPI = new ServiceAPI("c134b0bfd60a1d98024ef1001d236de0803ccf8b8ffb7fadbcca45f49f68e5f2",
-				"5f574fca57916ca075e4b7ee91b1ef3d553285db9a141dba12aa3104e9339df4");
-			serviceAPI.setBaseURL("http://","localhost",8082);
-			var gameName:String =  "gameName";
-			var value:int = 123456;
-			var description:String =  "description";
-			var gameService:GameService= serviceAPI.buildGameService();
-			var game:String = gameService.getGameByName("tes11t",functio);
-			outputField.text += "\nResponse is------------ "+ game;
+			gameService = serviceAPI.buildGameService();
+			gameService.getGameByName(gameName, new app42CallBack());
+				
 		}
 	}
 }

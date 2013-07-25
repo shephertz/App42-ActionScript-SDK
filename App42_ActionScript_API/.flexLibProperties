@@ -2,6 +2,13 @@
 <flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
   <includeClasses>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.StringBulder"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.App42Service"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.App42Exception"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.App42ResponseBuilder"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.game.Game"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.game.GameResponseBuilder"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.App42Response"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.App42CallBack"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
