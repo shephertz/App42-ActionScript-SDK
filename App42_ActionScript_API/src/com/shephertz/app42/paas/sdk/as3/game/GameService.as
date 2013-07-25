@@ -25,7 +25,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		public function GameService(apiKey : String , secretKey : String) {
 			this.apiKey = apiKey;
 			this.secretKey = secretKey;
-			this.baseURL = "sjjdbkjsdbksb";
 			
 		}
 		
@@ -35,7 +34,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			
 			paramsDics["apiKey"]=apiKey;
 			paramsDics["version"]=version;
-			paramsDics["timeStamp"]=Util.getUTCFormattedTimestamp();
+			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
 			
 			var queryParams:Dictionary = Util.clone(paramsDics);
 			paramsDics["name"] = gameName; 
@@ -43,7 +42,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var signature:String = Util.sign(this.secretKey,paramsDics);
 			var resourceUrl:String = this.version + "/" + this.resource + "/"+ gameName;
 			response = RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,callback);
-			trace("----response----------------" + response);
 			return response;
 		}
 		
@@ -55,12 +53,9 @@ package com.shephertz.app42.paas.sdk.as3.game
 			paramsDics["version"]=version;
 			paramsDics["timeStamp"]=Util.getUTCFormattedTimestamp();
 			var queryParams:Dictionary = Util.clone(paramsDics);
-//			var 
-			var jsonBody:String  =  "{\"app42\":{\"game\":{\"name\":"+gameName+",\description\":"+description+"}}}";
-			trace("jsonBody is " + jsonBody);
 			var signature:String = Util.sign(this.secretKey,paramsDics);
 			var resourceUrl:String = this.version + "/" + this.resource + "/"+ gameName;
-			response = RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams,jsonBody,callback);
+		//	response = RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams,jsonBody,callback);
 			trace("----response----------------" + response);
 			return response;	
 		}

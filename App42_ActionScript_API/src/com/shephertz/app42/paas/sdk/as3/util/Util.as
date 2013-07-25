@@ -8,6 +8,7 @@ package com.shephertz.app42.paas.sdk.as3.util
 	
 	import mx.utils.Base64Encoder;
 	
+	
 	public class Util
 	{
 		
@@ -18,6 +19,7 @@ package com.shephertz.app42.paas.sdk.as3.util
 		
 		public static function computeHmac(message:String, key:String):String
 		{
+			trace("in hmac "+ message);
 			// HMAC also support RIPEMD algorithm which is not provided
 			var messageBytes:ByteArray = new ByteArray();
 			
@@ -32,41 +34,18 @@ package com.shephertz.app42.paas.sdk.as3.util
 			
 			var encoder : Base64Encoder = new Base64Encoder();
 			encoder.encodeBytes(encryptedArray);
-			var urlcode:String = urlEncode(encoder.toString());
-			return urlcode;
+			return encoder.toString();
 		}
-		
-		public static function urlEncode(string:String):String {
-			var urlString:String = '';
-			
-			for (var i:int = 0 ; i < string.length ; i++)
-			{
-				var chr:Number = string.charCodeAt(i);
-				
-				if ((chr >= 48 && chr <= 57) || // 09
-					(chr >= 65 && chr <= 90) || // AZ
-					(chr >= 97 && chr <= 122) || // az
-					chr == 45 || // -
-					chr == 95 || // _
-					chr == 46 || // .
-					chr == 126) // ~
-				{
-					urlString += String.fromCharCode(chr);
-				}
-				else
-				{
-					urlString += '%' + chr.toString(16).toUpperCase();
-				}
-			}
-			
-			return urlString;
-		}
-		
 		public static function getUTCFormattedTimestamp():String {
 			var currentDate:Date = new Date();
 			var timeStamp : String = new String();
-			timeStamp = currentDate.getUTCFullYear() + "-" + currentDate.getUTCMonth() + "-" + currentDate.getUTCDate() +"T"+currentDate.getUTCHours()+":"+currentDate.getUTCMinutes()+":" +currentDate.getUTCMinutes()+":"+currentDate.getUTCMilliseconds()+"Z";
-			return timeStamp;
+			var month : String  =	new String();
+			if(currentDate.getUTCMonth() < 10)
+				month  = "-0" + currentDate.getUTCMonth();
+			else
+				month  = "-"+currentDate.getUTCMonth();
+			timeStamp = currentDate.getUTCFullYear() + month + "-" + currentDate.getDate() +"T"+currentDate.getUTCHours()+":"+currentDate.getUTCMinutes()+":" +currentDate.getUTCMinutes()+":"+currentDate.getUTCMilliseconds()+"Z";
+			return "2013-07-24T14:06:00.848Z";
 		}
 		
 		
@@ -91,9 +70,48 @@ package com.shephertz.app42.paas.sdk.as3.util
 			return cloned;
 		}
 		public static function sign(secretKey:String, parmasDics:Dictionary):String {
-			for(var key:String in parmasDics) 
-			var signature:String = computeHmac(secretKey,key);
-			return escape(signature); 
+			
+			for(var key:* in parmasDics) {
+				trace("keys is " + key);
+				var keysParams:String = parmasDics[key];
+				var signature:String = computeHmac(keysParams,secretKey);
+				
+			}return escape(signature); 
+		}
+		public static function sortDictionaryByValue(d:Dictionary):Array
+		{
+			var a:Array = new Array();
+			for (var dictionaryKey:Object in d)
+			{
+				a.push({key:dictionaryKey,value:d[dictionaryKey]});
+			}
+			a.sortOn("value",[Array.NUMERIC|Array.DESCENDING]);
+			return a;
+		}  
+		public static function urlEncode(string:String):String {
+			var urlString:String = '';
+			
+			for (var i:int = 0 ; i < string.length ; i++)
+			{
+				var chr:Number = string.charCodeAt(i);
+				
+				if ((chr >= 48 && chr <= 57) || // 09
+					(chr >= 65 && chr <= 90) || // AZ
+					(chr >= 97 && chr <= 122) || // az
+					chr == 45 || // -
+					chr == 95 || // _
+					chr == 46 || // .
+					chr == 126) // ~
+				{
+					urlString += String.fromCharCode(chr);
+				}
+				else
+				{
+					urlString += '%' + chr.toString(16).toUpperCase();
+				}
+			}
+			
+			return urlString;
 		}
 		
 	}

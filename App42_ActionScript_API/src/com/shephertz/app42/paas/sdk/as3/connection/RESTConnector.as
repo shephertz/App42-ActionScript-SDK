@@ -50,7 +50,7 @@ package com.shephertz.app42.paas.sdk.as3.connection
 		
 		public  function executeGet(signature : String , url : String ,
 									params : Dictionary, func:Function) : String {
-			/*
+			
 			var response:String ;
 			var queryParams : Dictionary = com.shephertz.app42.paas.sdk.as3.util.Util.clone(params);
 			var apiKey : String = queryParams["apiKey"]
@@ -63,24 +63,27 @@ package com.shephertz.app42.paas.sdk.as3.connection
 			// Get all Request parameter and set here
 			for ( var keys:String in data ) {
 					queryString += keys + "=" + data[keys] + "&";
-			}*/
+			}
 			
-			var uri:String  = "http://control.appwarp.shephertz.com/newzonelocation?plan=default";
+			var uri:String  = this.baseURL + url + queryString;
 			var request:URLRequest = new URLRequest(uri);
+			trace("uri is " + uri);
+			trace("apiKey is " + apiKey);
+			trace("signature is " + signature);
+			trace("Config.getInstance().getAccept() is " + Config.getInstance().getAccept());
+			trace("Util.getUTCFormattedTimestamp() is " + Util.getUTCFormattedTimestamp());
 			request.method = URLRequestMethod.GET;
-//			request.requestHeaders.push(new URLRequestHeader("Content-Type",Config.getInstance().getContentType()));
-//			request.requestHeaders.push(new URLRequestHeader("Accept",Config.getInstance().getAccept()));
-//			request.requestHeaders.push(new URLRequestHeader("apiKey",apiKey));
-//			request.requestHeaders.push(new URLRequestHeader("signature",signature));
-//			request.requestHeaders.push(new URLRequestHeader("timeStamp",Util.getUTCFormattedTimestamp()));
-//			trace("---------resource url is ---------- "+ uri);
-//			trace("---------resource url is ---------- "+ apiKey);trace("---------resource url is ---------- "+ signature);
+			request.requestHeaders.push(new URLRequestHeader("Content-Type",Config.getInstance().getContentType()));
+			request.requestHeaders.push(new URLRequestHeader("Accept",Config.getInstance().getAccept()));
+			request.requestHeaders.push(new URLRequestHeader("apiKey",apiKey));
+			request.requestHeaders.push(new URLRequestHeader("signature",signature));
+			request.requestHeaders.push(new URLRequestHeader("timeStamp",Util.getUTCFormattedTimestamp()));
 			var httpLoader:URLLoader = new URLLoader;
 			httpLoader.addEventListener(Event.COMPLETE,completeHandler);
 			httpLoader.addEventListener(IOErrorEvent.IO_ERROR,error);
 			httpLoader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS,statusEvent);
 			httpLoader.load(request); 
-			//callback = func;
+			callback = func;
 			return "responsefromseerver";	
 		}
 		public  function executePost(signature : String , url : String ,
@@ -98,7 +101,7 @@ package com.shephertz.app42.paas.sdk.as3.connection
 				queryString += keys + "=" + data[keys] + "&";
 			}
 			
-			var uri:String  = this.baseURL +url+ queryString;
+			var uri:String  = this.baseURL+ url+queryString;
 			var request:URLRequest = new URLRequest(uri);
 			request.method = URLRequestMethod.GET;
 			request.requestHeaders.push(new URLRequestHeader("Content-Type",Config.getInstance().getContentType()));
@@ -106,28 +109,33 @@ package com.shephertz.app42.paas.sdk.as3.connection
 			request.requestHeaders.push(new URLRequestHeader("apiKey",apiKey));
 			request.requestHeaders.push(new URLRequestHeader("signature",signature));
 			request.requestHeaders.push(new URLRequestHeader("timeStamp",Util.getUTCFormattedTimestamp()));
-			trace("---------resource url is ---------- "+ uri);
-			trace("---------resource url is ---------- "+ apiKey);trace("---------resource url is ---------- "+ signature);
 			var httpLoader:URLLoader = new URLLoader;
 			httpLoader.addEventListener(Event.COMPLETE,completeHandler);
 			httpLoader.addEventListener(IOErrorEvent.IO_ERROR,error);
 			httpLoader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS,statusEvent);
 			httpLoader.load(request); 
 			callback = func;
-			return "responsefromseerver";	
+			var str:String  = callback();
+			trace("str is " + str);
+			return "";	
 		}
+	
 		private function completeHandler(e:Event):void
 		{
-			trace("  -------------------------- trace ----------------------" );
 			trace("[HTTP]Recieved : "+e.target.data);	
-			if(e.target.data){
-				callback(e.target.data);	
+//			if(e.target.data){
+//				trace("callback -----" + e.target.data);
+				try { callback(e.target.data);}
+				catch (error:Error){
+					throw new Error(e.target.data);
 			}
+		
 		}
 		private function statusEvent(status:HTTPStatusEvent):void
 		{
-			trace("I m Status Event");
-			trace("Success : "+status.toString());	
+			trace("I m Status Event"  +status);
+			if(status.status == 402)
+			trace("Success : ");	
 			
 		}
 		private function error(e:IOErrorEvent):void

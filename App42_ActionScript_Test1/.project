@@ -3,6 +3,7 @@
 	<name>App42_ActionScript_Test1</name>
 	<comment></comment>
 	<projects>
+		<project>App42_ActionScript_API</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

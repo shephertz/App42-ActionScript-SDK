@@ -67,7 +67,6 @@ package
 			userTextField.height = 30;
 			userTextField.x = 220;
 			userTextField.text = User_Name;
-//			userTextField.text = Email_id;
 			userTextField.textColor = BLACK;
 			userTextField.border = true;
 			userTextField.type = "input";
@@ -104,15 +103,14 @@ package
 		{ 
 			var functio:Function;
 			
-			var serviceAPI:ServiceAPI = new ServiceAPI("5122309e3580653903aa6750df2087c709ca61481d877c1b98cf07f1926707cf",
-				"a18daafa2437afc8dbc59873a5d39a66ebe71554fee9639aaae13c86c179b1ed");
+			var serviceAPI:ServiceAPI = new ServiceAPI("c134b0bfd60a1d98024ef1001d236de0803ccf8b8ffb7fadbcca45f49f68e5f2",
+				"5f574fca57916ca075e4b7ee91b1ef3d553285db9a141dba12aa3104e9339df4");
 			serviceAPI.setBaseURL("http://","localhost",8082);
-			
+			var gameName:String =  "gameName";
+			var value:int = 123456;
+			var description:String =  "description";
 			var gameService:GameService= serviceAPI.buildGameService();
-			var game:String = gameService.getGameByName("test",functio);
-			
-			//var game:String = gameService.createGame("test","himansbj",functio);
-			trace("response from test-------------" + game);
+			var game:String = gameService.getGameByName("tes11t",functio);
 			outputField.text += "\nResponse is------------ "+ game;
 		}
 	}
