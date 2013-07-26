@@ -31,13 +31,49 @@ package com.shephertz.app42.paas.sdk.as3.game
 			this.secretKey = secretKey;
 			
 		}
-		
-		public function getGameByName(gameName:String, callback:App42CallBack) : void {
+		/**
+		 * Creates a game on the cloud in async mode.
+		 * @param gameName - Name of the game that has to be created
+		 * @param gameDescription - Description of the game to be created
+		 * @param callback - Callback object for success/exception result
+		 * @throws App42Exception
+		 * 
+		 */
+		public function createGame(gameName:String, description:String ,callback:App42CallBack) : void {
 			var response:String = null;
 			var paramsDics:Dictionary = new Dictionary();
 			
 			paramsDics["apiKey"]=apiKey;
 			paramsDics["version"]=version;
+			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
+			var queryParams:Dictionary = Util.clone(paramsDics);
+			var json:Object = new Object;
+			var app42Json:Object = new Object;
+			var gameJson:Object = new Object;
+			gameJson.name = gameName;
+			gameJson.description = description;
+			json.app42 = app42Json;
+			app42Json.game = gameJson;
+			var jsonStr:String  = com.adobe.serialization.json.JSON.encode(json);
+			paramsDics["body"] = jsonStr.toString();
+			var signature:String = Util.sign(this.secretKey,paramsDics);
+			var resourceUrl:String = this.version + "/" + this.resource;
+			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonStr,this,callback);
+		}
+		
+		
+		/**
+		 * Retrieves the game by the specified name in async mode.
+		 * @param gameName - Name of the game that has to be fetched
+		 * @param callback - Callback object for success/exception result
+		 * @throws App42Exception
+		 */
+		public function getGameByName(gameName:String, callback:App42CallBack) : void {
+			var response:String = null;
+			var paramsDics:Dictionary = new Dictionary();
+			
+			paramsDics["apiKey"]= apiKey;
+			paramsDics["version"]= version;
 			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
 			
 			var queryParams:Dictionary = Util.clone(paramsDics);
@@ -49,19 +85,41 @@ package com.shephertz.app42.paas.sdk.as3.game
 			
 		}
 		
+		/**
+		 * Fetches all games for the App
+		 * @param callback - Callback object for success/exception result
+		 * @throws App42Exception
+		 * 
+		 */
+		public function getAllGames(callback:App42CallBack) : void {
+			var response:String = null;
+			var paramsDics:Dictionary = new Dictionary();
+			
+			paramsDics["apiKey"]=apiKey;
+			paramsDics["version"]=version;
+			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
+			
+			var queryParams:Dictionary = Util.clone(paramsDics);
+			
+			var signature:String = Util.sign(this.secretKey,paramsDics);
+			var resourceUrl:String = this.version + "/" + this.resource;
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+			
+		}
+		
 		
 	 override public function onSuccess(response:String, requestCall:App42CallBack,isArray:Boolean):void
 		{
 		 	var object:Object;
 			object = com.adobe.serialization.json.JSON.decode(response);
+			trace("response is " + response);
 //			object = new GameResponseBuilder().buildResponse(response);
-			trace("response from service is " + response);
-			trace("object from service is " + object);
 			requestCall.onSuccess(object);
 			
 		}
 	 override public function onException(exception:App42Exception, requestCall:App42CallBack):void
 		{
+		 	trace("I m here in Service" + exception);
 		 	requestCall.onException(exception);
 		}
 	}

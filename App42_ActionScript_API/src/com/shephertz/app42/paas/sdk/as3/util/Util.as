@@ -37,32 +37,26 @@ package com.shephertz.app42.paas.sdk.as3.util
 		}
 		
 		public static function getUTCFormattedTimestamp():String {
-			var currentDate:Date = new Date();
-			var timeStamp : String = new String();
-			var month : String  =	new String();
-			var date : String  =	new String();
-			var hours : String  =	new String();
-			var minutes : String  =	new String();
-			var seconds : String  =	new String();
-			var milliseconds : String  =	new String();
-			if(currentDate.getUTCMonth() || currentDate.getUTCDate() || currentDate.getUTCHours() || currentDate.getUTCMinutes() || currentDate.getUTCSeconds() || currentDate.getUTCMilliseconds() < 10)
-			{
-				month = "-0" + (currentDate.getUTCMonth()+1);
-				date = "-" + currentDate.getUTCDate();
-				hours = "" + (currentDate.getUTCHours());
-				minutes = "" +(currentDate.getUTCMinutes());
-				seconds = "" + (currentDate.getUTCSeconds());
-				milliseconds = "" + (currentDate.getUTCMilliseconds());
-			}
-			else {
-				month  = "-"+currentDate.getUTCMonth();
-				date = "-" + currentDate.getUTCDate();
-				hours = "" + currentDate.getUTCHours();
-				minutes = "" +currentDate.getUTCMinutes();
-				seconds = "" + currentDate.getUTCSeconds();
-				milliseconds = "" + currentDate.getUTCMilliseconds();
-			}
-			timeStamp = currentDate.getUTCFullYear() + month + date +"T"+hours+":"+minutes+":"+seconds+"."+milliseconds+"Z";
+			var date:Date = new Date();
+			var month:String;
+			var monthString:String = (date.getUTCMonth()+1).toString();
+			if (monthString.length == 1) { month = "0" + monthString; }
+			else{  month = monthString;  }
+			var dateString:String;
+			var rawDate:String = date.getUTCDate().toString();
+			if (rawDate.length == 1) { dateString = "0" + rawDate; }
+			else { dateString = rawDate; }
+			
+			
+			var timeStamp:String = "";
+			timeStamp += date.getUTCFullYear() + "-";
+			timeStamp += month + "-";
+			timeStamp += dateString;
+			timeStamp += "T" + date.getUTCHours() + ":";
+			timeStamp += date.getUTCMinutes() + ":";
+			timeStamp += date.getUTCSeconds() + ".";
+			timeStamp += date.getUTCMilliseconds();
+			timeStamp += "Z";
 			return timeStamp;
 		}
 		

@@ -9,6 +9,8 @@
     <classEntry path="com.shephertz.app42.paas.sdk.as3.game.GameResponseBuilder"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.App42Response"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.App42CallBack"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.user.UserService"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.game.ScoreBoardService"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

@@ -1,6 +1,7 @@
 package com.shephertz.app42.paas.sdk.as3
 {
 	import com.shephertz.app42.paas.sdk.as3.game.GameService;
+	import com.shephertz.app42.paas.sdk.as3.game.ScoreBoardService;
 	
 
 	public  class ServiceAPI
@@ -109,15 +110,24 @@ package com.shephertz.app42.paas.sdk.as3
 		}
 		
 		/** 
-		 * Builds the instance of UserService.
+		 * Builds the instance of GameService.
 		 * @return 
-		 * 			UserService - UserService Object  
-		 * @see	UserService
+		 * 			gameService - GameService Object  
+		 * @see	GameService
 		 */ 
 		public function  buildGameService() : GameService {
 			var gameService : GameService  = new GameService(apiKey, secretKey);
 			return gameService;
 		}
-
+		/** 
+		 * Builds the instance of ScoreBoardService.
+		 * @return 
+		 * 			scoreBoardService - ScoreBoardService Object  
+		 * @see	ScoreBoardService
+		 */ 
+		public function  buildScoreBoardService() : ScoreBoardService {
+			var scoreboardService : ScoreBoardService  = new ScoreBoardService(apiKey, secretKey);
+			return scoreboardService;
+		}
 	}
 }

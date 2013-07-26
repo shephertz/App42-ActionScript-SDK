@@ -2,6 +2,7 @@ import com.shephertz.app42.paas.sdk.as3.App42CallBack;
 import com.shephertz.app42.paas.sdk.as3.App42Exception;
 import com.shephertz.app42.paas.sdk.as3.ServiceAPI;
 import com.shephertz.app42.paas.sdk.as3.game.GameService;
+import com.shephertz.app42.paas.sdk.as3.game.ScoreBoardService;
 
 import flash.text.TextField;
 
@@ -14,14 +15,17 @@ var postbtn:TextField = new TextField();
 var User_Name:String = "Enter Your UserName";
 var Password:String =  "Enter Your Password";
 var Email_id:String =  "Enter Your EmailId";
+var outputTextField:TextField = new TextField();
 var GREY:uint = 0x999999;
 var BLACK:uint = 0x000000;
 var WHITE:uint = 0xFFFFFF;
 var RED:uint = 0xDF0101;
 var serviceAPI:ServiceAPI ;
-var gameName:String =  "tes111t";
+var gameName:String =  "testGame";
+var userName:String =  "Himanshu";
 var description:String =  "description";
 var gameService:GameService;
+var scoreBoardService:ScoreBoardService;
 
 class app42CallBack implements App42CallBack{
 	
@@ -30,8 +34,18 @@ class app42CallBack implements App42CallBack{
 		serviceAPI.setBaseURL("http://","localhost",8082);
 	public function onSuccess(res:Object):void
 	{
-		trace("On Success In TestCase " + res["app42Fault"]["message"]);
-//			["games"]["game"]["name"]);
+		trace("On Success In TestCase " + res);
+		
+//		jsonArray = res["app42"]["response"]["games"]["game"];
+//		for(var keySorted:* in jsonArray)
+//		{
+//			trace("On Success In TestCase " + jsonArray[keySorted]["name"]);
+//		}	
+//		
+		outputField.text += "\n GameName is ..." +res;
+		
+		
+//			["app42Fault"]["message"]);	
 	}
 	public function onException(res:App42Exception):void
 	{
@@ -117,14 +131,29 @@ package
 			postbtn.text = "Post API";
 			postbtn.addEventListener(MouseEvent.CLICK,connect_click);
 			addChild(postbtn);
+			//connect_click(null);
 			
 		}
-		
+
 		private function connect_click(e:MouseEvent):void
 		{ 
-			gameService = serviceAPI.buildGameService();
-			gameService.getGameByName(gameName, new app42CallBack());
+			try{
+				gameService = serviceAPI.buildGameService();
+				scoreBoardService = serviceAPI.buildScoreBoardService();
+				var jsonArray:Array = new Array();
+				jsonArray.push("Nick");
+				jsonArray.push("john");
+				trace("Array is " + jsonArray);
+				scoreBoardService.getTopRankingsByGroup(gameName,jsonArray,new app42CallBack());
+//				gameService.createGame(gameName,description,new app42CallBack());
+//				gameService.getGameByName(gameName,new app42CallBack());
+//				gameService.getAllGames(new app42CallBack());
+				outputTextField.text += "\nConnecting...";
 				
+			}
+			catch(error:Error){
+				trace("I M HERE FROM TEST ERROr " +error)
+			}
 		}
 	}
 }
