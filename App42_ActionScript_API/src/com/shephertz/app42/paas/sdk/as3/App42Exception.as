@@ -7,8 +7,11 @@ package com.shephertz.app42.paas.sdk.as3
 		
 		public function App42Exception(message : String , httpErrorCode:int, appErrorCode:int)
 		{
-			super(message, appErrorCode);
+			App42Log.debug("Exception message " + message);
+			super(message, httpErrorCode);
+			App42Log.debug("HttpErrorCode " + httpErrorCode);
 			this.httpErrorCode = httpErrorCode;
+			App42Log.debug("AppErrorCode " + appErrorCode);
 			this.appErrorCode = appErrorCode;
 		}
 		

@@ -7,8 +7,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 	import com.shephertz.app42.paas.sdk.as3.util.Util;
 	
 	import flash.utils.Dictionary;
-	
-	import mx.collections.ArrayList;
 
 	public class ScoreBoardService extends App42Service
 	{
@@ -255,6 +253,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			
 			var queryParams:Dictionary = Util.clone(paramsDics);
 			paramsDics["name"] = gameName; 
+			trace("userList is " + userList);
 			paramsDics["userList"] = userList; 
 			trace("userList is " + userList);
 			var signature:String = Util.sign(this.secretKey,paramsDics);

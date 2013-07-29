@@ -2,6 +2,7 @@ package com.shephertz.app42.paas.sdk.as3.user
 {
 	import com.adobe.serialization.json.JSON;
 	import com.shephertz.app42.paas.sdk.as3.App42CallBack;
+	import com.shephertz.app42.paas.sdk.as3.App42Exception;
 	import com.shephertz.app42.paas.sdk.as3.App42Service;
 	import com.shephertz.app42.paas.sdk.as3.connection.RESTConnector;
 	import com.shephertz.app42.paas.sdk.as3.util.Util;
@@ -41,9 +42,6 @@ package com.shephertz.app42.paas.sdk.as3.user
 		 */
 		public function createUser(userName:String, password:String, emailId:String ,callback:App42CallBack) : void {
 			var response:String = null;
-			Util.throwExceptionIfNullOrBlank(userName,"UserName",callback);
-			Util.throwExceptionIfNullOrBlank(password,"password",callback);
-			Util.throwExceptionIfNullOrBlank(emailId,"emailId",callback);
 			var paramsDics:Dictionary = new Dictionary();
 			
 			paramsDics["apiKey"]=apiKey;
@@ -72,7 +70,6 @@ package com.shephertz.app42.paas.sdk.as3.user
 		 */
 		public function getUser(userName:String, callback:App42CallBack) : void {
 			var response:String = null;
-			Util.throwExceptionIfNullOrBlank(userName,"UserName",callback);
 			var paramsDics:Dictionary = new Dictionary();
 			
 			paramsDics["apiKey"]= apiKey;
@@ -129,6 +126,18 @@ package com.shephertz.app42.paas.sdk.as3.user
 			var resourceUrl:String = this.version + "/" + this.resource  + "/"+ "email" + "/" + emailId;
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 			
+		}
+		
+		override public function onSuccess(response:String, requestCall:App42CallBack,isArray:Boolean):void
+		{
+			var object:Object;
+			object = com.adobe.serialization.json.JSON.decode(response);
+			requestCall.onSuccess(object);
+			
+		}
+		override public function onException(exception:App42Exception, requestCall:App42CallBack):void
+		{
+			requestCall.onException(exception);
 		}
 	}
 }

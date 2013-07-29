@@ -1,9 +1,11 @@
 package com.shephertz.app42.paas.sdk.as3.util
 {
+	import com.adobe.serialization.json.JSON;
 	import com.hurlant.crypto.hash.HMAC;
 	import com.hurlant.crypto.hash.SHA1;
 	import com.shephertz.app42.paas.sdk.as3.App42CallBack;
 	import com.shephertz.app42.paas.sdk.as3.App42Exception;
+	import com.shephertz.app42.paas.sdk.as3.App42Service;
 	
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
@@ -13,7 +15,6 @@ package com.shephertz.app42.paas.sdk.as3.util
 	
 	public class Util
 	{
-		
 		public function Util()
 		{
 			
@@ -130,12 +131,14 @@ package com.shephertz.app42.paas.sdk.as3.util
 		
 		public static function throwExceptionIfNullOrBlank(obj:Object, name:String,callback:App42CallBack):void {
 			if (obj == null) {
-				callback.onException(new App42Exception(name + " parameter can not be blank",null,null));
+				throw new App42Service().onException( new App42Exception(name +" parameter can not be null" ,null,null),callback);
 			}
-			if (obj instanceof String) {
+			if (obj is String) {
 				var trimObj:String = obj.toString();
 				if(Util.trim(trimObj) == "")
-					callback.onException(new App42Exception(name + " parameter can not be blank",null,null));
+				{
+					throw new App42Service().onException(new App42Exception(name + " parameter can not be blank",null,null),callback);
+				}
 			}
 		}
 		
@@ -171,6 +174,11 @@ package com.shephertz.app42.paas.sdk.as3.util
 				default:
 					return false;
 			}
+		}
+		public static function toString(object:Object):String
+		{
+			var toString:String  = com.adobe.serialization.json.JSON.encode(object);
+			return toString;
 		}
 	}
 }

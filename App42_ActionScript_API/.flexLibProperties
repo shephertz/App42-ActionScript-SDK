@@ -5,8 +5,6 @@
     <classEntry path="com.shephertz.app42.paas.sdk.as3.App42Service"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.App42Exception"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.App42ResponseBuilder"/>
-    <classEntry path="com.shephertz.app42.paas.sdk.as3.game.Game"/>
-    <classEntry path="com.shephertz.app42.paas.sdk.as3.game.GameResponseBuilder"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.App42Response"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.App42CallBack"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.user.UserService"/>
@@ -15,6 +13,9 @@
     <classEntry path="com.shephertz.app42.paas.sdk.as3.App42BadParameterException"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.storage.StorageService"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.App42SecurityException"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.App42LimitException"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.game.RewardService"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.game.ScoreService"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

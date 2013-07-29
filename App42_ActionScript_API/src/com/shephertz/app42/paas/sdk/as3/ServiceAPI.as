@@ -1,7 +1,11 @@
 package com.shephertz.app42.paas.sdk.as3
 {
 	import com.shephertz.app42.paas.sdk.as3.game.GameService;
+	import com.shephertz.app42.paas.sdk.as3.game.RewardService;
 	import com.shephertz.app42.paas.sdk.as3.game.ScoreBoardService;
+	import com.shephertz.app42.paas.sdk.as3.game.ScoreService;
+	import com.shephertz.app42.paas.sdk.as3.storage.StorageService;
+	import com.shephertz.app42.paas.sdk.as3.user.UserService;
 	
 
 	public  class ServiceAPI
@@ -21,8 +25,7 @@ package com.shephertz.app42.paas.sdk.as3
 		
 		/** 
 		 * Retrieve the value of config object.
-		 * @return 
-		 * 			Config object  
+		 * @return Config object  
 		 */ 
 		public function  getConfig() : Config {
 			return config;
@@ -30,9 +33,7 @@ package com.shephertz.app42.paas.sdk.as3
 		
 		/**
 		 * Sets the value of config object
-		 * @param config
-		 * 			Config object
-		 * 
+		 * @param config - Config object
 		 * @see	Config
 		 */
 		public function  setConfig(config :Config ) : void{
@@ -41,8 +42,7 @@ package com.shephertz.app42.paas.sdk.as3
 		
 		/** 
 		 * Retrieve the value of apiKey.
-		 * @return 
-		 * 			apiKey - A variable of String type  
+		 * @return apiKey - A variable of String type  
 		 */ 
 		public function  getApiKey(): String {
 			return apiKey;
@@ -50,8 +50,7 @@ package com.shephertz.app42.paas.sdk.as3
 		
 		/**
 		 * Sets the value of apiKey
-		 * @param apiKey
-		 * 			apiKey - A variable of String type
+		 * @param apiKey - A variable of String type
 		 * 
 		 */	
 		public function  setApiKey(apiKey : String ) : void {
@@ -60,8 +59,7 @@ package com.shephertz.app42.paas.sdk.as3
 		
 		/** 
 		 * Retrieve the value of secretKey.
-		 * @return 
-		 * 			secretKey - A variable of String type  
+		 * @return secretKey - A variable of String type  
 		 */ 
 		public function  getSecretKey() : String{
 			return secretKey;
@@ -69,8 +67,7 @@ package com.shephertz.app42.paas.sdk.as3
 		
 		/**
 		 * Sets the value of secretKey
-		 * @param secretKey
-		 * 			secretKey - A variable of String type
+		 * @param secretKey - A variable of String type
 		 * 
 		 */	
 		public function  setSecretKey(secretKey : String ) : void{
@@ -79,8 +76,7 @@ package com.shephertz.app42.paas.sdk.as3
 		
 		/** 
 		 * Retrieve the value of baseURL.
-		 * @return 
-		 * 			Config.baseURL - A variable of String type  
+		 * @return Config.baseURL - A variable of String type  
 		 */ 
 		public function  getBaseURL() : String {
 			return config.getBaseURL();
@@ -88,12 +84,9 @@ package com.shephertz.app42.paas.sdk.as3
 		
 		/**
 		 * Sets the value of Config.baseURL
-		 * @param protocol
-		 * 			protocol - A variable of String type
-		 * @param host
-		 * 			host - A variable of String type
-		 * @param port
-		 * 			port - A variable of Integer type
+		 * @param protocol - A variable of String type
+		 * @param host - A variable of String type
+		 * @param port - A variable of Integer type
 		 */	
 		public function  setBaseURL(protocol : String , host : String ,port: int ) : void {
 			config.setBaseURL(protocol, host, port);
@@ -102,8 +95,7 @@ package com.shephertz.app42.paas.sdk.as3
 		
 		/**
 		 * Sets the value of Config.customcode
-		 * @param url
-		 * 			url - server url
+		 * @param url - server url
 		 */
 		public function  setCustomCodeURL(url : String ) : void {
 			config.setCustomCodeURL(url);
@@ -111,8 +103,7 @@ package com.shephertz.app42.paas.sdk.as3
 		
 		/** 
 		 * Builds the instance of GameService.
-		 * @return 
-		 * 			gameService - GameService Object  
+		 * @return gameService - GameService Object  
 		 * @see	GameService
 		 */ 
 		public function  buildGameService() : GameService {
@@ -121,13 +112,50 @@ package com.shephertz.app42.paas.sdk.as3
 		}
 		/** 
 		 * Builds the instance of ScoreBoardService.
-		 * @return 
-		 * 			scoreBoardService - ScoreBoardService Object  
+		 * @return scoreBoardService - ScoreBoardService Object  
 		 * @see	ScoreBoardService
 		 */ 
 		public function  buildScoreBoardService() : ScoreBoardService {
 			var scoreboardService : ScoreBoardService  = new ScoreBoardService(apiKey, secretKey);
 			return scoreboardService;
 		}
+		
+		/** 
+		 * Builds the instance of ScoreService.
+		 * @return scoreService - ScoreService Object  
+		 * @see	ScoreService
+		 */ 
+		public function  buildScoreService() : ScoreService {
+			var scoreService : ScoreService  = new ScoreService(apiKey, secretKey);
+			return scoreService;
+		}
+		/** 
+		 * Builds the instance of RewardService.
+		 * @return rewardService - RewardService Object  
+		 * @see	RewardService
+		 */ 
+		public function  buildRewardService() : RewardService {
+			var rewardService : RewardService  = new RewardService(apiKey, secretKey);
+			return rewardService;
+		}
+		/** 
+		 * Builds the instance of StorageService.
+		 * @return storageService - StorageService Object  
+		 * @see	StorageService
+		 */ 
+		public function  buildStorageServicee() : StorageService {
+			var storageService : StorageService  = new StorageService(apiKey, secretKey);
+			return storageService;
+		}
+		/** 
+		 * Builds the instance of UserService.
+		 * @return userService - UserService Object  
+		 * @see	UserService
+		 */ 
+		public function  buildUserService() : UserService {
+			var userService : UserService  = new UserService(apiKey, secretKey);
+			return userService;
+		}
+		
 	}
 }

@@ -3,6 +3,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 	import com.adobe.serialization.json.JSON;
 	import com.shephertz.app42.paas.sdk.as3.App42CallBack;
 	import com.shephertz.app42.paas.sdk.as3.App42Exception;
+	import com.shephertz.app42.paas.sdk.as3.App42Log;
 	import com.shephertz.app42.paas.sdk.as3.App42Service;
 	import com.shephertz.app42.paas.sdk.as3.connection.RESTConnector;
 	import com.shephertz.app42.paas.sdk.as3.util.Util;
@@ -34,7 +35,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 		/**
 		 * Creates a game on the cloud in async mode.
 		 * @param gameName - Name of the game that has to be created
-		 * @param gameDescription - Description of the game to be created
+		 * @param description - Description of the game to be created
 		 * @param callback - Callback object for success/exception result
 		 * @throws App42Exception
 		 * 
@@ -55,6 +56,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			json.app42 = app42Json;
 			app42Json.game = gameJson;
 			var jsonBody:String  = com.adobe.serialization.json.JSON.encode(json);
+			App42Log.debug("Json String : " + jsonBody.toString());
 			paramsDics["body"] = jsonBody.toString();
 			var signature:String = Util.sign(this.secretKey,paramsDics);
 			var resourceUrl:String = this.version + "/" + this.resource;
@@ -112,8 +114,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		{
 		 	var object:Object;
 			object = com.adobe.serialization.json.JSON.decode(response);
-			trace("response is " + response);
-//			object = new GameResponseBuilder().buildResponse(response);
 			requestCall.onSuccess(object);
 			
 		}

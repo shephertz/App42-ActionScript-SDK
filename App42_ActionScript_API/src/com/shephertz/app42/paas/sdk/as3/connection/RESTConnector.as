@@ -1,7 +1,13 @@
 package com.shephertz.app42.paas.sdk.as3.connection
 {
 	import com.adobe.serialization.json.JSON;
+	import com.shephertz.app42.paas.sdk.as3.App42BadParameterException;
 	import com.shephertz.app42.paas.sdk.as3.App42CallBack;
+	import com.shephertz.app42.paas.sdk.as3.App42Exception;
+	import com.shephertz.app42.paas.sdk.as3.App42LimitException;
+	import com.shephertz.app42.paas.sdk.as3.App42Log;
+	import com.shephertz.app42.paas.sdk.as3.App42NotFoundException;
+	import com.shephertz.app42.paas.sdk.as3.App42SecurityException;
 	import com.shephertz.app42.paas.sdk.as3.App42Service;
 	import com.shephertz.app42.paas.sdk.as3.Config;
 	import com.shephertz.app42.paas.sdk.as3.util.Util;
@@ -45,33 +51,28 @@ package com.shephertz.app42.paas.sdk.as3.connection
 		}
 		
 		
-		/**
-		 * @param signature
-		 * @param url
-		 * @param params
-		 * @return
-		 * @throws Exception
-		 */
-		
 		public  function executeGet(signature : String , url : String ,
 									params : Dictionary,serviceNew:App42Service ,call:App42CallBack) : void {
 			
 			var response:String ;
-			var httpLoader:URLLoader = new URLLoader;
 			var queryParams : Dictionary = com.shephertz.app42.paas.sdk.as3.util.Util.clone(params);
 			var apiKey : String = queryParams["apiKey"]
-			
+			var httpLoader:URLLoader = new URLLoader;
 			var timeStamp : String = queryParams["timeStamp"]
 			delete queryParams["apiKey"]
 			delete queryParams["timeStamp"]
 			var queryString:String = "?";
 			var data:Object = queryParams;
 			// Get all Request parameter and set here
+			var value:String;
 			for ( var keys:String in data ) {
-				queryString += keys + "=" + data[keys] + "&";
+				value  = data[keys];
+				queryString += keys + "=" + value + "&";
+				App42Log.debug(" Setting value :" + keys + " : " + value);
 			}
-			
+			App42Log.debug(" QueryString is " + queryString);
 			var uri:String  = this.baseURL + url + queryString;
+			App42Log.debug(" Requested URL is " + uri);
 			var request:URLRequest = new URLRequest(uri);
 			request.method = URLRequestMethod.GET;
 			request.requestHeaders.push(new URLRequestHeader("Content-Type",Config.getInstance().getContentType()));
@@ -80,58 +81,35 @@ package com.shephertz.app42.paas.sdk.as3.connection
 			request.requestHeaders.push(new URLRequestHeader("signature",signature));
 			request.requestHeaders.push(new URLRequestHeader("timeStamp",timeStamp));
 			httpLoader.addEventListener(Event.COMPLETE,completeHandler);
-			httpLoader.addEventListener(IOErrorEvent.IO_ERROR,gotIOError);
-			httpLoader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS,statusEvent);
-			httpLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,gotIOError);
+			httpLoader.addEventListener(IOErrorEvent.IO_ERROR,app42Exception);
+			httpLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,app42Exception);
 			httpLoader.load(request);
 			service  = serviceNew;
 			callback = call;
 			
 		}
-		private function completeHandler(e:Event):void
-		{
-			var json:Object  = com.adobe.serialization.json.JSON.decode(e.target.data);
-			if(json["app42"] != undefined){
-				trace("Success Called");
-			 	service.onSuccess(e.target.data,callback,true);
-			}
-			else{
-				
-				trace("Exception Called" + e);
-//				service.onException(e,callback);
-			}
-		}
-		private function statusEvent(status:HTTPStatusEvent):void
-		{
-			if(status.status == 200)
-				trace("Status if called" + status);
-			else{
-				trace("Status Else called " + status.status);
-			}
-		}
-		private function gotIOError(event:Event):void
-		{
-			trace("[HTTP]Error : "+event.target.data);
-		}
 		
 		public  function executePost(signature : String , url : String ,
 									 params : Dictionary, bodyPayLoad:String,serviceNew:App42Service ,call:App42CallBack) : void {
 			var response:String ;
-			var httpLoader:URLLoader = new URLLoader;
 			var queryParams : Dictionary = com.shephertz.app42.paas.sdk.as3.util.Util.clone(params);
 			var apiKey : String = queryParams["apiKey"]
-			
+			var httpLoader:URLLoader = new URLLoader;
 			var timeStamp : String = queryParams["timeStamp"]
 			delete queryParams["apiKey"]
 			delete queryParams["timeStamp"]
 			var queryString:String = "?";
 			var data:Object = queryParams;
 			// Get all Request parameter and set here
+			var value:String;
 			for ( var keys:String in data ) {
-				queryString += keys + "=" + data[keys] + "&";
+				value  = data[keys];
+				queryString += keys + "=" + value + "&";
+				App42Log.debug("Setting value :" + keys + " : " + value);
 			}
-			
+			App42Log.debug("QueryString is " + queryString);
 			var uri:String  = this.baseURL + url + queryString;
+			App42Log.debug("Requested URL is " + uri);
 			var request:URLRequest = new URLRequest(uri);
 			request.method = URLRequestMethod.POST;
 			request.data = bodyPayLoad;
@@ -140,14 +118,46 @@ package com.shephertz.app42.paas.sdk.as3.connection
 			request.requestHeaders.push(new URLRequestHeader("apiKey",apiKey));
 			request.requestHeaders.push(new URLRequestHeader("signature",signature));
 			request.requestHeaders.push(new URLRequestHeader("timeStamp",timeStamp));
-	
-			httpLoader.addEventListener(Event.COMPLETE,completeHandler);
-			httpLoader.addEventListener(IOErrorEvent.IO_ERROR,gotIOError);
-			httpLoader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS,statusEvent);
-			httpLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,gotIOError);
 			httpLoader.load(request);
+			httpLoader.addEventListener(Event.COMPLETE,completeHandler);
+			httpLoader.addEventListener(IOErrorEvent.IO_ERROR,app42Exception);
+			httpLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,app42Exception);
 			service  = serviceNew;
 			callback = call;
+		}
+		
+	
+		private function completeHandler(e:Event):void
+		{
+			//var json:Object  = com.adobe.serialization.json.JSON.decode(e.target.data);
+			service.onSuccess(e.target.data,callback,true);
+		}
+		
+		private function app42Exception(event:Event):void
+		{
+			var app42Fault:Object = new Object;
+			app42Fault = com.adobe.serialization.json.JSON.decode(event.target.data)["app42Fault"];
+			var appErrorCode:int = app42Fault["appErrorCode"];
+			var httpErrorCode:int = app42Fault["httpErrorCode"];
+			var detailMessage:String =event.target.data;
+			if(httpErrorCode == 400){
+				service.onException(new App42BadParameterException(detailMessage,httpErrorCode,appErrorCode),callback);
+			}
+			else if(httpErrorCode == 401){
+				service.onException(new App42SecurityException(detailMessage,httpErrorCode,appErrorCode),callback);
+			}
+			else if(httpErrorCode == 404){
+				service.onException(new App42NotFoundException(detailMessage,httpErrorCode,appErrorCode),callback);
+			}
+			else if(httpErrorCode == 413){
+				service.onException(new App42LimitException(detailMessage,httpErrorCode,appErrorCode),callback);
+			}
+			else if(httpErrorCode == 500){
+				service.onException(new App42Exception(detailMessage,httpErrorCode,appErrorCode),callback);
+			}
+			else{
+				service.onException(new App42Exception(detailMessage,httpErrorCode,appErrorCode),callback);
+			}
 		}
 	}
 }
