@@ -2,6 +2,8 @@ package com.shephertz.app42.paas.sdk.as3.util
 {
 	import com.hurlant.crypto.hash.HMAC;
 	import com.hurlant.crypto.hash.SHA1;
+	import com.shephertz.app42.paas.sdk.as3.App42CallBack;
+	import com.shephertz.app42.paas.sdk.as3.App42Exception;
 	
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
@@ -125,5 +127,50 @@ package com.shephertz.app42.paas.sdk.as3.util
 			return urlString;
 		}
 		
+		
+		public static function throwExceptionIfNullOrBlank(obj:Object, name:String,callback:App42CallBack):void {
+			if (obj == null) {
+				callback.onException(new App42Exception(name + " parameter can not be blank",null,null));
+			}
+			if (obj instanceof String) {
+				var trimObj:String = obj.toString();
+				if(Util.trim(trimObj) == "")
+					callback.onException(new App42Exception(name + " parameter can not be blank",null,null));
+			}
+		}
+		
+		
+		public static function trim(str:String):String
+		{
+			if (str == null) return '';
+			
+			var startIndex:int = 0;
+			while (isWhitespace(str.charAt(startIndex)))
+				++startIndex;
+			
+			var endIndex:int = str.length - 1;
+			while (isWhitespace(str.charAt(endIndex)))
+				--endIndex;
+			
+			if (endIndex >= startIndex)
+				return str.slice(startIndex, endIndex + 1);
+			else
+				return "";
+		}
+		public static function isWhitespace(character:String):Boolean
+		{
+			switch (character)
+			{
+				case " ":
+				case "\t":
+				case "\r":
+				case "\n":
+				case "\f":
+					return true;
+					
+				default:
+					return false;
+			}
+		}
 	}
 }

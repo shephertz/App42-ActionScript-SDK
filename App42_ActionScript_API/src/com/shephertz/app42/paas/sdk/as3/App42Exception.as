@@ -4,7 +4,8 @@ package com.shephertz.app42.paas.sdk.as3
 	{
 		private var httpErrorCode:int;
 		private var appErrorCode:int;
-		public function App42Exception(message : String , httpErrorCode:int,appErrorCode:int)
+		
+		public function App42Exception(message : String , httpErrorCode:int, appErrorCode:int)
 		{
 			super(message, appErrorCode);
 			this.httpErrorCode = httpErrorCode;

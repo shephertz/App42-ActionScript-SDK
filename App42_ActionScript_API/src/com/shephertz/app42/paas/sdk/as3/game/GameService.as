@@ -54,11 +54,11 @@ package com.shephertz.app42.paas.sdk.as3.game
 			gameJson.description = description;
 			json.app42 = app42Json;
 			app42Json.game = gameJson;
-			var jsonStr:String  = com.adobe.serialization.json.JSON.encode(json);
-			paramsDics["body"] = jsonStr.toString();
+			var jsonBody:String  = com.adobe.serialization.json.JSON.encode(json);
+			paramsDics["body"] = jsonBody.toString();
 			var signature:String = Util.sign(this.secretKey,paramsDics);
 			var resourceUrl:String = this.version + "/" + this.resource;
-			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonStr,this,callback);
+			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonBody,this,callback);
 		}
 		
 		

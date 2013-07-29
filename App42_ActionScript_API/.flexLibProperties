@@ -11,6 +11,10 @@
     <classEntry path="com.shephertz.app42.paas.sdk.as3.App42CallBack"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.user.UserService"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.game.ScoreBoardService"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.App42NotFoundException"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.App42BadParameterException"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.storage.StorageService"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.App42SecurityException"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

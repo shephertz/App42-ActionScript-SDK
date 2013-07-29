@@ -9,6 +9,7 @@ package com.shephertz.app42.paas.sdk.as3.connection
 	import flash.events.Event;
 	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
+	import flash.events.SecurityErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestHeader;
@@ -79,8 +80,9 @@ package com.shephertz.app42.paas.sdk.as3.connection
 			request.requestHeaders.push(new URLRequestHeader("signature",signature));
 			request.requestHeaders.push(new URLRequestHeader("timeStamp",timeStamp));
 			httpLoader.addEventListener(Event.COMPLETE,completeHandler);
-			httpLoader.addEventListener(IOErrorEvent.IO_ERROR,error);
+			httpLoader.addEventListener(IOErrorEvent.IO_ERROR,gotIOError);
 			httpLoader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS,statusEvent);
+			httpLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,gotIOError);
 			httpLoader.load(request);
 			service  = serviceNew;
 			callback = call;
@@ -90,12 +92,12 @@ package com.shephertz.app42.paas.sdk.as3.connection
 		{
 			var json:Object  = com.adobe.serialization.json.JSON.decode(e.target.data);
 			if(json["app42"] != undefined){
-//				trace("Success Called");
+				trace("Success Called");
 			 	service.onSuccess(e.target.data,callback,true);
 			}
-			else{.
+			else{
 				
-				trace("Exception Called" + e.target.data);
+				trace("Exception Called" + e);
 //				service.onException(e,callback);
 			}
 		}
@@ -107,10 +109,9 @@ package com.shephertz.app42.paas.sdk.as3.connection
 				trace("Status Else called " + status.status);
 			}
 		}
-		private function error(e:Error):void
+		private function gotIOError(event:Event):void
 		{
-			trace("I m error Event" + e);
-			
+			trace("[HTTP]Error : "+event.target.data);
 		}
 		
 		public  function executePost(signature : String , url : String ,
@@ -141,8 +142,9 @@ package com.shephertz.app42.paas.sdk.as3.connection
 			request.requestHeaders.push(new URLRequestHeader("timeStamp",timeStamp));
 	
 			httpLoader.addEventListener(Event.COMPLETE,completeHandler);
-			httpLoader.addEventListener(IOErrorEvent.IO_ERROR,error);
+			httpLoader.addEventListener(IOErrorEvent.IO_ERROR,gotIOError);
 			httpLoader.addEventListener(HTTPStatusEvent.HTTP_RESPONSE_STATUS,statusEvent);
+			httpLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,gotIOError);
 			httpLoader.load(request);
 			service  = serviceNew;
 			callback = call;

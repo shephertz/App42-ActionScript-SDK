@@ -245,20 +245,18 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * @param callback - Callback object for success/exception result
 		 * @throws App42Exception
 		 */
-		public function getTopRankingsByGroup(gameName:String, userName:Array,callback:App42CallBack) : void {
+		public function getTopRankingsByGroup(gameName:String, userList:Array,callback:App42CallBack) : void {
 			var response:String = null;
 			var paramsDics:Dictionary = new Dictionary();
 			
 			paramsDics["apiKey"]= apiKey;
 			paramsDics["version"]= version;
 			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
-			var jsonArray:ArrayList = new ArrayList();
-			jsonArray.addItem(userName);
 			
 			var queryParams:Dictionary = Util.clone(paramsDics);
 			paramsDics["name"] = gameName; 
-			paramsDics["userList"] = jsonArray; 
-			
+			paramsDics["userList"] = userList; 
+			trace("userList is " + userList);
 			var signature:String = Util.sign(this.secretKey,paramsDics);
 			var resourceUrl:String = this.version + "/" + this.resource  +  "/"
 				+ gameName + "/group";

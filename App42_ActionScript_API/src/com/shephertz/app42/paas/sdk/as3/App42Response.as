@@ -24,7 +24,6 @@ package com.shephertz.app42.paas.sdk.as3
 			this.strResponse = strResponse;
 		}
 		
-		
 		public function setResponseSuccess(isResponseSuccess:Boolean):void {
 			this.isResponseSuccess = isResponseSuccess;
 		}
