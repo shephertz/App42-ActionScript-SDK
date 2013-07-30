@@ -1,3 +1,8 @@
+/**
+ * -----------------------------------------------------------------------
+ *     Copyright © 2012 ShepHertz Technologies Pvt Ltd. All rights reserved.
+ * -----------------------------------------------------------------------
+ */
 package com.shephertz.app42.paas.sdk.as3.util
 {
 	import com.adobe.serialization.json.JSON;
@@ -5,7 +10,6 @@ package com.shephertz.app42.paas.sdk.as3.util
 	import com.hurlant.crypto.hash.SHA1;
 	import com.shephertz.app42.paas.sdk.as3.App42CallBack;
 	import com.shephertz.app42.paas.sdk.as3.App42Exception;
-	import com.shephertz.app42.paas.sdk.as3.App42Service;
 	
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
@@ -127,21 +131,46 @@ package com.shephertz.app42.paas.sdk.as3.util
 			
 			return urlString;
 		}
-		
+		/**
+		 * An exception to check whether the object is null or blank.
+		 * @param obj
+		 * @param name
+		 * 
+		 */
 		
 		public static function throwExceptionIfNullOrBlank(obj:Object, name:String,callback:App42CallBack):void {
 			if (obj == null) {
-				throw new App42Service().onException( new App42Exception(name +" parameter can not be null" ,null,null),callback);
+				callback.onException(new App42Exception(name +" parameter can not be null" ,null,null));
+				return ;
 			}
 			if (obj is String) {
 				var trimObj:String = obj.toString();
 				if(Util.trim(trimObj) == "")
 				{
-					throw new App42Service().onException(new App42Exception(name + " parameter can not be blank",null,null),callback);
+					callback.onException(new App42Exception(name + " parameter can not be blank",null,null));
+					return ;
 				}
 			}
 		}
 		
+		/**
+		 * An exception to check whether the email entered is valid or not.
+		 * @param obj
+		 * @param name
+		 */
+		
+		public static function throwExceptionIfEmailNotValid(obj:Object, name:String,callback:App42CallBack):void {
+			trace("HERE IN EXCEPTIOBN");
+			if (obj == null) {
+				callback.onException(new App42Exception(name +" parameter can not be null" ,null,null));
+				return ;
+			}
+			var pattern:RegExp = /"^[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Z]{2,4}$"/;
+			var match:Boolean = pattern.exec(obj.toString());
+			if (match != true)
+				callback.onException(new App42Exception(name +" id is not valid" ,null,null));
+			return ;
+		}
 		
 		public static function trim(str:String):String
 		{

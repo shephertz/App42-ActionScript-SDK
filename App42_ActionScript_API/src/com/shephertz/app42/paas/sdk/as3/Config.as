@@ -1,6 +1,13 @@
+/**
+ * -----------------------------------------------------------------------
+ *     Copyright © 2012 ShepHertz Technologies Pvt Ltd. All rights reserved.
+ * -----------------------------------------------------------------------
+ */
 package com.shephertz.app42.paas.sdk.as3
 {
-	
+	/**
+	 * @author Himanshu Sharma
+	 */
 
 	public class Config {
 		

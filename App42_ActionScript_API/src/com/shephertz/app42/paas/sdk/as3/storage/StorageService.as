@@ -1,3 +1,8 @@
+/**
+ * -----------------------------------------------------------------------
+ *     Copyright © 2012 ShepHertz Technologies Pvt Ltd. All rights reserved.
+ * -----------------------------------------------------------------------
+ */
 package com.shephertz.app42.paas.sdk.as3.storage
 {
 	import com.adobe.serialization.json.JSON;
@@ -20,6 +25,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 	 * access/search the document.
 	 * @see Storage
 	 * 
+	 * @author Himanshu Sharma
 	 */
 	
 	public class StorageService extends App42Service
@@ -57,7 +63,12 @@ package com.shephertz.app42.paas.sdk.as3.storage
 									   jsonObject:Object,callback:App42CallBack):void  {
 			var response:String = null;
 			var paramsDics:Dictionary = new Dictionary();
-			Util.throwExceptionIfNullOrBlank(dbName,"DbName",callback);
+			if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "")
+			{
+				Util.throwExceptionIfNullOrBlank(dbName,"DbName",callback);
+				Util.throwExceptionIfNullOrBlank(collectionName,"CollectionName",callback);
+				return ;
+			}
 			paramsDics["apiKey"]=apiKey;
 			paramsDics["version"]=version;
 			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
@@ -72,13 +83,15 @@ package com.shephertz.app42.paas.sdk.as3.storage
 			app42Json.storage = storageJson;
 			json.app42 = app42Json;
 			
-			var jsonStr:String  = com.adobe.serialization.json.JSON.encode(json);
-			App42Log.debug("Json String : " + jsonStr.toString());
-			paramsDics["body"] = jsonStr.toString();
+			var jsonBody:String  = com.adobe.serialization.json.JSON.encode(json);
+			paramsDics["body"] = jsonBody.toString();
+			App42Log.debug("Json String : " + jsonBody.toString());
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource	+ "/insert/dbName/" + dbName + "/collectionName/"
 				+ collectionName;
-			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonStr,this,callback);
+			App42Log.debug("Http url : " + resourceUrl);
+			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonBody,this,callback);
 		}
 		
 		/**
@@ -90,8 +103,11 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		 */
 		public function findAllDocuments(dbName:String,collectionName:String, callback:App42CallBack) : void {
 			var response:String = null;
-			Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
-			Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
+			if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "")
+			{
+				Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
+				Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
+			}
 			var paramsDics:Dictionary = new Dictionary();
 			
 			paramsDics["apiKey"]= apiKey;
@@ -103,8 +119,10 @@ package com.shephertz.app42.paas.sdk.as3.storage
 			paramsDics["collectionName"] = collectionName; 
 			
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource	+ "/findAll/dbName/" + dbName + "/collectionName/"
 				+ collectionName;
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 			
 		}
@@ -119,8 +137,11 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		 */
 		public function findAllDocumentsByPaging(dbName:String,collectionName:String,max:int,offset:int ,callback:App42CallBack) : void {
 			var response:String = null;
-			Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
-			Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
+			if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "")
+			{
+				Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
+				Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
+			}
 			var paramsDics:Dictionary = new Dictionary();
 			
 			paramsDics["apiKey"]= apiKey;
@@ -134,8 +155,10 @@ package com.shephertz.app42.paas.sdk.as3.storage
 			paramsDics["offset"] = offset; 
 			
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource	+ "/findAll/dbName/" + dbName + "/collectionName/"
 				+ collectionName + "/" + max + "/" + offset;
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 			
 		}
@@ -149,7 +172,10 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		*/
 		public function findAllCollections(dbName:String, callback:App42CallBack) : void {
 			var response:String = null;
-			Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
+			if(dbName == null || Util.trim(dbName) == "" )
+			{
+				Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
+			}
 			var paramsDics:Dictionary = new Dictionary();
 			
 			paramsDics["apiKey"]= apiKey;
@@ -160,8 +186,10 @@ package com.shephertz.app42.paas.sdk.as3.storage
 			paramsDics["dbName"] = dbName; 
 			
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource	
 				+ "/findCollections/dbName/" + dbName;
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 			
 		}
@@ -174,8 +202,11 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		 */
 		public function findAllDocumentsCount(dbName:String,collectionName:String, callback:App42CallBack) : void {
 			var response:String = null;
-			Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
-			Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
+			if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "")
+			{
+				Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
+				Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
+			}
 			var paramsDics:Dictionary = new Dictionary();
 			
 			paramsDics["apiKey"]= apiKey;
@@ -187,9 +218,11 @@ package com.shephertz.app42.paas.sdk.as3.storage
 			paramsDics["collectionName"] = collectionName; 
 			
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource	
 				+ "/findAll/count/dbName/" + dbName + "/collectionName/"
 				+ collectionName;
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 			
 		}
@@ -204,9 +237,12 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		 */
 		public function findDocumentById(dbName:String,collectionName:String,docId:String,callback:App42CallBack) : void {
 			var response:String = null;
-			Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
-			Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
-			Util.throwExceptionIfNullOrBlank(docId,"docId",callback);
+			if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "" || docId == null || Util.trim(docId) == "")
+			{
+				Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
+				Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
+				Util.throwExceptionIfNullOrBlank(docId,"DocId",callback);
+			}
 			var paramsDics:Dictionary = new Dictionary();
 			
 			paramsDics["apiKey"]= apiKey;
@@ -219,8 +255,10 @@ package com.shephertz.app42.paas.sdk.as3.storage
 			paramsDics["docId"] = docId; 
 			
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource  + "/findDocById/dbName/" + dbName + "/collectionName/"
 				+ collectionName + "/docId/" + docId;
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 			
 		}
@@ -239,7 +277,13 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		public function findDocumentByKeyValue(dbName:String,collectionName:String,key:String,value:String,callback:App42CallBack) : void {
 			var response:String = null;
 			var paramsDics:Dictionary = new Dictionary();
-			
+			if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "" || key == null || Util.trim(key) == "" || value == null || Util.trim(value) == "")
+			{
+				Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
+				Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
+				Util.throwExceptionIfNullOrBlank(key,"Key",callback);
+				Util.throwExceptionIfNullOrBlank(value,"Value",callback);
+			}
 			paramsDics["apiKey"]= apiKey;
 			paramsDics["version"]= version;
 			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
@@ -251,13 +295,16 @@ package com.shephertz.app42.paas.sdk.as3.storage
 			paramsDics["value"] = value; 
 			
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource	+ "/findDocByKV/dbName/" + dbName + "/collectionName/"
 				+ collectionName + "/" + key + "/"	+ Util.urlEncode(value);
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 			
 		}
 		override public function onSuccess(response:String, requestCall:App42CallBack,isArray:Boolean):void
 		{
+			App42Log.debug("Response From Server : " + response);
 			var object:Object;
 			object = com.adobe.serialization.json.JSON.decode(response);
 			requestCall.onSuccess(object);

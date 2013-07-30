@@ -1,3 +1,8 @@
+/**
+ * -----------------------------------------------------------------------
+ *     Copyright © 2012 ShepHertz Technologies Pvt Ltd. All rights reserved.
+ * -----------------------------------------------------------------------
+ */
 package com.shephertz.app42.paas.sdk.as3.game
 {
 	import com.adobe.serialization.json.JSON;
@@ -9,6 +14,20 @@ package com.shephertz.app42.paas.sdk.as3.game
 	import com.shephertz.app42.paas.sdk.as3.util.Util;
 	
 	import flash.utils.Dictionary;
+	/**
+	 * The Game service allows Game, User, Score and ScoreBoard Management on the
+	 * Cloud. The service allows Game Developer to create a Game and then do in Game
+	 * Scoring using the Score service. It also allows to maintain a Score board
+	 * across game sessions using the ScoreBoard service. One can query for average
+	 * or highest score for user for a Game and highest and average score across
+	 * users for a Game. It also gives ranking of the user against other users for a
+	 * particular game. The Reward and RewardPoints allows the Game Developer to
+	 * assign rewards to a user and redeem the rewards. E.g. One can give Swords or
+	 * Energy etc. The services Game, Score, ScoreBoard, Reward, RewardPoints can be
+	 * used in Conjunction for complete Game Scoring and Reward Management.
+	 * 
+	 * @author Himanshu Sharma
+	 */
 	
 	public class GameService extends App42Service
 	{
@@ -59,7 +78,9 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Json String : " + jsonBody.toString());
 			paramsDics["body"] = jsonBody.toString();
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource;
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonBody,this,callback);
 		}
 		
@@ -82,7 +103,9 @@ package com.shephertz.app42.paas.sdk.as3.game
 			paramsDics["name"] = gameName; 
 			
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/"+ gameName;
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 			
 		}
@@ -104,7 +127,9 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var queryParams:Dictionary = Util.clone(paramsDics);
 			
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource;
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 			
 		}
@@ -113,13 +138,13 @@ package com.shephertz.app42.paas.sdk.as3.game
 	 override public function onSuccess(response:String, requestCall:App42CallBack,isArray:Boolean):void
 		{
 		 	var object:Object;
+			App42Log.debug("Response From Server : " + response);
 			object = com.adobe.serialization.json.JSON.decode(response);
 			requestCall.onSuccess(object);
 			
 		}
 	 override public function onException(exception:App42Exception, requestCall:App42CallBack):void
 		{
-		 	trace("I m here in Service" + exception);
 		 	requestCall.onException(exception);
 		}
 	}

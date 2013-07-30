@@ -1,3 +1,8 @@
+/**
+ * -----------------------------------------------------------------------
+ *     Copyright © 2012 ShepHertz Technologies Pvt Ltd. All rights reserved.
+ * -----------------------------------------------------------------------
+ */
 package com.shephertz.app42.paas.sdk.as3
 {
 	import com.shephertz.app42.paas.sdk.as3.game.GameService;
@@ -6,7 +11,13 @@ package com.shephertz.app42.paas.sdk.as3
 	import com.shephertz.app42.paas.sdk.as3.game.ScoreService;
 	import com.shephertz.app42.paas.sdk.as3.storage.StorageService;
 	import com.shephertz.app42.paas.sdk.as3.user.UserService;
-	
+	/**
+	* The ServiceAPI class is used to build the Service objects which are used to
+	* call various api methods.
+	* 
+	* @author Himanshu Sharma
+	* 
+	*/
 
 	public  class ServiceAPI
 	{

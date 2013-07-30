@@ -1,3 +1,8 @@
+/**
+ * -----------------------------------------------------------------------
+ *     Copyright © 2012 ShepHertz Technologies Pvt Ltd. All rights reserved.
+ * -----------------------------------------------------------------------
+ */
 package com.shephertz.app42.paas.sdk.as3.game
 {
 	import com.adobe.serialization.json.JSON;
@@ -11,7 +16,23 @@ package com.shephertz.app42.paas.sdk.as3.game
 	import flash.utils.Dictionary;
 	
 	import mx.collections.ArrayList;
-
+	
+	/**
+	 * Define a Reward e.g. Sword, Energy etc. Is needed for Reward Points
+	 * 
+	 * The Game service allows Game, User, Score and ScoreBoard Management on the
+	 * Cloud. The service allows Game Developer to create a Game and then do in Game
+	 * Scoring using the Score service. It also allows to maintain a Scoreboard
+	 * across game sessions using the ScoreBoard service. One can query for average
+	 * or highest score for user for a Game and highest and average score across
+	 * users for a Game. It also gives ranking of the user against other users for a
+	 * particular game. The Reward and RewardPoints allows the Game Developer to
+	 * assign rewards to a user and redeem the rewards. E.g. One can give Swords or
+	 * Energy etc. The services Game, Score, ScoreBoard, Reward, RewardPoints can be
+	 * used in Conjunction for complete Game Scoring and Reward Management.
+	 * 
+	 * @author Himanshu Sharma
+	 */
 	public class RewardService extends App42Service
 	{
 		private var version : String  = "1.0";
@@ -56,16 +77,21 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var queryParams:Dictionary = Util.clone(paramsDics);
 			var json:Object = new Object;
 			var app42Json:Object = new Object;
-			var gameJson:Object = new Object;
-			gameJson.name = rewardName;
-			gameJson.description = description;
+			var rewardsJson:Object = new Object;
+			var rewardJson:Object = new Object;
+			rewardJson.name = rewardName;
+			rewardJson.description = description;
 			json.app42 = app42Json;
-			app42Json.game = gameJson;
+			app42Json.rewards = rewardsJson;
+			rewardsJson.reward = rewardJson;
 			var jsonBody:String  = com.adobe.serialization.json.JSON.encode(json);
 			App42Log.debug("Json String : " + jsonBody.toString());
 			paramsDics["body"] = jsonBody.toString();
+			App42Log.debug("Json String : " + jsonBody.toString());
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource;
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonBody,this,callback);
 		}
 		
@@ -85,7 +111,9 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var queryParams:Dictionary = Util.clone(paramsDics);
 			
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/count";
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 			
 		}
@@ -106,7 +134,9 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var queryParams:Dictionary = Util.clone(paramsDics);
 			
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource;
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 			
 		}
@@ -132,8 +162,10 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var queryParams:Dictionary = Util.clone(paramsDics);
 			
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource+ "/paging"
 				+ "/" + max + "/" + offset;
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 			
 		}
@@ -152,13 +184,15 @@ package com.shephertz.app42.paas.sdk.as3.game
 			paramsDics["apiKey"]=apiKey;
 			paramsDics["version"]=version;
 			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
-			paramsDics["rewardName"]=rewardName; 	
+			paramsDics["name"]=rewardName; 	
 			
 			var queryParams:Dictionary = Util.clone(paramsDics);
 			
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/"
 				+ rewardName;
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 			
 		}
@@ -198,7 +232,9 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Json String : " + jsonBody.toString());
 			paramsDics["body"] = jsonBody.toString();
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/earn";
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonBody,this,callback);
 		}
 		
@@ -235,7 +271,9 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Json String : " + jsonBody.toString());
 			paramsDics["body"] = jsonBody.toString();
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/redeem";
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonBody,this,callback);
 		}
 		
@@ -261,8 +299,10 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var queryParams:Dictionary = Util.clone(paramsDics);
 			
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource  + "/"
 				+ gameName + "/" + userName;
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 			
 		}
@@ -293,8 +333,10 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var queryParams:Dictionary = Util.clone(paramsDics);
 			
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource  + "/"
 				+ gameName + "/" + rewardName + "/" + max;
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 		}
 		/**
@@ -320,40 +362,13 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var queryParams:Dictionary = Util.clone(paramsDics);
 			
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/"
 				+ userName + "/points/" + rewardName;
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 		}
-		/**
-		 * This function returns you a list of group wise users who earned the top
-		 * rewards in the specified game .
-		 * @param gameName - Name of the game for which top reward earners are to be fetched
-		 * @param rewardName - Name of the reward for which top earners are to be listed
-		 * @param userList - List of group wise users earning specified rewards
-		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
-		 * 
-		 */
-		
-		public function getTopNRewardEarnersByGroup(gameName:String,rewardName:String ,userList:ArrayList,callback:App42CallBack) : void {
-			var response:String = null;
-			var paramsDics:Dictionary = new Dictionary();
-			
-			paramsDics["apiKey"]=apiKey;
-			paramsDics["version"]=version;
-			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
-			
-			paramsDics["gameName"]=gameName; 	
-			paramsDics["rewardName"]=rewardName; 	
-			paramsDics["userList"]=userList; 	
-			var queryParams:Dictionary = Util.clone(paramsDics);
-			
-			var signature:String = Util.sign(this.secretKey,paramsDics);
-			var resourceUrl:String = this.version + "/" + this.resource + "/"
-				+ gameName + "/" + rewardName + "/group/points";
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
-		}
-		
+
 		/**
 		 * Fetches the reward rank for a particular user
 		 * @param gameName - Name of the game for which user rank have to be fetched
@@ -364,7 +379,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * 
 		 */
 		
-		public function getUserRankingOnReward(gameName:String,rewardName:String ,userName:ArrayList,callback:App42CallBack) : void {
+		public function getUserRankingOnReward(gameName:String,rewardName:String ,userName:String,callback:App42CallBack) : void {
 			var response:String = null;
 			var paramsDics:Dictionary = new Dictionary();
 			
@@ -378,13 +393,16 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var queryParams:Dictionary = Util.clone(paramsDics);
 			
 			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource  + "/"	+ gameName + "/" + rewardName + "/" + "rank" + "/"
 				+ userName;
+			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 		}
 		
 		override public function onSuccess(response:String, requestCall:App42CallBack,isArray:Boolean):void
 		{
+			App42Log.debug("Response From Server : " + response);
 			var object:Object;
 			object = com.adobe.serialization.json.JSON.decode(response);
 			requestCall.onSuccess(object);
@@ -392,7 +410,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		}
 		override public function onException(exception:App42Exception, requestCall:App42CallBack):void
 		{
-			trace("I m here in Service" + exception);
 			requestCall.onException(exception);
 		}
 	}

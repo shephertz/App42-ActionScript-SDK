@@ -1,7 +1,15 @@
+/**
+ * -----------------------------------------------------------------------
+ *     Copyright © 2012 ShepHertz Technologies Pvt Ltd. All rights reserved.
+ * -----------------------------------------------------------------------
+ */
 package com.shephertz.app42.paas.sdk.as3
 {
 	public class App42Response
 	{
+		/**
+		 * @author Himanshu Sharma
+		 */
 		public var isResponseSuccess:Boolean;
 		
 		private var strResponse:String;

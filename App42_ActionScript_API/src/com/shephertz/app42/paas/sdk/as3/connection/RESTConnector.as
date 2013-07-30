@@ -1,3 +1,8 @@
+/**
+ * -----------------------------------------------------------------------
+ *     Copyright © 2012 ShepHertz Technologies Pvt Ltd. All rights reserved.
+ * -----------------------------------------------------------------------
+ */
 package com.shephertz.app42.paas.sdk.as3.connection
 {
 	import com.adobe.serialization.json.JSON;
@@ -13,7 +18,6 @@ package com.shephertz.app42.paas.sdk.as3.connection
 	import com.shephertz.app42.paas.sdk.as3.util.Util;
 	
 	import flash.events.Event;
-	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.net.URLLoader;
@@ -21,6 +25,10 @@ package com.shephertz.app42.paas.sdk.as3.connection
 	import flash.net.URLRequestHeader;
 	import flash.net.URLRequestMethod;
 	import flash.utils.Dictionary;
+	
+	/**
+	 * @author Himanshu Sharma
+	 */
 	
 	public class RESTConnector
 	{
@@ -126,37 +134,42 @@ package com.shephertz.app42.paas.sdk.as3.connection
 			callback = call;
 		}
 		
-	
+		
 		private function completeHandler(e:Event):void
 		{
-			//var json:Object  = com.adobe.serialization.json.JSON.decode(e.target.data);
 			service.onSuccess(e.target.data,callback,true);
 		}
 		
 		private function app42Exception(event:Event):void
 		{
 			var app42Fault:Object = new Object;
-			app42Fault = com.adobe.serialization.json.JSON.decode(event.target.data)["app42Fault"];
-			var appErrorCode:int = app42Fault["appErrorCode"];
-			var httpErrorCode:int = app42Fault["httpErrorCode"];
-			var detailMessage:String =event.target.data;
-			if(httpErrorCode == 400){
-				service.onException(new App42BadParameterException(detailMessage,httpErrorCode,appErrorCode),callback);
+			trace("event is " + event);
+			try {
+				app42Fault = com.adobe.serialization.json.JSON.decode(event.target.data)["app42Fault"];
+				var appErrorCode:int = app42Fault["appErrorCode"];
+				var httpErrorCode:int = app42Fault["httpErrorCode"];
+				var detailMessage:String =event.target.data;
+				if(httpErrorCode == 400){
+					service.onException(new App42BadParameterException(detailMessage,httpErrorCode,appErrorCode),callback);
+				}
+				else if(httpErrorCode == 401){
+					service.onException(new App42SecurityException(detailMessage,httpErrorCode,appErrorCode),callback);
+				}
+				else if(httpErrorCode == 404){
+					service.onException(new App42NotFoundException(detailMessage,httpErrorCode,appErrorCode),callback);
+				}
+				else if(httpErrorCode == 413){
+					service.onException(new App42LimitException(detailMessage,httpErrorCode,appErrorCode),callback);
+				}
+				else if(httpErrorCode == 500){
+					service.onException(new App42Exception(detailMessage,httpErrorCode,appErrorCode),callback);
+				}
+				else{
+					service.onException(new App42Exception(detailMessage,httpErrorCode,appErrorCode),callback);
+				}
 			}
-			else if(httpErrorCode == 401){
-				service.onException(new App42SecurityException(detailMessage,httpErrorCode,appErrorCode),callback);
-			}
-			else if(httpErrorCode == 404){
-				service.onException(new App42NotFoundException(detailMessage,httpErrorCode,appErrorCode),callback);
-			}
-			else if(httpErrorCode == 413){
-				service.onException(new App42LimitException(detailMessage,httpErrorCode,appErrorCode),callback);
-			}
-			else if(httpErrorCode == 500){
-				service.onException(new App42Exception(detailMessage,httpErrorCode,appErrorCode),callback);
-			}
-			else{
-				service.onException(new App42Exception(detailMessage,httpErrorCode,appErrorCode),callback);
+			catch(error:Error){
+				trace("Parsing Exception : " + error.getStackTrace());
 			}
 		}
 	}

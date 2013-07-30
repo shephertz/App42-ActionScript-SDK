@@ -1,7 +1,15 @@
+/**
+ * -----------------------------------------------------------------------
+ *     Copyright © 2012 ShepHertz Technologies Pvt Ltd. All rights reserved.
+ * -----------------------------------------------------------------------
+ */
 package com.shephertz.app42.paas.sdk.as3
 {
 	public class App42Log
 	{
+		/**
+		 * @author Himanshu Sharma
+		 */
 		private static var debugFlag:Boolean = false;
 		
 		public static function isDebug():Boolean
