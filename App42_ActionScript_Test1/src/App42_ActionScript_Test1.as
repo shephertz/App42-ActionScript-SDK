@@ -1,4 +1,3 @@
-import com.adobe.serialization.json.JSON;
 import com.shephertz.app42.paas.sdk.as3.App42CallBack;
 import com.shephertz.app42.paas.sdk.as3.App42Exception;
 import com.shephertz.app42.paas.sdk.as3.ServiceAPI;
@@ -23,6 +22,8 @@ var gameNameTextField:TextField = new TextField();
 var gameUserNameTextField:TextField = new TextField();
 var gameScoreTextField:TextField = new TextField();
 
+var sbGameTextField:TextField = new TextField();
+var sbUserNameTextField:TextField = new TextField();
 var rewGameTextField:TextField = new TextField();
 var rewRewardTextField:TextField = new TextField();
 var rewUserNameTextField:TextField = new TextField();
@@ -47,20 +48,24 @@ var Get_USER_NAME:String = "Enter User Name";
 
 var GAME_NAME:String = "Enter Game Name";
 var GAME_USER_NAME:String = "Enter Game User Name";
-var GAME_SCORE:String = "Enter Game Score";
+var GAME_SCORE:String = "Integer value only";
 
 
 var rewGAME_NAME:String = "Enter Game Name";
 var rewReward_NAME:String = "Enter Reward Name";
 var rewGAME_USER_NAME:String = "Enter User Name";
-var rew_Points:String = "Points";
+var rew_Points:String = "Int value";
+
+
+var sbGAME_NAME:String = "Enter Game Name";
+var sb_USER_NAME:String = "Enter User Name";
 
 var outputTextField:TextField = new TextField();
 var GREY:uint = 0x999999;
 var BLACK:uint = 0x000000;
 var WHITE:uint = 0xFFFFFF;
 var RED:uint = 0xDF0101;
-var serviceAPI:ServiceAPI ;//= new ServiceAPI("02a75a1d13c1c7963d37d57f2ae0b572295653a8d41dd7e7c782e61224f9e5a1","6a4e1d048dc5396666e1b292ee1967aac7b24d6181699f3851867d0b98fa9c74") ;
+var serviceAPI:ServiceAPI ;
 var gameName:String =  "testGame";
 var rewardName:String =  "rewardName";
 var userName1:String =  "Himanshu";
@@ -79,12 +84,10 @@ class app42CallBack implements App42CallBack{
 	serviceAPI.setBaseURL("http://","localhost",8082);
 	public function onSuccess(res:Object):void
 	{
-			trace("On Success In TestCase " +  Util.toString(res));
-			outputField.text += "\nDBName is  ..."+  Util.toString(res)	
-		}
+		outputField.text += "\nDBName is  ..."+  Util.toString(res)	
+	}
 	public function onException(excption:App42Exception):void
 	{
-		trace("On Exception in Test Case " +excption);
 		outputField.text += "" + excption;
 	}
 }
@@ -93,19 +96,58 @@ class reward42CallBack implements App42CallBack{
 	
 	public function onSuccess(res:Object):void
 	{
-		var rewardObject:Object  = res["app42"]["response"]["rewards"]["reward"]
-		var userName:String  = rewardObject["userName"];
-		var points:int  = rewardObject["points"];
-		trace("On Success In TestCase " + Util.toString(res));
-		outputField.text += "User by the Name"+  userName + "have total points = " + points 
+			outputField.text += "User by the Name" 
+			rewGameTextField.text = rewGAME_NAME;
+			rewUserNameTextField.text = rewGAME_USER_NAME;
+			rewRewardTextField.text = rewReward_NAME;
+			rewPointsTextField.text = rew_Points;
 	}
 	public function onException(excption:App42Exception):void
 	{
-		trace("On Exception in Test Case " +excption);
 		outputField.text += "" + excption;
+		rewGameTextField.text = rewGAME_NAME;
+		rewUserNameTextField.text = rewGAME_USER_NAME;
+		rewRewardTextField.text = rewReward_NAME;
+		rewPointsTextField.text = rew_Points;
 	}
 }
 
+class sb42CallBack implements App42CallBack{
+	
+	public function onSuccess(res:Object):void
+	{
+		trace(res)
+		outputField.text += "User by the Name" 
+		sbGameTextField.text = sbGAME_NAME;
+		sbUserNameTextField.text = sb_USER_NAME;
+	}
+	public function onException(excption:App42Exception):void
+	{
+		outputField.text += "" + excption;
+		sbGameTextField.text = sbGAME_NAME;
+		sbUserNameTextField.text = sb_USER_NAME;
+	}
+}
+
+class earnReward42CallBack implements App42CallBack{
+	
+	public function onSuccess(res:Object):void
+	{
+		outputField.text += "User by the Name" 
+		rewGameTextField.text = rewGAME_NAME;
+		rewUserNameTextField.text = rewGAME_USER_NAME;
+		rewRewardTextField.text = rewReward_NAME;
+		rewPointsTextField.text = rew_Points;
+	}
+	public function onException(excption:App42Exception):void
+	{
+		outputField.text += "" + excption;
+		rewGameTextField.text = rewGAME_NAME;
+		rewUserNameTextField.text = rewGAME_USER_NAME;
+		rewRewardTextField.text = rewReward_NAME;
+		rewPointsTextField.text = rew_Points;
+	}
+}
 class user42CallBack implements App42CallBack{
 	
 	public function onSuccess(res:Object):void
@@ -116,11 +158,12 @@ class user42CallBack implements App42CallBack{
 		userTextField.text = User_Name;
 		passTextField.text = Password;emailIdTextField.text = Email_id;
 	}
-	public function onException(excption:App42Exception):void
+	public function onException(exception:App42Exception):void
 	{
-		outputField.text += "" + excption;
+		outputField.text += "" + exception;
 		userTextField.text = User_Name;
-		passTextField.text = Password;emailIdTextField.text = Email_id;
+		passTextField.text = Password;
+		emailIdTextField.text = Email_id;
 	}
 }
 
@@ -136,8 +179,10 @@ class auth42CallBack implements App42CallBack{
 	}
 	public function onException(exception:App42Exception):void
 	{
-		var details:Object = com.adobe.serialization.json.JSON.decode(exception.message);
-		outputField.text += "Your " + details["app42Fault"]["details"];
+		outputField.text += "" + exception;
+		authUserTextField.text = AUTHUser_Name;
+		authPassTextField.text = AUTHPassword;
+		
 	}
 }
 
@@ -148,12 +193,10 @@ class storage42CallBack implements App42CallBack{
 	{
 		var userObject:Object = res["app42"]["response"]["users"]["user"];
 		var uName:String = userObject["userName"];
-		trace("On Success In TestCase " + res);
 		outputField.text += "User with the "+ uName + "and" + userObject["email"] + " is successfully registered";
 	}
 	public function onException(excption:App42Exception):void
 	{
-		trace("On Exception in Test Case " +excption);
 		outputField.text += "" + excption;
 	}
 }
@@ -165,18 +208,17 @@ class game42CallBack implements App42CallBack{
 	{
 		var userObject:Object = res["app42"]["response"]["users"]["user"];
 		var uName:String = userObject["userName"];
-		trace("On Success In TestCase " + res);
 		outputField.text += "User with the "+ uName + "and" + userObject["email"] + " is successfully registered";
 	}
 	public function onException(excption:App42Exception):void
 	{
-		trace("On Exception in Test Case " +excption);
 		outputField.text += "" + excption;
 	}
 }
 
 package
 {
+	import com.shephertz.app42.paas.sdk.as3.App42Log;
 	import com.shephertz.app42.paas.sdk.as3.ServiceAPI;
 	
 	import flash.display.Sprite;
@@ -319,7 +361,7 @@ package
 			rewGameTextField.width = 90;
 			rewGameTextField.height = 20;
 			rewGameTextField.x = 0;
-			rewGameTextField.y = 90;
+			rewGameTextField.y = 120;
 			rewGameTextField.text = rewGAME_NAME;
 			rewGameTextField.textColor = BLACK;
 			rewGameTextField.border = true;
@@ -332,7 +374,7 @@ package
 			rewUserNameTextField.width = 90;
 			rewUserNameTextField.height = 20;
 			rewUserNameTextField.x = 100;
-			rewUserNameTextField.y = 90;
+			rewUserNameTextField.y = 120;
 			rewUserNameTextField.text = rewGAME_USER_NAME;
 			rewUserNameTextField.textColor = BLACK;
 			rewUserNameTextField.border = true;
@@ -344,7 +386,7 @@ package
 			rewRewardTextField.width = 102;
 			rewRewardTextField.height = 20;
 			rewRewardTextField.x = 200;
-			rewRewardTextField.y = 90;
+			rewRewardTextField.y = 120;
 			rewRewardTextField.text = rewReward_NAME;
 			rewRewardTextField.textColor = BLACK;
 			rewRewardTextField.border = true;
@@ -356,7 +398,7 @@ package
 			rewPointsTextField.width = 50;
 			rewPointsTextField.height = 20;
 			rewPointsTextField.x = 310;
-			rewPointsTextField.y = 90;
+			rewPointsTextField.y = 120;
 			rewPointsTextField.text = rew_Points;
 			rewPointsTextField.textColor = BLACK;
 			rewPointsTextField.border = true;
@@ -366,8 +408,8 @@ package
 			addChild(rewPointsTextField);
 			
 			
-			earnRewardbtn.y = 90 ;
 			earnRewardbtn.x = 400;
+			earnRewardbtn.y = 120 ;
 			earnRewardbtn.selectable = false;
 			earnRewardbtn.width = 90;
 			earnRewardbtn.height = 20;
@@ -390,6 +432,55 @@ package
 			rewardbtn.text = "Get Top Reward Earners";
 			rewardbtn.addEventListener(MouseEvent.CLICK,getTopReward_click);
 			addChild(rewardbtn);
+			
+			sbGameTextField.width = 90;
+			sbGameTextField.height = 20;
+			sbGameTextField.x = 0;
+			sbGameTextField.y = 90;
+			sbGameTextField.text = sbGAME_NAME;
+			sbGameTextField.textColor = BLACK;
+			sbGameTextField.border = true;
+			sbGameTextField.type = "input";
+			sbGameTextField.addEventListener(FocusEvent.FOCUS_IN, sbfocusHandler);
+			sbGameTextField.addEventListener(FocusEvent.FOCUS_OUT, sbfocusHandler);
+			addChild(sbGameTextField);
+			
+			
+			sbUserNameTextField.width = 90;
+			sbUserNameTextField.height = 20;
+			sbUserNameTextField.x = 100;
+			sbUserNameTextField.y = 90;
+			sbUserNameTextField.text = sb_USER_NAME;
+			sbUserNameTextField.textColor = BLACK;
+			sbUserNameTextField.border = true;
+			sbUserNameTextField.type = "input";
+			sbUserNameTextField.addEventListener(FocusEvent.FOCUS_IN, sbfocusHandler);
+			sbUserNameTextField.addEventListener(FocusEvent.FOCUS_OUT, sbfocusHandler);
+			addChild(sbUserNameTextField);
+			
+			saveUserScorebtn.y = 90 ;
+			saveUserScorebtn.x = 400;
+			saveUserScorebtn.selectable = false;
+			saveUserScorebtn.width = 90;
+			saveUserScorebtn.height = 20;
+			saveUserScorebtn.background = true;
+			saveUserScorebtn.backgroundColor = GREY;
+			saveUserScorebtn.textColor = WHITE;
+			saveUserScorebtn.text = "Save User Score";
+			saveUserScorebtn.addEventListener(MouseEvent.CLICK,saveUserScore_click);
+			addChild(saveUserScorebtn);
+			
+			getTopRankbtn.y = 90 ;
+			getTopRankbtn.x = 400;
+			getTopRankbtn.selectable = false;
+			getTopRankbtn.width = 90;
+			getTopRankbtn.height = 20;
+			getTopRankbtn.background = true;
+			getTopRankbtn.backgroundColor = GREY;
+			getTopRankbtn.textColor = WHITE;
+			getTopRankbtn.text = "Save User Score";
+			getTopRankbtn.addEventListener(MouseEvent.CLICK,getTopScoreBoard_click);
+			addChild(getTopRankbtn);
 			
 		}
 		
@@ -427,16 +518,6 @@ package
 //				userService.authenticate(userName,"password",new app42CallBack());
 		}
 		
-		private function reward_click(e:MouseEvent):void
-		{ 
-			serviceAPI = new ServiceAPI("02a75a1d13c1c7963d37d57f2ae0b572295653a8d41dd7e7c782e61224f9e5a1","6a4e1d048dc5396666e1b292ee1967aac7b24d6181699f3851867d0b98fa9c74"); ;
-			serviceAPI.setBaseURL("http://","localhost",8082);
-//			App42Log.setDebug(true);
-			rewardService = serviceAPI.buildRewardService();
-//			rewardService.createReward(rewardName,userName,new reward42CallBack());
-//			rewardService.earnRewards(gameName,userName1,rewardName,1200,new reward42CallBack());
-//			rewardService.redeemRewards(gameName,userName,rewardName,100,new reward42CallBack());
-		}
 		private function get_click(e:MouseEvent):void
 		{ 
 			serviceAPI = new ServiceAPI("02a75a1d13c1c7963d37d57f2ae0b572295653a8d41dd7e7c782e61224f9e5a1","6a4e1d048dc5396666e1b292ee1967aac7b24d6181699f3851867d0b98fa9c74"); ;
@@ -495,38 +576,44 @@ package
 		
 		private function auth_click(e:MouseEvent):void
 		{
-			
 			serviceAPI = new ServiceAPI("02a75a1d13c1c7963d37d57f2ae0b572295653a8d41dd7e7c782e61224f9e5a1","6a4e1d048dc5396666e1b292ee1967aac7b24d6181699f3851867d0b98fa9c74"); ;
 			serviceAPI.setBaseURL("http://","localhost",8082);
-						
 			userService = serviceAPI.buildUserService();
-			userService.authenticate(authUserTextField.text,authPassTextField.text,new auth42CallBack());
+//			userService.authenticate(authUserTextField.text,authPassTextField.text,new auth42CallBack());
 		}
-
 		
 		private function earnReward_click(e:MouseEvent):void
 		{
-			
 			serviceAPI = new ServiceAPI("02a75a1d13c1c7963d37d57f2ae0b572295653a8d41dd7e7c782e61224f9e5a1","6a4e1d048dc5396666e1b292ee1967aac7b24d6181699f3851867d0b98fa9c74"); ;
 			serviceAPI.setBaseURL("http://","localhost",8082);
 			rewardService = serviceAPI.buildRewardService();
-			rewardService.earnRewards(rewGameTextField.text,rewUserNameTextField.text,rewRewardTextField.text,rewPointsTextField.alpha,new reward42CallBack());
+			rewardService.earnRewards(rewGameTextField.text,rewUserNameTextField.text,rewRewardTextField.text,rewPointsTextField.alpha,new earnReward42CallBack());
 		}
 		
+		private function saveUserScore_click(e:MouseEvent):void
+		{
+			App42Log.setDebug(true);
+			serviceAPI = new ServiceAPI("02a75a1d13c1c7963d37d57f2ae0b572295653a8d41dd7e7c782e61224f9e5a1","6a4e1d048dc5396666e1b292ee1967aac7b24d6181699f3851867d0b98fa9c74"); ;
+			serviceAPI.setBaseURL("http://","localhost",8082);
+			scoreBoardService = serviceAPI.buildScoreBoardService();
+			scoreBoardService.saveUserScore(sbGameTextField.text,sbUserNameTextField.text,1000,new sb42CallBack());
+		}
 		private function getTopReward_click(e:MouseEvent):void
 		{
-			
 			serviceAPI = new ServiceAPI("02a75a1d13c1c7963d37d57f2ae0b572295653a8d41dd7e7c782e61224f9e5a1","6a4e1d048dc5396666e1b292ee1967aac7b24d6181699f3851867d0b98fa9c74"); ;
 			serviceAPI.setBaseURL("http://","localhost",8082);
 			rewardService = serviceAPI.buildRewardService();
-			rewardService.getTopNRewardEarners(rewGameTextField.text,rewRewardTextField.text,rewPointsTextField.alpha,new reward42CallBack());
+			rewardService.getTopNRewardEarners(rewGameTextField.text,rewRewardTextField.text,5,new reward42CallBack());
 		}
-		private function clear_click(e:MouseEvent):void
+		
+		
+		private function getTopScoreBoard_click(e:MouseEvent):void
 		{
-			outputField.text=""; //To Clear the Text Box
+			serviceAPI = new ServiceAPI("02a75a1d13c1c7963d37d57f2ae0b572295653a8d41dd7e7c782e61224f9e5a1","6a4e1d048dc5396666e1b292ee1967aac7b24d6181699f3851867d0b98fa9c74"); ;
+			serviceAPI.setBaseURL("http://","localhost",8082);
+			rewardService = serviceAPI.buildRewardService();
+			rewardService.getTopNRewardEarners(rewGameTextField.text,rewRewardTextField.text,5,new reward42CallBack());
 		}
-		
-		
 		private  function focusHandler(event:FocusEvent):void
 		{
 			switch (event.type) 
@@ -552,7 +639,10 @@ package
 				case FocusEvent.FOCUS_IN:
 					 if(authUserTextField.text == AUTHUser_Name || authPassTextField.text == AUTHPassword )
 					 	{
-							authUserTextField.text = "";authUserTextField.textColor = BLACK; authPassTextField.text = ""; authPassTextField.textColor = BLACK;
+							authUserTextField.text = "";
+							authUserTextField.textColor = BLACK; 
+							authPassTextField.text = "";
+							authPassTextField.textColor = BLACK;
 					 	}
 				break;
 				case FocusEvent.FOCUS_OUT:
@@ -564,17 +654,22 @@ package
 				break;
 			}
 		}	
+		
 		private function rewfocusHandler(event:FocusEvent):void
 		{
 			switch (event.type)
 			{
 				case FocusEvent.FOCUS_IN:
-					if(rewGameTextField.text == rewGAME_NAME || rewUserNameTextField.text == rewGAME_USER_NAME || rewRewardTextField.text == rewReward_NAME || rewPointsTextField.text == "")
+					if(rewGameTextField.text == rewGAME_NAME || rewUserNameTextField.text == rewGAME_USER_NAME || rewRewardTextField.text == rewReward_NAME || rewPointsTextField.text ==rew_Points)
 						{
-							rewGameTextField.text = "";	rewGameTextField.textColor = BLACK; 
-							rewUserNameTextField.text = ""; rewUserNameTextField.textColor = BLACK ;
-							rewRewardTextField.text = "";rewRewardTextField.textColor = BLACK;
-							rewPointsTextField.text = "";rewPointsTextField.textColor = BLACK;  
+							rewGameTextField.text = "";	
+							rewGameTextField.textColor = BLACK; 
+							rewUserNameTextField.text = "";
+							rewUserNameTextField.textColor = BLACK ;
+							rewRewardTextField.text = "";
+							rewRewardTextField.textColor = BLACK;
+							rewPointsTextField.text = "";
+							rewPointsTextField.textColor = BLACK;  
 						}
 					break;
 				case FocusEvent.FOCUS_OUT:
@@ -587,6 +682,33 @@ package
 						}
 				break;
 			}
+		}
+		
+		private function sbfocusHandler(event:FocusEvent):void
+		{
+			switch (event.type)
+			{
+				case FocusEvent.FOCUS_IN:
+					if(sbGameTextField.text == sbGAME_NAME || sbUserNameTextField.text == sb_USER_NAME)
+					{
+						sbGameTextField.text = "";	
+						sbGameTextField.textColor = BLACK; 
+						sbUserNameTextField.text = "";
+						sbUserNameTextField.textColor = BLACK ;
+					}
+					break;
+				case FocusEvent.FOCUS_OUT:
+					if (sbGameTextField.text == "" && sbUserNameTextField.text == "")
+					{
+						sbGameTextField.text = sbGAME_NAME; 
+						sbUserNameTextField.text = sb_USER_NAME;
+					}
+					break;
+			}
+		}
+		private function clear_click(e:MouseEvent):void
+		{
+			outputField.text = "";
 		}
 	}
 }

@@ -144,9 +144,8 @@ package com.shephertz.app42.paas.sdk.as3.util
 				return ;
 			}
 			if (obj is String) {
-				var trimObj:String = obj.toString();
-				if(Util.trim(trimObj) == "")
-				{
+			var trimObj:String = obj.toString();
+				if(Util.trim(trimObj) == "") {
 					callback.onException(new App42Exception(name + " parameter can not be blank",null,null));
 					return ;
 				}
@@ -160,7 +159,6 @@ package com.shephertz.app42.paas.sdk.as3.util
 		 */
 		
 		public static function throwExceptionIfEmailNotValid(obj:Object, name:String,callback:App42CallBack):void {
-			trace("HERE IN EXCEPTIOBN");
 			if (obj == null) {
 				callback.onException(new App42Exception(name +" parameter can not be null" ,null,null));
 				return ;

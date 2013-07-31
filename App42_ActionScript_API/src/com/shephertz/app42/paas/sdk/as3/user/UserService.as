@@ -115,6 +115,7 @@ package com.shephertz.app42.paas.sdk.as3.user
 			{
 				Util.throwExceptionIfNullOrBlank(userName,"UserName",callback);
 				Util.throwExceptionIfNullOrBlank(password,"Password",callback);
+				
 				return ;
 			}
 			paramsDics["apiKey"]=apiKey;

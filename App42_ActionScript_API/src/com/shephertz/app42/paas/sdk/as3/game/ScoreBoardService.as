@@ -67,7 +67,13 @@ package com.shephertz.app42.paas.sdk.as3.game
 			 gameScore:int,callback:App42CallBack):void  {
 			var response:String = null;
 			var paramsDics:Dictionary = new Dictionary();
-			
+			if(userName == null || Util.trim(userName) == "" || gameName == null || Util.trim(gameName) == "" )
+			{
+				Util.throwExceptionIfNullOrBlank(userName,"UserName",callback);
+				Util.throwExceptionIfNullOrBlank(gameName,"GameName",callback);
+				
+				return;
+			}
 			paramsDics["apiKey"]=apiKey;
 			paramsDics["version"]=version;
 			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
