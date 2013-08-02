@@ -6,11 +6,24 @@
 package com.shephertz.app42.paas.sdk.as3
 {
 	import com.adobe.serialization.json.JSON;
+	import com.shephertz.app42.paas.sdk.as3.game.Game;
+
 	public class App42ResponseBuilder
 	{
 		/**
 		 * @author Himanshu Sharma
 		 */
+		public function buildObjectFromJSONTree(serviceName:Object, json:Object):void {
+		var game:Game = Game(serviceName);
+		
+			for(var names:String in json);
+			{
+				if(json["name"] != null || json["description"] != null){
+				game.setName(json["name"]);}
+				trace("is --- " + json["description"]);
+					game.setDescription(json["description"]);
+			}
+		}
 		public function getServiceJSONObject(serviceName:String, json:String):Object {
 			var jsonObj:Object = com.adobe.serialization.json.JSON.decode(json);
 			var jsonObjApp42:Object = jsonObj["app42"];

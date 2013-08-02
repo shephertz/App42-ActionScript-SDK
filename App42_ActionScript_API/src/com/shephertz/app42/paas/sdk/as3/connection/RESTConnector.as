@@ -60,42 +60,6 @@ package com.shephertz.app42.paas.sdk.as3.connection
 			
 		}
 		
-		
-		public  function executeGet(signature : String , url : String ,
-									params : Dictionary,serviceNew:App42Service ,call:App42CallBack) : void {
-			
-			var response:String ;
-			
-			var queryParams : Dictionary = com.shephertz.app42.paas.sdk.as3.util.Util.clone(params);
-			queryParams["signature"] = signature;
-			var apiKey : String = queryParams["apiKey"]
-			var httpLoader:URLLoader = new URLLoader;
-			var timeStamp : String = queryParams["timeStamp"]
-			var queryString:String = "?";
-			var data:Object = queryParams;
-			// Get all Request parameter and set here
-			var value:String;
-			for ( var keys:String in data ) {
-				value  = data[keys];
-				queryString += keys + "=" + value + "&";
-				
-				App42Log.debug(" Setting value :" + keys + " : " + value);
-			}
-			App42Log.debug(" QueryString is " + queryString);
-			var uri:String  = this.baseURL + url + queryString;
-			App42Log.debug(" Requested URL is " + uri);
-			var request:URLRequest = new URLRequest(uri);
-			request.method = URLRequestMethod.GET;
-			request.contentType  = Config.getInstance().getContentType();
-			httpLoader.addEventListener(Event.COMPLETE,completeHandler);
-			httpLoader.addEventListener(IOErrorEvent.IO_ERROR,app42Exception);
-			httpLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,app42Exception);
-			httpLoader.load(request);
-			service  = serviceNew;
-			callback = call;
-			
-		}
-		
 		public  function executePost(signature : String , url : String ,
 									 params : Dictionary, bodyPayLoad:String,serviceNew:App42Service ,call:App42CallBack) : void {
 			var response:String ;
@@ -126,6 +90,8 @@ package com.shephertz.app42.paas.sdk.as3.connection
 			request.requestHeaders.push(new URLRequestHeader("apiKey",apiKey));
 			request.requestHeaders.push(new URLRequestHeader("signature",signature));
 			request.requestHeaders.push(new URLRequestHeader("timeStamp",timeStamp));
+			request.requestHeaders.push(new URLRequestHeader("Custom-Headers","PUT"));
+			request.requestHeaders.push(new URLRequestHeader("SDKName","AS3"));
 			httpLoader.load(request);
 			httpLoader.addEventListener(Event.COMPLETE,completeHandler);
 			httpLoader.addEventListener(IOErrorEvent.IO_ERROR,app42Exception);
@@ -134,6 +100,130 @@ package com.shephertz.app42.paas.sdk.as3.connection
 			callback = call;
 		}
 		
+		public  function executePut(signature : String , url : String ,
+									 params : Dictionary, bodyPayLoad:String,serviceNew:App42Service ,call:App42CallBack) : void {
+			var response:String ;
+			var queryParams : Dictionary = com.shephertz.app42.paas.sdk.as3.util.Util.clone(params);
+			var apiKey : String = queryParams["apiKey"]
+			var httpLoader:URLLoader = new URLLoader;
+			var timeStamp : String = queryParams["timeStamp"]
+			delete queryParams["apiKey"]
+			delete queryParams["timeStamp"]
+			var queryString:String = "?";
+			var data:Object = queryParams;
+			// Get all Request parameter and set here
+			var value:String;
+			for ( var keys:String in data ) {
+				value  = data[keys];
+				queryString += keys + "=" + value + "&";
+				App42Log.debug("Setting value :" + keys + " : " + value);
+			}
+			App42Log.debug("QueryString is " + queryString);
+			var uri:String  = this.baseURL + url + queryString;
+			App42Log.debug("Requested URL is " + uri);
+			flash.system.Security.loadPolicyFile("http://localhost:8082/App42_API_SERVER/crossdomain.xml");
+			var request:URLRequest = new URLRequest(uri);
+			request.method = URLRequestMethod.POST;
+			request.data = bodyPayLoad;
+			request.requestHeaders.push(new URLRequestHeader("Content-Type",Config.getInstance().getContentType()));
+			request.requestHeaders.push(new URLRequestHeader("Accept",Config.getInstance().getAccept()));
+			request.requestHeaders.push(new URLRequestHeader("apiKey",apiKey));
+			request.requestHeaders.push(new URLRequestHeader("signature",signature));
+			request.requestHeaders.push(new URLRequestHeader("timeStamp",timeStamp));
+			request.requestHeaders.push(new URLRequestHeader("SDKName","AS3"));
+			request.requestHeaders.push(new URLRequestHeader("SDKName","AS3"));
+			httpLoader.load(request);
+			httpLoader.addEventListener(Event.COMPLETE,completeHandler);
+			httpLoader.addEventListener(IOErrorEvent.IO_ERROR,app42Exception);
+			httpLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,app42Exception);
+			service  = serviceNew;
+			callback = call;
+		}
+		
+		
+		public  function executeGet(signature : String , url : String ,
+									params : Dictionary,serviceNew:App42Service ,call:App42CallBack) : void {
+			var response:String ;
+			var queryParams : Dictionary = com.shephertz.app42.paas.sdk.as3.util.Util.clone(params);
+			var apiKey : String = queryParams["apiKey"]
+			var httpLoader:URLLoader = new URLLoader;
+			var timeStamp : String = queryParams["timeStamp"]
+			delete queryParams["apiKey"]
+			delete queryParams["timeStamp"]
+			
+			var queryString:String = "?";
+			var data:Object = queryParams;
+			// Get all Request parameter and set here
+			var value:String;
+			for ( var keys:String in data ) {
+				value  = data[keys];
+				queryString += keys + "=" + value + "&";
+				App42Log.debug("Setting value : " + keys + " : " + value);
+			}
+			App42Log.debug("QueryString is " + queryString);
+			var uri:String  = this.baseURL + url + queryString;
+			App42Log.debug("Requested URL is " + uri);
+			var request:URLRequest = new URLRequest(uri);
+			request.method = URLRequestMethod.POST;
+			request.data = "Himanshu";
+			request.requestHeaders.push(new URLRequestHeader("Content-Type",Config.getInstance().getContentType()));
+			request.requestHeaders.push(new URLRequestHeader("Accept",Config.getInstance().getAccept()));
+			request.requestHeaders.push(new URLRequestHeader("apiKey",apiKey));
+			request.requestHeaders.push(new URLRequestHeader("signature",signature));
+			request.requestHeaders.push(new URLRequestHeader("timeStamp",timeStamp));
+			request.requestHeaders.push(new URLRequestHeader("SDKName","AS3"));
+			request.requestHeaders.push(new URLRequestHeader("Custom-Headers","GET"));
+			httpLoader.load(request);
+			httpLoader.addEventListener(Event.COMPLETE,completeHandler);
+			httpLoader.addEventListener(IOErrorEvent.IO_ERROR,app42Exception);
+			httpLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,app42Exception);
+			httpLoader.load(request);
+			service  = serviceNew;
+			callback = call;
+			
+		}
+		
+		public  function executeDelete(signature : String , url : String ,
+									   params : Dictionary,serviceNew:App42Service ,call:App42CallBack) : void {
+			var response:String ;
+			var queryParams : Dictionary = com.shephertz.app42.paas.sdk.as3.util.Util.clone(params);
+			var apiKey : String = queryParams["apiKey"]
+			var httpLoader:URLLoader = new URLLoader;
+			var timeStamp : String = queryParams["timeStamp"]
+			delete queryParams["apiKey"]
+			delete queryParams["timeStamp"]
+			
+			var queryString:String = "?";
+			var data:Object = queryParams;
+			// Get all Request parameter and set here
+			var value:String;
+			for ( var keys:String in data ) {
+				value  = data[keys];
+				queryString += keys + "=" + value + "&";
+				App42Log.debug("Setting value : " + keys + " : " + value);
+			}
+			App42Log.debug("QueryString is " + queryString);
+			var uri:String  = this.baseURL + url + queryString;
+			App42Log.debug("Requested URL is " + uri);
+			var request:URLRequest = new URLRequest(uri);
+			request.method = URLRequestMethod.POST;
+			request.data = "Himanshu";
+			request.requestHeaders.push(new URLRequestHeader("Content-Type",Config.getInstance().getContentType()));
+			request.requestHeaders.push(new URLRequestHeader("Accept",Config.getInstance().getAccept()));
+			request.requestHeaders.push(new URLRequestHeader("apiKey",apiKey));
+			request.requestHeaders.push(new URLRequestHeader("signature",signature));
+			request.requestHeaders.push(new URLRequestHeader("timeStamp",timeStamp));
+			request.requestHeaders.push(new URLRequestHeader("SDKName","AS3"));
+			request.requestHeaders.push(new URLRequestHeader("Custom-Headers","DELETE"));
+			httpLoader.load(request);
+			httpLoader.addEventListener(Event.COMPLETE,completeHandler);
+			httpLoader.addEventListener(IOErrorEvent.IO_ERROR,app42Exception);
+			httpLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,app42Exception);
+			httpLoader.load(request);
+			service  = serviceNew;
+			callback = call;
+			
+		}
 		
 		private function completeHandler(e:Event):void
 		{

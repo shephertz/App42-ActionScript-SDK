@@ -14,6 +14,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 	import com.shephertz.app42.paas.sdk.as3.util.Util;
 	
 	import flash.utils.Dictionary;
+	
 	/**
 	 * The Game service allows Game, User, Score and ScoreBoard Management on the
 	 * Cloud. The service allows Game Developer to create a Game and then do in Game
@@ -67,6 +68,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			paramsDics["version"]=version;
 			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
 			var queryParams:Dictionary = Util.clone(paramsDics);
+			
 			var json:Object = new Object;
 			var app42Json:Object = new Object;
 			var gameJson:Object = new Object;
@@ -139,7 +141,8 @@ package com.shephertz.app42.paas.sdk.as3.game
 		{
 		 	var object:Object;
 			App42Log.debug("Response From Server : " + response);
-			object = com.adobe.serialization.json.JSON.decode(response);
+//			object = com.adobe.serialization.json.JSON.decode(response);
+			object = new GameResponseBuilder().buildResponse(response);
 			requestCall.onSuccess(object);
 			
 		}

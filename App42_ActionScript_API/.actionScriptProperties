@@ -64,11 +64,6 @@
       </libraryPathEntry>
       <libraryPathEntry kind="3" linkType="1" path="lib/as3corelib.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="lib/as3crypto.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="1" linkType="1" path="${FLEXUNIT_LIB_LOCATION}/version4libs/Common"/>
-      <libraryPathEntry kind="1" linkType="1" path="${FLEXUNIT_LIB_LOCATION}/version4libs/FlexProject"/>
-      <libraryPathEntry kind="1" linkType="1" path="${FLEXUNIT_LIB_LOCATION}/version4libs/FlexProject_Extended"/>
-      <libraryPathEntry kind="1" linkType="1" path="${FLEXUNIT_LOCALE_LOCATION}"/>
-      <libraryPathEntry kind="3" linkType="1" path="lib/as3httpclient.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>

@@ -52,9 +52,7 @@ package com.shephertz.app42.paas.sdk.as3.util
 			var dateString:String;
 			var rawDate:String = date.getUTCDate().toString();
 			if (rawDate.length == 1) { dateString = "0" + rawDate; }
-			else { dateString = rawDate; }
-			
-			
+			else { dateString = rawDate; }			
 			var timeStamp:String = "";
 			timeStamp += date.getUTCFullYear() + "-";
 			timeStamp += month + "-";

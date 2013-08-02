@@ -16,6 +16,9 @@
     <classEntry path="com.shephertz.app42.paas.sdk.as3.App42LimitException"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.game.RewardService"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.game.ScoreService"/>
+    <classEntry path="flexUnitTests.FlexUnit"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.game.Game"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.game.GameResponseBuilder"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

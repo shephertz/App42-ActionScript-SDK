@@ -1,6 +1,7 @@
 import com.shephertz.app42.paas.sdk.as3.App42CallBack;
 import com.shephertz.app42.paas.sdk.as3.App42Exception;
 import com.shephertz.app42.paas.sdk.as3.ServiceAPI;
+import com.shephertz.app42.paas.sdk.as3.game.Game;
 import com.shephertz.app42.paas.sdk.as3.game.GameService;
 import com.shephertz.app42.paas.sdk.as3.game.RewardService;
 import com.shephertz.app42.paas.sdk.as3.game.ScoreBoardService;
@@ -50,6 +51,8 @@ var GAME_NAME:String = "Enter Game Name";
 var GAME_USER_NAME:String = "Enter Game User Name";
 var GAME_SCORE:String = "Integer value only";
 
+var rewTopGAME_NAME:String = null;
+var rewTopReward_NAME:String = null;
 
 var rewGAME_NAME:String = "Enter Game Name";
 var rewReward_NAME:String = "Enter Reward Name";
@@ -84,7 +87,12 @@ class app42CallBack implements App42CallBack{
 	serviceAPI.setBaseURL("http://","localhost",8082);
 	public function onSuccess(res:Object):void
 	{
-		outputField.text += "\nDBName is  ..."+  Util.toString(res)	
+		if(res is Game)
+		{
+			var game:Game = Game(res);
+			trace("If Loop" + game.getName());
+			outputField.text += "res  ..."+  game.getDescription()	
+		}
 	}
 	public function onException(excption:App42Exception):void
 	{
@@ -171,19 +179,19 @@ class user42CallBack implements App42CallBack{
 class auth42CallBack implements App42CallBack{
 	serviceAPI = new ServiceAPI("02a75a1d13c1c7963d37d57f2ae0b572295653a8d41dd7e7c782e61224f9e5a1","6a4e1d048dc5396666e1b292ee1967aac7b24d6181699f3851867d0b98fa9c74"); ;
 	serviceAPI.setBaseURL("http://","localhost",8082);
-	public function onSuccess(res:Object):void
-	{
-		var userObject:Object = res["app42"]["response"];
-		var uName:String = userObject["users"]["user"]["userName"];
-		outputField.text += uName + " is successfully authenticated";
-	}
-	public function onException(exception:App42Exception):void
-	{
-		outputField.text += "" + exception;
-		authUserTextField.text = AUTHUser_Name;
-		authPassTextField.text = AUTHPassword;
-		
-	}
+		public function onSuccess(res:Object):void
+		{
+			var userObject:Object = res["app42"]["response"];
+			var uName:String = userObject["users"]["user"]["userName"];
+			outputField.text += uName + " is successfully authenticated";
+		}
+		public function onException(exception:App42Exception):void
+		{
+			outputField.text += "" + exception;
+			authUserTextField.text = AUTHUser_Name;
+			authPassTextField.text = AUTHPassword;
+			
+		}
 }
 
 class storage42CallBack implements App42CallBack{
@@ -363,6 +371,7 @@ package
 			rewGameTextField.x = 0;
 			rewGameTextField.y = 120;
 			rewGameTextField.text = rewGAME_NAME;
+			rewGameTextField.text = rewGAME_NAME;
 			rewGameTextField.textColor = BLACK;
 			rewGameTextField.border = true;
 			rewGameTextField.type = "input";
@@ -409,7 +418,7 @@ package
 			
 			
 			earnRewardbtn.x = 400;
-			earnRewardbtn.y = 120 ;
+			earnRewardbtn.y = 150 ;
 			earnRewardbtn.selectable = false;
 			earnRewardbtn.width = 90;
 			earnRewardbtn.height = 20;
@@ -421,8 +430,8 @@ package
 			addChild(earnRewardbtn);
 			
 			
-			rewardbtn.y = 350 ;
-			rewardbtn.x = 200;
+			rewardbtn.y = 180 ;
+			rewardbtn.x = 400;
 			rewardbtn.selectable = false;
 			rewardbtn.width = 130;
 			rewardbtn.height = 20;
@@ -470,15 +479,15 @@ package
 			saveUserScorebtn.addEventListener(MouseEvent.CLICK,saveUserScore_click);
 			addChild(saveUserScorebtn);
 			
-			getTopRankbtn.y = 90 ;
+			getTopRankbtn.y = 120 ;
 			getTopRankbtn.x = 400;
 			getTopRankbtn.selectable = false;
-			getTopRankbtn.width = 90;
+			getTopRankbtn.width = 120;
 			getTopRankbtn.height = 20;
 			getTopRankbtn.background = true;
 			getTopRankbtn.backgroundColor = GREY;
 			getTopRankbtn.textColor = WHITE;
-			getTopRankbtn.text = "Save User Score";
+			getTopRankbtn.text = "Get Top RanKing";
 			getTopRankbtn.addEventListener(MouseEvent.CLICK,getTopScoreBoard_click);
 			addChild(getTopRankbtn);
 			
@@ -576,10 +585,14 @@ package
 		
 		private function auth_click(e:MouseEvent):void
 		{
+			App42Log.setDebug(true);
 			serviceAPI = new ServiceAPI("02a75a1d13c1c7963d37d57f2ae0b572295653a8d41dd7e7c782e61224f9e5a1","6a4e1d048dc5396666e1b292ee1967aac7b24d6181699f3851867d0b98fa9c74"); ;
 			serviceAPI.setBaseURL("http://","localhost",8082);
+			gameService = serviceAPI.buildGameService();
 			userService = serviceAPI.buildUserService();
 //			userService.authenticate(authUserTextField.text,authPassTextField.text,new auth42CallBack());
+			gameService.getGameByName(gameName,new app42CallBack());
+	//			userService.getUser(userName,new auth42CallBack());
 		}
 		
 		private function earnReward_click(e:MouseEvent):void
@@ -603,7 +616,7 @@ package
 			serviceAPI = new ServiceAPI("02a75a1d13c1c7963d37d57f2ae0b572295653a8d41dd7e7c782e61224f9e5a1","6a4e1d048dc5396666e1b292ee1967aac7b24d6181699f3851867d0b98fa9c74"); ;
 			serviceAPI.setBaseURL("http://","localhost",8082);
 			rewardService = serviceAPI.buildRewardService();
-			rewardService.getTopNRewardEarners(rewGameTextField.text,rewRewardTextField.text,5,new reward42CallBack());
+			rewardService.getTopNRewardEarners(rewTopGAME_NAME,rewTopReward_NAME,5,new reward42CallBack());
 		}
 		
 		
@@ -706,6 +719,7 @@ package
 					break;
 			}
 		}
+		
 		private function clear_click(e:MouseEvent):void
 		{
 			outputField.text = "";
