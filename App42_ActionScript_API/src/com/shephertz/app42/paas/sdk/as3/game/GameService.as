@@ -111,9 +111,8 @@ package com.shephertz.app42.paas.sdk.as3.game
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 			
 		}
-		
 		/**
-		 * Fetches all games for the App
+		 * Fetches all games for the App in async mode.
 		 * @param callback - Callback object for success/exception result
 		 * @throws App42Exception
 		 * 
@@ -131,6 +130,57 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var signature:String = Util.sign(this.secretKey,paramsDics);
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource;
+			App42Log.debug("Http url : " + resourceUrl);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+			
+		}
+		
+		
+		/**
+		 * Fetches the count of all games for the App in async mode.
+		 * @param callback - Callback object for success/exception result
+		 * @throws App42Exception
+		 * 
+		 */
+		public function getAllGamesCount(callback:App42CallBack) : void {
+			var response:String = null;
+			var paramsDics:Dictionary = new Dictionary();
+			paramsDics["apiKey"]=apiKey;
+			paramsDics["version"]=version;
+			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
+			
+			var queryParams:Dictionary = Util.clone(paramsDics);
+			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
+			var resourceUrl:String = this.version + "/" + this.resource + "/count";
+			App42Log.debug("Http url : " + resourceUrl);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+			
+		}
+		/**
+		 * Fetches all games for the App by paging in async mode.
+		 * @param max - Maximum number of records to be fetched
+		 * @param offset - From where the records are to be fetched
+		 * @param callback - Callback object for success/exception result
+		 * @throws App42Exception
+		 * 
+		 */
+		public function getAllGamesByPaging(max:int,offset:int,callback:App42CallBack) : void {
+			var response:String = null;
+			var paramsDics:Dictionary = new Dictionary();
+			
+			paramsDics["apiKey"]=apiKey;
+			paramsDics["version"]=version;
+			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
+			
+			var queryParams:Dictionary = Util.clone(paramsDics);
+			paramsDics["max"]=max;
+			paramsDics["offset"]=offset;
+			
+			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
+			var resourceUrl:String = this.version + "/" + this.resource + "/paging"
+				+ "/" + max + "/" + offset;
 			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 			

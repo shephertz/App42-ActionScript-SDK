@@ -15,7 +15,6 @@ package com.shephertz.app42.paas.sdk.as3
 		 */
 		public function buildObjectFromJSONTree(serviceName:Object, json:Object):void {
 		var game:Game = Game(serviceName);
-		
 			for(var names:String in json);
 			{
 				if(json["name"] != null || json["description"] != null){

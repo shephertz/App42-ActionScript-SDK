@@ -60,11 +60,9 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * Creates Reward. Reward can be Sword, Energy etc. When Reward Points have
 		 * to be added the Reward name created using this method has to be
 		 * specified.
-		 * 
 		 * @param rewardName  - The reward that has to be created
 		 * @param description - The description of the reward to be created
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		public function createReward(rewardName:String, description:String ,callback:App42CallBack) : void {
@@ -98,7 +96,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		/**
 		 * Fetches the count of all the Rewards
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 */
 		public function getAllRewardsCount(callback:App42CallBack) : void {
 			var response:String = null;
@@ -120,7 +117,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		/**
 		 * Fetches all the Rewards
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		public function getAllRewards(callback:App42CallBack) : void {
@@ -145,7 +141,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * @param max - Maximum number of records to be fetched
 		 * @param offset - From where the records are to be fetched
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		
@@ -173,7 +168,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * Retrieves the reward for the specified name
 		 * @param rewardName - Name of the reward that has to be fetched
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		
@@ -206,7 +200,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * @param rewardName - The rewards for which reward points have to be added
 		 * @param rewardPoints - The points that have to be added
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		public function earnRewards(gameName:String, userName:String ,rewardName:String, rewardPoints:int ,callback:App42CallBack) : void {
@@ -245,7 +238,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * @param rewardName - The rewards for which reward points have to be deducted
 		 * @param rewardPoints - The points that have to be deducted
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		public function redeemRewards(gameName:String, userName:String ,rewardName:String, rewardPoints:int ,callback:App42CallBack) : void {
@@ -282,7 +274,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * @param gameName - Name of the game for which reward points have to be fetched
 		 * @param userName - The user for whom reward points have to be fetched
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		
@@ -315,7 +306,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * @param rewardName - Name of the reward for which list of earners is to be fetched
 		 * @param max - Specifies the number of top earners to be fetched
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		
@@ -345,7 +335,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * @param userName - Name of the user whose rewards are to be fetched
 		 * @param rewardName - Name of the reward for which details are to be fetched
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		
@@ -368,7 +357,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 		}
-
+		
 		/**
 		 * Fetches the reward rank for a particular user
 		 * @param gameName - Name of the game for which user rank have to be fetched
@@ -399,7 +388,32 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 		}
-		
+		/**
+		 * This function returns you a list of group wise users who earned the top
+		 * rewards in the specified game .
+		 * @param gameName - Name of the game for which top reward earners are to be fetched
+		 * @param rewardName - Name of the reward for which top earners are to be listed
+		 * @param userList - List of group wise users earning specified rewards
+		 * @param callback - Callback object for success/exception result
+		 * 
+		 */
+		public function getTopNRewardEarnersByGroup(gameName:String,rewardName:String ,userList:Array,callback:App42CallBack) : void {
+			var response:String = null;
+			var paramsDics:Dictionary = new Dictionary();
+			
+			paramsDics["apiKey"]=apiKey;
+			paramsDics["version"]=version;
+			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
+			paramsDics["userList"]="[" + userList + "]"; 	
+			var queryParams:Dictionary = Util.clone(paramsDics);
+			paramsDics["gameName"]=gameName; 	
+			paramsDics["rewardName"]=rewardName; 	
+			paramsDics["userList"]="[" + userList + "]"; 	
+			var signature:String = Util.sign(this.secretKey,paramsDics);
+			var resourceUrl:String = this.version + "/" + this.resource + "/"
+				+ gameName + "/" + rewardName + "/group/points";
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+		}
 		override public function onSuccess(response:String, requestCall:App42CallBack,isArray:Boolean):void
 		{
 			App42Log.debug("Response From Server : " + response);

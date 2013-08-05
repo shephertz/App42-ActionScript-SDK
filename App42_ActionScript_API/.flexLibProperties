@@ -19,6 +19,14 @@
     <classEntry path="flexUnitTests.FlexUnit"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.game.Game"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.game.GameResponseBuilder"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.storage.Query"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.storage.QueryBuilder"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.storage.Storage"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.storage.StorageResponseBuilder"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.user.User"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.Enum"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.user.Profile"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.user.UserGender"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

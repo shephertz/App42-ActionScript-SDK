@@ -8,7 +8,6 @@ import com.shephertz.app42.paas.sdk.as3.game.ScoreBoardService;
 import com.shephertz.app42.paas.sdk.as3.game.ScoreService;
 import com.shephertz.app42.paas.sdk.as3.storage.StorageService;
 import com.shephertz.app42.paas.sdk.as3.user.UserService;
-import com.shephertz.app42.paas.sdk.as3.util.Util;
 
 import flash.text.TextField;
 
@@ -228,6 +227,8 @@ package
 {
 	import com.shephertz.app42.paas.sdk.as3.App42Log;
 	import com.shephertz.app42.paas.sdk.as3.ServiceAPI;
+	import com.shephertz.app42.paas.sdk.as3.game.RewardService;
+	import com.shephertz.app42.paas.sdk.as3.user.Profile;
 	
 	import flash.display.Sprite;
 	import flash.events.FocusEvent;
@@ -235,6 +236,8 @@ package
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+	
+	import mx.collections.ArrayList;
 	
 	
 	public class App42_ActionScript_Test1 extends Sprite 
@@ -589,10 +592,16 @@ package
 			serviceAPI = new ServiceAPI("02a75a1d13c1c7963d37d57f2ae0b572295653a8d41dd7e7c782e61224f9e5a1","6a4e1d048dc5396666e1b292ee1967aac7b24d6181699f3851867d0b98fa9c74"); ;
 			serviceAPI.setBaseURL("http://","localhost",8082);
 			gameService = serviceAPI.buildGameService();
+			var rewardService:RewardService = serviceAPI.buildRewardService();
 			userService = serviceAPI.buildUserService();
 //			userService.authenticate(authUserTextField.text,authPassTextField.text,new auth42CallBack());
-			gameService.getGameByName(gameName,new app42CallBack());
-	//			userService.getUser(userName,new auth42CallBack());
+			var userList:Array = [];
+			userList.push("Nick");
+			userList.push("John");
+			trace("User Array is " + userList);
+			
+//			rewardService.getTopNRewardEarnersByGroup(gameName,rewardName,userList,new app42CallBack());
+//			userService.createUserWithRole(userName+ "hs1cau","hgsiahsah","hiii1ci@gmail.com",userList,new auth42CallBack());
 		}
 		
 		private function earnReward_click(e:MouseEvent):void

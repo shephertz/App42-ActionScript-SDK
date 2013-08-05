@@ -65,7 +65,26 @@ package com.shephertz.app42.paas.sdk.as3.util
 			return timeStamp;
 		}
 		
-		
+		public static function getUTCFormattedTimestampWithUserInputDate(date:Date):String {
+			var month:String;
+			var monthString:String = (date.getUTCMonth()+1).toString();
+			if (monthString.length == 1) { month = "0" + monthString; }
+			else{  month = monthString;  }
+			var dateString:String;
+			var rawDate:String = date.getUTCDate().toString();
+			if (rawDate.length == 1) { dateString = "0" + rawDate; }
+			else { dateString = rawDate; }			
+			var timeStamp:String = "";
+			timeStamp += date.getUTCFullYear() + "-";
+			timeStamp += month + "-";
+			timeStamp += dateString;
+			timeStamp += "T" + date.getUTCHours() + ":";
+			timeStamp += date.getUTCMinutes() + ":";
+			timeStamp += date.getUTCSeconds() + ".";
+			timeStamp += date.getUTCMilliseconds();
+			timeStamp += "Z";
+			return timeStamp;
+		}
 		public static function countKeys(myDictionary:flash.utils.Dictionary):int 
 		{
 			var n:int = 0;
@@ -138,14 +157,20 @@ package com.shephertz.app42.paas.sdk.as3.util
 		
 		public static function throwExceptionIfNullOrBlank(obj:Object, name:String,callback:App42CallBack):void {
 			if (obj == null) {
-				callback.onException(new App42Exception(name +" parameter can not be null" ,null,null));
+				callback.onException(new App42Exception(name +" parameter can not be null." ,null,null));
 				return ;
 			}
 			if (obj is String) {
 			var trimObj:String = obj.toString();
 				if(Util.trim(trimObj) == "") {
-					callback.onException(new App42Exception(name + " parameter can not be blank",null,null));
+					callback.onException(new App42Exception(name + " parameter can not be blank.",null,null));
 					return ;
+				}
+			}
+			if(obj is Array){
+				if((Array(obj)).length == 0)
+				{
+					callback.onException(new App42Exception(name + " connot be empty.",null,null));
 				}
 			}
 		}

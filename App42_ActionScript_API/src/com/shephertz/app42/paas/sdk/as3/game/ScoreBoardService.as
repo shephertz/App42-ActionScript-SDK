@@ -60,7 +60,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * @param userName - The user for which score has to be saved
 		 * @param gameScore - The sore that has to be saved
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		public function saveUserScore( gameName:String,  userName:String,
@@ -106,7 +105,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * @param gameName - Name of the game for which highest score has to be fetched
 		 * @param userName - The user for which highest score has to be fetched
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		public function getHighestScoreByUser(gameName:String, userName:String,callback:App42CallBack) : void {
@@ -132,7 +130,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * @param gameName - Name of the game for which score has to be fetched
 		 * @param userName - The user for which score has to be fetched
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 */
 		
 		public function getScoresByUser(gameName:String, userName:String,callback:App42CallBack) : void {
@@ -158,7 +155,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * @param gameName - Name of the game for which lowest score has to be fetched
 		 * @param userName - The user for which lowest score has to be fetched
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		public function getLowestScoreByUser(gameName:String, userName:String,callback:App42CallBack) : void {
@@ -184,7 +180,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * @param gameName - Name of the game for which average score has to be fetched
 		 * @param userName - The user for which average score has to be fetched
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		public function getAverageScoreByUser(gameName:String, userName:String,callback:App42CallBack) : void {
@@ -209,7 +204,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		* Retrieves the Top Rankings for the specified game in async mode.
 		* @param gameName - Name of the game for which ranks have to be fetched
 		* @param callback - Callback object for success/exception result
-		* @throws App42Exception
 		* 
 		*/
 		public function getTopRankings(gameName:String, callback:App42CallBack) : void {
@@ -234,7 +228,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * @param gameName - Name of the game for which ranks have to be fetched
 		 * @param max - Maximum number of records to be fetched
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		public function getTopNRankings(gameName:String, max:int,callback:App42CallBack) : void {
@@ -256,12 +249,42 @@ package com.shephertz.app42.paas.sdk.as3.game
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
 		}
 		/**
+		 * Retrieves the Top Rankings for the specified game in async mode.
+		 * @param gameName - Name of the game for which ranks have to be fetched
+		 * @param startDate  -Start date from which the ranking have to be fetched
+		 * @param endDate  - End date up to which the ranking have to be fetched 
+		 * @param callback - Callback object for success/exception result
+		 * 
+		 */
+		public function getTopRankingsByDate(gameName:String, startDate:Date , endDate:Date ,callback:App42CallBack) : void {
+			var response:String = null;
+			var paramsDics:Dictionary = new Dictionary();
+			
+			paramsDics["apiKey"]= apiKey;
+			paramsDics["version"]= version;
+			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
+			
+			var queryParams:Dictionary = Util.clone(paramsDics);
+			var strStartDate:String = Util.getUTCFormattedTimestampWithUserInputDate(startDate);
+			var strEndDate:String = Util.getUTCFormattedTimestampWithUserInputDate(endDate);
+			paramsDics["name"] = gameName; 
+			paramsDics["startDate"] = strStartDate; 
+			paramsDics["endDate"] = strEndDate; 
+			
+			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
+			var resourceUrl:String = this.version + "/" + this.resource + "/"
+				+ gameName + "/ranking" + "/" + strStartDate + "/"
+				+ strEndDate;
+			App42Log.debug("Http url : " + resourceUrl);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+		}
+		/**
 		 * This function returns the specified number of top rankers in a specific
 		 * game in async mode.
 		 * @param gameName - Name of the game
 		 * @param max - Maximum number of records to be fetched
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		public function getTopNRankers(gameName:String, max:int,callback:App42CallBack) : void {
@@ -288,7 +311,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * @param gameName- Name of the game for which ranks have to be fetched
 		 * @param userName - Name of the user for which ranks have to be fetched
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		public function getUserRanking(gameName:String, userName:String,callback:App42CallBack) : void {
@@ -314,7 +336,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * @param gameName - Name of the game
 		 * @param userName - Name of the user for which score has to retrieve
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		public function getLastScoreByUser(gameName:String, userName:String,callback:App42CallBack) : void {
@@ -341,7 +362,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * last game session.
 		 * @param userName - Name of the for which score has to retrieve.
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		public function getLastGameScore(userName:String,callback:App42CallBack) : void {
@@ -364,6 +384,111 @@ package com.shephertz.app42.paas.sdk.as3.game
 		}
 
 		
+		/**
+		 * This function returns the top ranking based on user score
+		 * @param gameName - Name of the game.
+		 * @param userList - List of the user for which ranking has to retrieve
+		 * @param callback - Callback object for success/exception result
+		 * 
+		 */
+		public function getTopRankingsByGroup(gameName:String,userList:Array,callback:App42CallBack) : void {
+			var response:String = null;
+			var paramsDics:Dictionary = new Dictionary();
+			
+			paramsDics["apiKey"]= apiKey;
+			paramsDics["version"]= version;
+			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
+			paramsDics["userList"] = "["+userList+"]"; 
+			var queryParams:Dictionary = Util.clone(paramsDics);
+			paramsDics["name"] = gameName; 
+			
+			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
+			var resourceUrl:String = this.version + "/" + this.resource+ "/"
+				+ gameName + "/group";
+			App42Log.debug("Http url : " + resourceUrl);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+		}
+		
+		/**
+		 * This function returns the specified number of top rankers in a specific
+		 * game in async mode.
+		 * @param gameName - Name of the game
+		 * @param startDate  -Start date from which the ranking have to be fetched
+		 * @param endDate  - End date up to which the ranking have to be fetched 
+		 * @param max - Maximum number of records to be fetched
+		 * @param callback - Callback object for success/exception result
+		 * 
+		 */
+		public function getTopNRankersByDate(gameName:String ,startDate:Date , endDate:Date, max:int,callback:App42CallBack) : void {
+			var response:String = null;
+			var paramsDics:Dictionary = new Dictionary();
+			
+			paramsDics["apiKey"]= apiKey;
+			paramsDics["version"]= version;
+			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
+			
+			var queryParams:Dictionary = Util.clone(paramsDics);
+			var strStartDate:String = Util.getUTCFormattedTimestampWithUserInputDate(startDate);
+			var strEndDate:String = Util.getUTCFormattedTimestampWithUserInputDate(endDate);
+			paramsDics["name"] = gameName; 
+			paramsDics["max"] = max; 
+			paramsDics["startDate"] = strStartDate; 
+			paramsDics["endDate"] = strEndDate; 
+			
+			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
+			var resourceUrl:String = this.version + "/" + this.resource+ "/"
+				+ gameName + "/rankers" + "/" + strStartDate + "/"
+				+ strEndDate + "/" + max;
+			App42Log.debug("Http url : " + resourceUrl);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+		}
+		
+		/**
+		 * Edit the game score by score id of the user in async mode.
+		 * @param gameName - Name of the game for which score has to be edit
+		 * @param gameScore - The score that has to be edit
+		 * @param callback - Callback object for success/exception result
+		 * 
+		 */
+		public function editScoreValueById( scoreId:String,  gameScore:int ,callback:App42CallBack):void  {
+			var response:String = null;
+			var paramsDics:Dictionary = new Dictionary();
+			if(scoreId == null || Util.trim(scoreId) == "" )
+			{
+				Util.throwExceptionIfNullOrBlank(scoreId,"ScoreId",callback);
+				
+				return;
+			}
+			paramsDics["apiKey"]=apiKey;
+			paramsDics["version"]=version;
+			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
+			var queryParams:Dictionary = Util.clone(paramsDics);
+			
+			var json:Object = new Object;
+			var app42Json:Object = new Object;
+			var gameJson:Object = new Object;
+			var scoresJson:Object = new Object;
+			var scoreJson:Object = new Object;
+			scoreJson.value = gameScore;
+			scoreJson.scoreId = scoreId;
+			scoresJson.score = scoreJson;
+			gameJson.scores = scoresJson;
+			app42Json.game = gameJson;
+			json.app42 = app42Json;
+			
+			var jsonBody:String  = com.adobe.serialization.json.JSON.encode(json);
+			paramsDics["body"] = jsonBody.toString();
+			App42Log.debug("Json String : " + jsonBody.toString());
+			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
+			var resourceUrl:String = this.version + "/" + this.resource
+				+ "/editscore";
+			App42Log.debug("Http url : " + resourceUrl);
+			RESTConnector.getInstance().executePut(signature,resourceUrl,queryParams ,jsonBody,this,callback);
+			
+		}
 		override public function onSuccess(response:String, requestCall:App42CallBack,isArray:Boolean):void
 		{
 			App42Log.debug("Response From Server : " + response);
