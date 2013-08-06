@@ -90,7 +90,6 @@ package com.shephertz.app42.paas.sdk.as3.connection
 			request.requestHeaders.push(new URLRequestHeader("apiKey",apiKey));
 			request.requestHeaders.push(new URLRequestHeader("signature",signature));
 			request.requestHeaders.push(new URLRequestHeader("timeStamp",timeStamp));
-			request.requestHeaders.push(new URLRequestHeader("Custom-Headers","PUT"));
 			request.requestHeaders.push(new URLRequestHeader("SDKName","AS3"));
 			httpLoader.load(request);
 			httpLoader.addEventListener(Event.COMPLETE,completeHandler);
@@ -130,7 +129,7 @@ package com.shephertz.app42.paas.sdk.as3.connection
 			request.requestHeaders.push(new URLRequestHeader("apiKey",apiKey));
 			request.requestHeaders.push(new URLRequestHeader("signature",signature));
 			request.requestHeaders.push(new URLRequestHeader("timeStamp",timeStamp));
-			request.requestHeaders.push(new URLRequestHeader("SDKName","AS3"));
+			request.requestHeaders.push(new URLRequestHeader("Custom-Headers","PUT"));
 			request.requestHeaders.push(new URLRequestHeader("SDKName","AS3"));
 			httpLoader.load(request);
 			httpLoader.addEventListener(Event.COMPLETE,completeHandler);
@@ -142,7 +141,7 @@ package com.shephertz.app42.paas.sdk.as3.connection
 		
 		
 		public  function executeGet(signature : String , url : String ,
-									params : Dictionary,serviceNew:App42Service ,call:App42CallBack) : void {
+									params : Dictionary,serviceNew:App42Service ,call:App42CallBack,bool:Boolean) : void {
 			var response:String ;
 			var queryParams : Dictionary = com.shephertz.app42.paas.sdk.as3.util.Util.clone(params);
 			var apiKey : String = queryParams["apiKey"]
@@ -234,6 +233,7 @@ package com.shephertz.app42.paas.sdk.as3.connection
 		{
 			var app42Fault:Object = new Object;
 			try {
+				trace("event.target.data is " + event.target.data);
 				app42Fault = com.adobe.serialization.json.JSON.decode(event.target.data)["app42Fault"];
 				var appErrorCode:int = app42Fault["appErrorCode"];
 				var httpErrorCode:int = app42Fault["httpErrorCode"];

@@ -57,7 +57,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * @param gameName - Name of the game that has to be created
 		 * @param description - Description of the game to be created
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
+		 * 
 		 * 
 		 */
 		public function createGame(gameName:String, description:String ,callback:App42CallBack) : void {
@@ -91,7 +91,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * Retrieves the game by the specified name in async mode.
 		 * @param gameName - Name of the game that has to be fetched
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
+		 * 
 		 */
 		public function getGameByName(gameName:String, callback:App42CallBack) : void {
 			var response:String = null;
@@ -108,13 +108,13 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/"+ gameName;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 			
 		}
 		/**
 		 * Fetches all games for the App in async mode.
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
+		 * 
 		 * 
 		 */
 		public function getAllGames(callback:App42CallBack) : void {
@@ -131,7 +131,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
 			
 		}
 		
@@ -139,7 +139,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 		/**
 		 * Fetches the count of all games for the App in async mode.
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
+		 * 
 		 * 
 		 */
 		public function getAllGamesCount(callback:App42CallBack) : void {
@@ -154,7 +154,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/count";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
 			
 		}
 		/**
@@ -162,7 +162,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * @param max - Maximum number of records to be fetched
 		 * @param offset - From where the records are to be fetched
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
+		 * 
 		 * 
 		 */
 		public function getAllGamesByPaging(max:int,offset:int,callback:App42CallBack) : void {
@@ -182,7 +182,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var resourceUrl:String = this.version + "/" + this.resource + "/paging"
 				+ "/" + max + "/" + offset;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
 			
 		}
 		
@@ -190,9 +190,14 @@ package com.shephertz.app42.paas.sdk.as3.game
 	 override public function onSuccess(response:String, requestCall:App42CallBack,isArray:Boolean):void
 		{
 		 	var object:Object;
-			App42Log.debug("Response From Server : " + response);
-//			object = com.adobe.serialization.json.JSON.decode(response);
-			object = new GameResponseBuilder().buildResponse(response);
+			if(isArray){
+				App42Log.debug("Response From Server 1: " + response);
+				object = new GameResponseBuilder().buildArrayResponse(response);
+			} 
+			else {
+				App42Log.debug("Response From Server : " + response);
+				object = new GameResponseBuilder().buildResponse(response);
+			}
 			requestCall.onSuccess(object);
 			
 		}

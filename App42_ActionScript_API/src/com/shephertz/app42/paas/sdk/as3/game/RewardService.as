@@ -111,7 +111,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/count";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
 			
 		}
 		/**
@@ -133,7 +133,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
 			
 		}
 		/**
@@ -161,7 +161,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var resourceUrl:String = this.version + "/" + this.resource+ "/paging"
 				+ "/" + max + "/" + offset;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
 			
 		}
 		/**
@@ -187,7 +187,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var resourceUrl:String = this.version + "/" + this.resource + "/"
 				+ rewardName;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 			
 		}
 		
@@ -294,7 +294,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var resourceUrl:String = this.version + "/" + this.resource  + "/"
 				+ gameName + "/" + userName;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
 			
 		}
 		
@@ -327,7 +327,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var resourceUrl:String = this.version + "/" + this.resource  + "/"
 				+ gameName + "/" + rewardName + "/" + max;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
 		}
 		/**
 		 * This function returns you the details of all the specific rewards earned
@@ -355,7 +355,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var resourceUrl:String = this.version + "/" + this.resource + "/"
 				+ userName + "/points/" + rewardName;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
 		}
 		
 		/**
@@ -364,7 +364,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * @param rewardName - Name of the reward for which user rank have to be fetched
 		 * @param userName - Name of the user for which rank have to be fetched
 		 * @param callback - Callback object for success/exception result
-		 * @throws App42Exception
 		 * 
 		 */
 		
@@ -386,7 +385,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var resourceUrl:String = this.version + "/" + this.resource  + "/"	+ gameName + "/" + rewardName + "/" + "rank" + "/"
 				+ userName;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
 		}
 		/**
 		 * This function returns you a list of group wise users who earned the top
@@ -412,7 +411,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var signature:String = Util.sign(this.secretKey,paramsDics);
 			var resourceUrl:String = this.version + "/" + this.resource + "/"
 				+ gameName + "/" + rewardName + "/group/points";
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
 		}
 		override public function onSuccess(response:String, requestCall:App42CallBack,isArray:Boolean):void
 		{

@@ -68,11 +68,11 @@ var BLACK:uint = 0x000000;
 var WHITE:uint = 0xFFFFFF;
 var RED:uint = 0xDF0101;
 var serviceAPI:ServiceAPI ;
-var gameName:String =  "testGame";
+var gameName:String =  "Nexus";
 var rewardName:String =  "rewardName";
 var userName1:String =  "Himanshu";
-var userName:String = "Nick";
-var description:String =  "description";
+var userName:String = "Himanshu sharma";
+var description:String =  "himanshu is going to Shimla";
 var gameService:GameService;
 var rewardService:RewardService;
 var userService:UserService;
@@ -599,7 +599,9 @@ package
 			userList.push("Nick");
 			userList.push("John");
 			trace("User Array is " + userList);
-			
+//			gameService.createGame(gameName,description,new app42CallBack());
+//			gameService.getGameByName(gameName,new app42CallBack());
+			gameService.getAllGames(new app42CallBack());
 //			rewardService.getTopNRewardEarnersByGroup(gameName,rewardName,userList,new app42CallBack());
 //			userService.createUserWithRole(userName+ "hs1cau","hgsiahsah","hiii1ci@gmail.com",userList,new auth42CallBack());
 		}
