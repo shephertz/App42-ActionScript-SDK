@@ -90,7 +90,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource+ "/add";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonBody,this,callback);
+			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonBody,this,callback,false);
 		}
 		/**
 		 * Deducts the score from users account for a particular Game
@@ -128,7 +128,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource+ "/deduct";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonBody,this,callback);
+			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonBody,this,callback,false);
 		}
 		
 		override public function onSuccess(response:String, requestCall:App42CallBack,isArray:Boolean):void

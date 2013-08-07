@@ -98,7 +98,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonBody,this,callback);
+			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonBody,this,callback,false);
 		}
 		/**
 		 * Retrieves the highest game score for the specified user in async mode.
@@ -593,14 +593,20 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var resourceUrl:String = this.version + "/" + this.resource
 				+ "/editscore";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executePut(signature,resourceUrl,queryParams ,jsonBody,this,callback);
+			RESTConnector.getInstance().executePut(signature,resourceUrl,queryParams ,jsonBody,this,callback,false);
 			
 		}
 		override public function onSuccess(response:String, requestCall:App42CallBack,isArray:Boolean):void
 		{
-			App42Log.debug("Response From Server : " + response);
 			var object:Object;
-			object = com.adobe.serialization.json.JSON.decode(response);
+			if(isArray){
+				App42Log.debug("Array Response " + response);
+				object = new GameResponseBuilder().buildArrayResponse(response);
+			} 
+			else {
+				App42Log.debug("Response : " + response);
+				object = new GameResponseBuilder().buildResponse(response);
+			}
 			requestCall.onSuccess(object);
 			
 		}

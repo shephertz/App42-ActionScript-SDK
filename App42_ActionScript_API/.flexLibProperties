@@ -27,6 +27,8 @@
     <classEntry path="com.shephertz.app42.paas.sdk.as3.Enum"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.user.Profile"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.user.UserGender"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.game.Score"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.storage.JSONDocument"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

@@ -11,6 +11,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 	import com.shephertz.app42.paas.sdk.as3.App42Log;
 	import com.shephertz.app42.paas.sdk.as3.App42Service;
 	import com.shephertz.app42.paas.sdk.as3.connection.RESTConnector;
+	import com.shephertz.app42.paas.sdk.as3.game.GameResponseBuilder;
 	import com.shephertz.app42.paas.sdk.as3.util.Util;
 	
 	import flash.utils.Dictionary;
@@ -91,7 +92,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 			var resourceUrl:String = this.version + "/" + this.resource	+ "/insert/dbName/" + dbName + "/collectionName/"
 				+ collectionName;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonBody,this,callback);
+			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonBody,this,callback,false);
 		}
 		
 		/**
@@ -470,7 +471,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 			var resourceUrl:String = this.version + "/" + this.resource	+ "/update/dbName/" + dbName + "/collectionName/"
 				+ collectionName + "/" + key + "/" + value;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executePut(signature,resourceUrl,queryParams ,jsonBody,this,callback);
+			RESTConnector.getInstance().executePut(signature,resourceUrl,queryParams ,jsonBody,this,callback,false);
 		}
 		/**
 		 * Update target document using the document id.
@@ -520,7 +521,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 				var resourceUrl:String = this.version + "/" + this.resource	+ "/updateByDocId/dbName/" + dbName + "/collectionName/"
 					+ collectionName + "/docId/" + docId;
 				App42Log.debug("Http url : " + resourceUrl);
-				RESTConnector.getInstance().executePut(signature,resourceUrl,queryParams ,jsonBody,this,callback);
+				RESTConnector.getInstance().executePut(signature,resourceUrl,queryParams ,jsonBody,this,callback,false);
 			}
 			
 			/**
@@ -557,7 +558,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 				var resourceUrl:String = this.version + "/" + this.resource + "/deleteDocById/dbName/" + dbName + "/collectionName/"
 					+ collectionName + "/docId/" + docId;
 				App42Log.debug("Http url : " + resourceUrl);
-				RESTConnector.getInstance().executeDelete(signature,resourceUrl,queryParams,this,callback);
+				RESTConnector.getInstance().executeDelete(signature,resourceUrl,queryParams,this,callback,false);
 				
 			}
 
@@ -583,7 +584,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 				var resourceUrl:String = this.version + "/" + this.resource	+ "/deleteAll/dbName/" + dbName + "/collectionName/"
 					+ collectionName;
 				App42Log.debug("Http url : " + resourceUrl);
-				RESTConnector.getInstance().executeDelete(signature,resourceUrl,queryParams,this,callback);
+				RESTConnector.getInstance().executeDelete(signature,resourceUrl,queryParams,this,callback,false);
 				
 			}
 			
@@ -677,15 +678,21 @@ package com.shephertz.app42.paas.sdk.as3.storage
 			var resourceUrl:String = this.version + "/" + this.resource+ "/deletebykey/dbName/" + dbName + "/collectionName/"
 				+ collectionName + "/" + key;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeDelete(signature,resourceUrl,queryParams,this,callback);
+			RESTConnector.getInstance().executeDelete(signature,resourceUrl,queryParams,this,callback,false);
 			
 		}
 
 		override public function onSuccess(response:String, requestCall:App42CallBack,isArray:Boolean):void
 		{
-			App42Log.debug("Response From Server : " + response);
 			var object:Object;
-			object = com.adobe.serialization.json.JSON.decode(response);
+			if(isArray){
+				App42Log.debug("Array Response " + response);
+				object = new StorageResponseBuilder().buildArrayResponse(response);
+			} 
+			else {
+				App42Log.debug("Response : " + response);
+				object = new StorageResponseBuilder().buildResponse(response);
+			}
 			requestCall.onSuccess(object);
 			
 		}

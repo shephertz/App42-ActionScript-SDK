@@ -12,6 +12,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 	public class Game extends App42Response {
 		public var name:String;
 		public var description:String ;
+		public var scoreList:Array =new Array(Score);
 		/**
 		 * Returns the name of the game.
 		 * 
@@ -50,6 +51,24 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 */
 		public function setDescription( description:String):void {
 			this.description = description;
+		}
+		/**
+		 * Returns the score list for the Game.
+		 * 
+		 * @return the score list for the Game.
+		 */
+		public function getScoreList():Array {
+			return scoreList;
+		}
+		
+		/**
+		 * Sets the Score list for the Game.
+		 * @param scoreList
+		 *            - List of score for the game
+		 * 
+		 */
+		public function setScoreList(scoreList:Array):void {
+			this.scoreList = scoreList;
 		}
 	}
 }

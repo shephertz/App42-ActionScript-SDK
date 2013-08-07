@@ -4,10 +4,13 @@ import com.shephertz.app42.paas.sdk.as3.ServiceAPI;
 import com.shephertz.app42.paas.sdk.as3.game.Game;
 import com.shephertz.app42.paas.sdk.as3.game.GameService;
 import com.shephertz.app42.paas.sdk.as3.game.RewardService;
+import com.shephertz.app42.paas.sdk.as3.game.Score;
 import com.shephertz.app42.paas.sdk.as3.game.ScoreBoardService;
 import com.shephertz.app42.paas.sdk.as3.game.ScoreService;
+import com.shephertz.app42.paas.sdk.as3.storage.Storage;
 import com.shephertz.app42.paas.sdk.as3.storage.StorageService;
 import com.shephertz.app42.paas.sdk.as3.user.UserService;
+import com.shephertz.app42.paas.sdk.as3.util.Util;
 
 import flash.text.TextField;
 
@@ -86,11 +89,32 @@ class app42CallBack implements App42CallBack{
 	serviceAPI.setBaseURL("http://","localhost",8082);
 	public function onSuccess(res:Object):void
 	{
+		trace("res   " + res);
+		if(res is Storage)
+		{
+			var storage:Storage = Storage(res);
+//			trace("If Loop" + storage.getDbName());
+			outputField.text += "res  ..."+  storage.getCollectionName()	
+		}
 		if(res is Game)
 		{
 			var game:Game = Game(res);
 			trace("If Loop" + game.getName());
 			outputField.text += "res  ..."+  game.getDescription()	
+		}
+		else if(res is Array)
+		{
+			for(var i:int = 0;i < res.length;i++){
+				var games:Game = Game(res[i]);
+				if(games.getScoreList() as Array){
+					var scores:Array = games.getScoreList();
+					for(var j:int = 0; j < 1;j++){
+						trace("scores is in the  "+ Score(scores[0]).getUserName());
+						trace("scores is in the  "+ Score(scores[0]).getValue());
+						trace("scores is in the  "+ Score(scores[0]).getScoreId());
+					}
+				}
+			}
 		}
 	}
 	public function onException(excption:App42Exception):void
@@ -228,7 +252,6 @@ package
 	import com.shephertz.app42.paas.sdk.as3.App42Log;
 	import com.shephertz.app42.paas.sdk.as3.ServiceAPI;
 	import com.shephertz.app42.paas.sdk.as3.game.RewardService;
-	import com.shephertz.app42.paas.sdk.as3.user.Profile;
 	
 	import flash.display.Sprite;
 	import flash.events.FocusEvent;
@@ -236,8 +259,6 @@ package
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
-	
-	import mx.collections.ArrayList;
 	
 	
 	public class App42_ActionScript_Test1 extends Sprite 
@@ -594,16 +615,25 @@ package
 			gameService = serviceAPI.buildGameService();
 			var rewardService:RewardService = serviceAPI.buildRewardService();
 			userService = serviceAPI.buildUserService();
+			scoreBoardService = serviceAPI.buildScoreBoardService();
 //			userService.authenticate(authUserTextField.text,authPassTextField.text,new auth42CallBack());
 			var userList:Array = [];
 			userList.push("Nick");
 			userList.push("John");
-			trace("User Array is " + userList);
 //			gameService.createGame(gameName,description,new app42CallBack());
 //			gameService.getGameByName(gameName,new app42CallBack());
-			gameService.getAllGames(new app42CallBack());
+//			gameService.getAllGames(new app42CallBack());
 //			rewardService.getTopNRewardEarnersByGroup(gameName,rewardName,userList,new app42CallBack());
 //			userService.createUserWithRole(userName+ "hs1cau","hgsiahsah","hiii1ci@gmail.com",userList,new auth42CallBack());
+			
+//			scoreBoardService.saveUserScore(gameName,userName+ "is 3rd User",1200,new app42CallBack());
+//			scoreBoardService.getHighestScoreByUser(gameName,userName,new app42CallBack());
+//			scoreBoardService.getTopNRankers(gameName,5,new app42CallBack());
+			var jsonObject:Object = new Object;
+			jsonObject.name = "himanshu";
+			jsonObject.Age = 23;
+			storageService = serviceAPI.buildStorageServicee();
+			storageService.insertJSONDocument("test","foo23",jsonObject,new app42CallBack());
 		}
 		
 		private function earnReward_click(e:MouseEvent):void

@@ -38,6 +38,7 @@ package com.shephertz.app42.paas.sdk.as3.connection
 		private var baseURL : String  = null;
 		private var customCodeURL : String  = null;
 		private var callback:App42CallBack;
+		private var boolean:Boolean;
 		private var service:App42Service;
 		
 		private static var restCon: RESTConnector  = null;
@@ -61,7 +62,7 @@ package com.shephertz.app42.paas.sdk.as3.connection
 		}
 		
 		public  function executePost(signature : String , url : String ,
-									 params : Dictionary, bodyPayLoad:String,serviceNew:App42Service ,call:App42CallBack) : void {
+									 params : Dictionary, bodyPayLoad:String,serviceNew:App42Service ,call:App42CallBack,bool:Boolean) : void {
 			var response:String ;
 			var queryParams : Dictionary = com.shephertz.app42.paas.sdk.as3.util.Util.clone(params);
 			var apiKey : String = queryParams["apiKey"]
@@ -97,10 +98,11 @@ package com.shephertz.app42.paas.sdk.as3.connection
 			httpLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,app42Exception);
 			service  = serviceNew;
 			callback = call;
+			boolean = bool;
 		}
 		
 		public  function executePut(signature : String , url : String ,
-									 params : Dictionary, bodyPayLoad:String,serviceNew:App42Service ,call:App42CallBack) : void {
+									 params : Dictionary, bodyPayLoad:String,serviceNew:App42Service ,call:App42CallBack,bool:Boolean) : void {
 			var response:String ;
 			var queryParams : Dictionary = com.shephertz.app42.paas.sdk.as3.util.Util.clone(params);
 			var apiKey : String = queryParams["apiKey"]
@@ -137,6 +139,7 @@ package com.shephertz.app42.paas.sdk.as3.connection
 			httpLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR,app42Exception);
 			service  = serviceNew;
 			callback = call;
+			boolean = bool;
 		}
 		
 		
@@ -179,11 +182,11 @@ package com.shephertz.app42.paas.sdk.as3.connection
 			httpLoader.load(request);
 			service  = serviceNew;
 			callback = call;
-			
+			boolean = bool;
 		}
 		
 		public  function executeDelete(signature : String , url : String ,
-									   params : Dictionary,serviceNew:App42Service ,call:App42CallBack) : void {
+									   params : Dictionary,serviceNew:App42Service ,call:App42CallBack,bool:Boolean) : void {
 			var response:String ;
 			var queryParams : Dictionary = com.shephertz.app42.paas.sdk.as3.util.Util.clone(params);
 			var apiKey : String = queryParams["apiKey"]
@@ -221,19 +224,19 @@ package com.shephertz.app42.paas.sdk.as3.connection
 			httpLoader.load(request);
 			service  = serviceNew;
 			callback = call;
-			
+			boolean = bool;
 		}
 		
 		private function completeHandler(e:Event):void
 		{
-			service.onSuccess(e.target.data,callback,true);
+			service.onSuccess(e.target.data,callback,boolean);
 		}
 		
 		private function app42Exception(event:Event):void
 		{
 			var app42Fault:Object = new Object;
 			try {
-				trace("event.target.data is " + event.target.data);
+				App42Log.debug("event.target.data is " + event.target.data);
 				app42Fault = com.adobe.serialization.json.JSON.decode(event.target.data)["app42Fault"];
 				var appErrorCode:int = app42Fault["appErrorCode"];
 				var httpErrorCode:int = app42Fault["httpErrorCode"];
@@ -258,7 +261,7 @@ package com.shephertz.app42.paas.sdk.as3.connection
 				}
 			}
 			catch(error:Error){
-				trace("Parsing Exception : " + error.getStackTrace());
+				App42Log.debug("Parsing Exception : " + error.getStackTrace());
 			}
 		}
 	}
