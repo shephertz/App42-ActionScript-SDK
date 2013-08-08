@@ -7,10 +7,10 @@ import com.shephertz.app42.paas.sdk.as3.game.RewardService;
 import com.shephertz.app42.paas.sdk.as3.game.Score;
 import com.shephertz.app42.paas.sdk.as3.game.ScoreBoardService;
 import com.shephertz.app42.paas.sdk.as3.game.ScoreService;
+import com.shephertz.app42.paas.sdk.as3.storage.JSONDocument;
 import com.shephertz.app42.paas.sdk.as3.storage.Storage;
 import com.shephertz.app42.paas.sdk.as3.storage.StorageService;
 import com.shephertz.app42.paas.sdk.as3.user.UserService;
-import com.shephertz.app42.paas.sdk.as3.util.Util;
 
 import flash.text.TextField;
 
@@ -94,7 +94,16 @@ class app42CallBack implements App42CallBack{
 		{
 			var storage:Storage = Storage(res);
 //			trace("If Loop" + storage.getDbName());
-			outputField.text += "res  ..."+  storage.getCollectionName()	
+			trace("storage is " + storage);
+			if(storage.getJsonDocList() as Array){
+				var jsonDocument:Array = storage.getJsonDocList();
+				for(var j:int = 0; j <storage.getJsonDocList().length;j++){
+					trace("scores is in the  "+ JSONDocument(jsonDocument[j]).getDocId());
+//					trace("scores is in the  "+ JSONDocument(scores[0]).get());
+//					trace("scores is in the  "+ JSONDocument(scores[0]).getScoreId());
+				}
+			}
+			outputField.text += "res  ..."+  storage	
 		}
 		if(res is Game)
 		{
@@ -633,7 +642,8 @@ package
 			jsonObject.name = "himanshu";
 			jsonObject.Age = 23;
 			storageService = serviceAPI.buildStorageServicee();
-			storageService.insertJSONDocument("test","foo23",jsonObject,new app42CallBack());
+//			storageService.insertJSONDocument("test","foo23",jsonObject,new app42CallBack());
+			storageService.findAllDocuments("test","foo23",new app42CallBack());
 		}
 		
 		private function earnReward_click(e:MouseEvent):void

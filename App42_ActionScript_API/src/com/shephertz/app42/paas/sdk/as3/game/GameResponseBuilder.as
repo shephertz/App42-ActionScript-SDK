@@ -59,11 +59,9 @@ package com.shephertz.app42.paas.sdk.as3.game
 					if(scoreJSONObj is Array){
 						for (var i:int = 0; i < scoreJSONObj.length; i++) { 
 							var scoresObj:Object = scoreJSONObj[i];
-							
 							var score:Score = new Score;
 							buildObjectFromJSONTree(score, scoresObj);
 							array.push(score);
-//							trace(array.length)
 							game.setScoreList(array);
 						}
 					}

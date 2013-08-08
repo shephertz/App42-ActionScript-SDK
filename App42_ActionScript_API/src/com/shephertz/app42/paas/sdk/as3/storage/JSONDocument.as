@@ -87,12 +87,12 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		 * 
 		 */
 		
-		public function toString() {
-			if (this.docId != null && this.jsonDoc != null)
-				return this.docId + " : " + this.jsonDoc;
-			else
-				return super.toString();
-		}
+//		public function toString() {
+//			if (this.docId != null && this.jsonDoc != null)
+//				return this.docId + " : " + this.jsonDoc;
+//			else
+//				return super.toString();
+//		}
 		//	public function getLocation():GeoTag{
 		//		return loc;
 		//	}

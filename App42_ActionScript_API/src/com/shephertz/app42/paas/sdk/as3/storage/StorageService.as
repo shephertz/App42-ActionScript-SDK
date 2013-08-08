@@ -687,7 +687,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 			var object:Object;
 			if(isArray){
 				App42Log.debug("Array Response " + response);
-				object = new StorageResponseBuilder().buildArrayResponse(response);
+				object = new StorageResponseBuilder().buildResponse(response);
 			} 
 			else {
 				App42Log.debug("Response : " + response);
