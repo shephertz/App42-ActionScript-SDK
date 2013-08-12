@@ -98,7 +98,7 @@
 		 * 
 		 */
 		
-		public function setProfile( profile:Profile):void {
+		public function setProfile(profile:Profile):void {
 			this.profile = profile;
 		}
 		

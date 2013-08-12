@@ -180,37 +180,37 @@ package com.shephertz.app42.paas.sdk.as3.user
 			var obj:Object = new Object();
 			var json:Object = new Object();
 			var app42Json:Object = new Object();
-			var profile:Profile  = user.getProfile();
+			var profile:Profile  = new Profile(user);
 			var profileObj:Object = new Object();
-			profileObj.put("firstName", profile.getFirstName());
-			profileObj.put("lastName", profile.getLastName());
-			profileObj.put("sex", profile.getSex());
-			profileObj.put("mobile", profile.getMobile());
-			profileObj.put("line1", profile.getLine1());
-			profileObj.put("line2", profile.getLine2());
-			profileObj.put("city", profile.getCity());
-			profileObj.put("state", profile.getState());
-			profileObj.put("country", profile.getCountry());
-			profileObj.put("pincode", profile.getPincode());
-			profileObj.put("homeLandLine", profile.getHomeLandLine());
-			profileObj.put("officeLandLine", profile.getOfficeLandLine());
+			profileObj.firstName =  profile.getFirstName();
+			profileObj.lastName=profile.getLastName();
+			profileObj.sex = profile.getSex();
+			profileObj.mobile= profile.getMobile();
+			profileObj.line1= profile.getLine1();
+			profileObj.line2= profile.getLine2();
+			profileObj.city= profile.getCity();
+			profileObj.state= profile.getState();
+			profileObj.country= profile.getCountry();
+			profileObj.pincode= profile.getPincode();
+			profileObj.homeLandLine= profile.getHomeLandLine();
+			profileObj.officeLandLine= profile.getOfficeLandLine();
 			if (profile.getDateOfBirth() != null) {
 				profileObj.put("dateOfBirth", Util.getUTCFormattedTimestampWithUserInputDate(profile
 					.getDateOfBirth()));
 			}
-			obj.put("profileData", profileObj);
-			obj.put("userName", user.getUserName());
+			obj.profileData =  profileObj;
+			obj.userName= user.getUserName();
 			
 			json.app42 = app42Json;
-			app42Json.profileData = profileObj;
+			app42Json.user = obj;
 			var jsonBody:String  = com.adobe.serialization.json.JSON.encode(json);
 			paramsDics["body"] = jsonBody.toString();
 			App42Log.debug("Json String : " + jsonBody.toString());
 			var signature:String = Util.sign(this.secretKey,paramsDics);
 			App42Log.debug("Signature : " + signature);
-			var resourceUrl:String = this.version + "/" + this.resource	+ "/assignrole";
+			var resourceUrl:String = this.version + "/" + this.resource + "/profile";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonBody,this,callback,false);
+			RESTConnector.getInstance().executePut(signature,resourceUrl,queryParams ,jsonBody,this,callback,false);
 		}
 		/**
 		 * Assign Roles to the existing User 
@@ -954,9 +954,15 @@ package com.shephertz.app42.paas.sdk.as3.user
 		}
 		override public function onSuccess(response:String, requestCall:App42CallBack,isArray:Boolean):void
 		{
-			App42Log.debug("Response From Server : " + response);
 			var object:Object;
-			object = com.adobe.serialization.json.JSON.decode(response);
+			if(isArray){
+				App42Log.debug("Array Response " + response);
+				object = new UserResponseBuilder().buildArrayResponse(response);
+			} 
+			else {
+				App42Log.debug("Response : " + response);
+				object = new UserResponseBuilder().buildResponse(response);
+			}
 			requestCall.onSuccess(object);
 			
 		}

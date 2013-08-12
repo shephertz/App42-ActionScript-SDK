@@ -23,6 +23,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		 */
 		
 		public function getJsonDoc():String {
+			trace("trace is " + jsonDoc);
 			return jsonDoc;
 		}
 		

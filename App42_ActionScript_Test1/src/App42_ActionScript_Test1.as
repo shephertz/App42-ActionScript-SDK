@@ -10,7 +10,10 @@ import com.shephertz.app42.paas.sdk.as3.game.ScoreService;
 import com.shephertz.app42.paas.sdk.as3.storage.JSONDocument;
 import com.shephertz.app42.paas.sdk.as3.storage.Storage;
 import com.shephertz.app42.paas.sdk.as3.storage.StorageService;
+import com.shephertz.app42.paas.sdk.as3.user.Profile;
+import com.shephertz.app42.paas.sdk.as3.user.User;
 import com.shephertz.app42.paas.sdk.as3.user.UserService;
+import com.shephertz.app42.paas.sdk.as3.util.Util;
 
 import flash.text.TextField;
 
@@ -74,7 +77,7 @@ var serviceAPI:ServiceAPI ;
 var gameName:String =  "Nexus";
 var rewardName:String =  "rewardName";
 var userName1:String =  "Himanshu";
-var userName:String = "Himanshu sharma";
+var userName:String = "Himanshu";
 var description:String =  "himanshu is going to Shimla";
 var gameService:GameService;
 var rewardService:RewardService;
@@ -82,6 +85,7 @@ var userService:UserService;
 var storageService:StorageService;
 var scoreBoardService:ScoreBoardService;
 var scoreService:ScoreService;
+var user:User;
 
 class app42CallBack implements App42CallBack{
 	
@@ -89,42 +93,38 @@ class app42CallBack implements App42CallBack{
 	serviceAPI.setBaseURL("http://","localhost",8082);
 	public function onSuccess(res:Object):void
 	{
-		trace("res   " + res);
-		if(res is Storage)
-		{
-			var storage:Storage = Storage(res);
-//			trace("If Loop" + storage.getDbName());
-			trace("storage is " + storage);
-			if(storage.getJsonDocList() as Array){
-				var jsonDocument:Array = storage.getJsonDocList();
-				for(var j:int = 0; j <storage.getJsonDocList().length;j++){
-					trace("scores is in the  "+ JSONDocument(jsonDocument[j]).getDocId());
-//					trace("scores is in the  "+ JSONDocument(scores[0]).get());
-//					trace("scores is in the  "+ JSONDocument(scores[0]).getScoreId());
-				}
-			}
-			outputField.text += "res  ..."+  storage	
-		}
-		if(res is Game)
-		{
-			var game:Game = Game(res);
-			trace("If Loop" + game.getName());
-			outputField.text += "res  ..."+  game.getDescription()	
-		}
-		else if(res is Array)
-		{
-			for(var i:int = 0;i < res.length;i++){
-				var games:Game = Game(res[i]);
-				if(games.getScoreList() as Array){
-					var scores:Array = games.getScoreList();
-					for(var j:int = 0; j < 1;j++){
-						trace("scores is in the  "+ Score(scores[0]).getUserName());
-						trace("scores is in the  "+ Score(scores[0]).getValue());
-						trace("scores is in the  "+ Score(scores[0]).getScoreId());
-					}
-				}
-			}
-		}
+		trace("response is success : " + res);
+//		if(res is Storage)
+//		{
+//			var storage:Storage = Storage(res);
+//			trace("dbName is " + storage.getDbName());
+//			if(storage.getJsonDocList() is JSONDocument){
+//				trace( "trace in json is " + storage.getJsonDocList());
+//				var jsonDocument:Array = storage.getJsonDocList();
+//				for(var j:int = 0; j <storage.getJsonDocList().length;j++){
+//					trace(""+ JSONDocument(jsonDocument[j]).getDocId());
+//				}
+//			}
+//			outputField.text += "storage is ..."+  storage	
+//		}
+//		if(res is Game)
+//		{
+//			var game:Game = Game(res);
+//			trace("game Name is " + game.getName());
+//			outputField.text += "game Description is   ..."+  game.getDescription()	
+//		}
+//		else if(res is Array)
+//		{
+//			for(var i:int = 0;i < res.length;i++){
+//				var games:Game = Game(res[i]);
+//				if(games.getScoreList() as Array){
+//					var scores:Array = games.getScoreList();
+//					for(var j:int = 0; j < 1;j++){
+//						trace("scores is in the  "+ Score(scores[0]).getUserName());
+//					}
+//				}
+//			}
+//		}
 	}
 	public function onException(excption:App42Exception):void
 	{
@@ -136,11 +136,11 @@ class reward42CallBack implements App42CallBack{
 	
 	public function onSuccess(res:Object):void
 	{
-			outputField.text += "User by the Name" 
-			rewGameTextField.text = rewGAME_NAME;
-			rewUserNameTextField.text = rewGAME_USER_NAME;
-			rewRewardTextField.text = rewReward_NAME;
-			rewPointsTextField.text = rew_Points;
+		outputField.text += "User by the Name" 
+		rewGameTextField.text = rewGAME_NAME;
+		rewUserNameTextField.text = rewGAME_USER_NAME;
+		rewRewardTextField.text = rewReward_NAME;
+		rewPointsTextField.text = rew_Points;
 	}
 	public function onException(excption:App42Exception):void
 	{
@@ -211,19 +211,49 @@ class user42CallBack implements App42CallBack{
 class auth42CallBack implements App42CallBack{
 	serviceAPI = new ServiceAPI("02a75a1d13c1c7963d37d57f2ae0b572295653a8d41dd7e7c782e61224f9e5a1","6a4e1d048dc5396666e1b292ee1967aac7b24d6181699f3851867d0b98fa9c74"); ;
 	serviceAPI.setBaseURL("http://","localhost",8082);
-		public function onSuccess(res:Object):void
+	public function onSuccess(res:Object):void
+	{
+//		var user:User ;//= User(res);
+		var userName:String;
+		var sessionId:String;
+		var profile:Profile;
+		trace("response is " + Util.toString(res));
+		if(res is Array)
 		{
-			var userObject:Object = res["app42"]["response"];
-			var uName:String = userObject["users"]["user"]["userName"];
-			outputField.text += uName + " is successfully authenticated";
+			for(var i:int = 0;i < res.length;i++){
+				user = User(res[0]);
+				profile=new  Profile(user);
+				profile.setFirstName("Himanshu");
+				profile.setLastName("Sharma");
+				profile.setState("Delhi");
+				trace("profile is " +profile.getFirstName());
+				trace("user is " + Util.toString(user));
+				userName  = user.getUserName();
+				sessionId  = user.getSessionId();
+			}
 		}
-		public function onException(exception:App42Exception):void
+		else
 		{
-			outputField.text += "" + exception;
-			authUserTextField.text = AUTHUser_Name;
-			authPassTextField.text = AUTHPassword;
-			
+			user = User(res);;
+			trace("user is not array " + Util.toString(user));
+			profile = Profile(user);
+			profile.setFirstName("Himanshu");
+			profile.setLastName("Sharma");
+			profile.setState("Delhi");
+			userName  = user.getUserName();
+			sessionId  = user.getSessionId();
 		}
+		
+		outputField.text += userName + " is successfully authenticated with " + sessionId;
+		
+	}
+	public function onException(exception:App42Exception):void
+	{
+		outputField.text += "" + exception;
+		authUserTextField.text = AUTHUser_Name;
+		authPassTextField.text = AUTHPassword;
+		
+	}
 }
 
 class storage42CallBack implements App42CallBack{
@@ -290,7 +320,7 @@ package
 			headerLine1.textColor = BLACK;
 			headerLine1.x = 150;
 			headerLine1.y = 0;           
-						
+			
 			outputField.width = 600;
 			outputField.height = 900;
 			outputField.y = 250;
@@ -530,41 +560,41 @@ package
 		{ 
 			serviceAPI = new ServiceAPI("02a75a1d13c1c7963d37d57f2ae0b572295653a8d41dd7e7c782e61224f9e5a1","6a4e1d048dc5396666e1b292ee1967aac7b24d6181699f3851867d0b98fa9c74"); ;
 			serviceAPI.setBaseURL("http://","localhost",8082);
-//				App42Log.setDebug(true);
+			//				App42Log.setDebug(true);
 			
-				/********************Game , ScoreBoard, Score, Reward Service ************************/
+			/********************Game , ScoreBoard, Score, Reward Service ************************/
 			
-				gameService = serviceAPI.buildGameService();
-				scoreBoardService = serviceAPI.buildScoreBoardService();
-				rewardService = serviceAPI.buildRewardService();
-				scoreService = serviceAPI.buildScoreService();
-				var jsonArray:Array = new Array;
-//				rewardService.createReward(rewardName,userName,new reward42CallBack());
-//				gameService.createGame(gameName,description,new app42CallBack());
-//				scoreBoardService.saveUserScore(gameName,userName1,1200,new app42CallBack());
-//				scoreBoardService.saveUserScore(gameName,userName,1200,new app42CallBack());
-//				scoreService.addScore(gameName,userName,12000,new app42CallBack());
-//				scoreService.deductScore(gameName,userName,1000,new app42CallBack());
-				
-				/********************StorageService************************/
-				var jsonObject:Object = new Object;
-				jsonObject.name = "himanshu";
-				jsonObject.Age = 23;
-				storageService = serviceAPI.buildStorageServicee();
-//				storageService.insertJSONDocument("test","foo23",jsonObject,new app42CallBack());
-				
-				/********************UserService************************/
-				
-				userService = serviceAPI.buildUserService();
-				userService.createUser(userTextField.text,passTextField.text,emailIdTextField.text,new user42CallBack());
-//				userService.authenticate(userName,"password",new app42CallBack());
+			gameService = serviceAPI.buildGameService();
+			scoreBoardService = serviceAPI.buildScoreBoardService();
+			rewardService = serviceAPI.buildRewardService();
+			scoreService = serviceAPI.buildScoreService();
+			var jsonArray:Array = new Array;
+			//				rewardService.createReward(rewardName,userName,new reward42CallBack());
+			//				gameService.createGame(gameName,description,new app42CallBack());
+			//				scoreBoardService.saveUserScore(gameName,userName1,1200,new app42CallBack());
+			//				scoreBoardService.saveUserScore(gameName,userName,1200,new app42CallBack());
+			//				scoreService.addScore(gameName,userName,12000,new app42CallBack());
+			//				scoreService.deductScore(gameName,userName,1000,new app42CallBack());
+			
+			/********************StorageService************************/
+			var jsonObject:Object = new Object;
+			jsonObject.name = "himanshu";
+			jsonObject.Age = 23;
+			storageService = serviceAPI.buildStorageServicee();
+			//				storageService.insertJSONDocument("test","foo23",jsonObject,new app42CallBack());
+			
+			/********************UserService************************/
+			
+			userService = serviceAPI.buildUserService();
+			userService.createUser(userTextField.text,passTextField.text,emailIdTextField.text,new user42CallBack());
+			//				userService.authenticate(userName,"password",new app42CallBack());
 		}
 		
 		private function get_click(e:MouseEvent):void
 		{ 
 			serviceAPI = new ServiceAPI("02a75a1d13c1c7963d37d57f2ae0b572295653a8d41dd7e7c782e61224f9e5a1","6a4e1d048dc5396666e1b292ee1967aac7b24d6181699f3851867d0b98fa9c74"); ;
 			serviceAPI.setBaseURL("http://","localhost",8082);
-//			App42Log.setDebug(true);
+			//			App42Log.setDebug(true);
 			
 			/********************Game , ScoreBoard, Score, Reward Service ************************/
 			gameService = serviceAPI.buildGameService();
@@ -574,46 +604,46 @@ package
 			var userArray:Array = new Array;
 			userArray.push("Nick");
 			userArray.push("John");
-//			gameService.getGameByName(gameName,new app42CallBack());
-//			gameService.getAllGames(new app42CallBack());
-//			scoreBoardService.getHighestScoreByUser(gameName,userName,new app42CallBack());
-//			scoreBoardService.getLowestScoreByUser(gameName,userName,new app42CallBack());
-//			scoreBoardService.getAverageScoreByUser(gameName,userName,new app42CallBack());
-//			scoreBoardService.getScoresByUser(gameName,userName,new app42CallBack());
-//			scoreBoardService.getTopRankings(gameName,new app42CallBack());
-//			scoreBoardService.getTopNRankings(gameName,3,new app42CallBack());
-//			scoreBoardService.getUserRanking(gameName,userName,new app42CallBack());
-//			scoreBoardService.getLastScoreByUser(gameName,userName,new app42CallBack());
-//			scoreBoardService.getTopNRankers(gameName,3,new app42CallBack());
-//			scoreBoardService.getLastGameScore(userName,new app42CallBack());
+			//			gameService.getGameByName(gameName,new app42CallBack());
+			//			gameService.getAllGames(new app42CallBack());
+			//			scoreBoardService.getHighestScoreByUser(gameName,userName,new app42CallBack());
+			//			scoreBoardService.getLowestScoreByUser(gameName,userName,new app42CallBack());
+			//			scoreBoardService.getAverageScoreByUser(gameName,userName,new app42CallBack());
+			//			scoreBoardService.getScoresByUser(gameName,userName,new app42CallBack());
+			//			scoreBoardService.getTopRankings(gameName,new app42CallBack());
+			//			scoreBoardService.getTopNRankings(gameName,3,new app42CallBack());
+			//			scoreBoardService.getUserRanking(gameName,userName,new app42CallBack());
+			//			scoreBoardService.getLastScoreByUser(gameName,userName,new app42CallBack());
+			//			scoreBoardService.getTopNRankers(gameName,3,new app42CallBack());
+			//			scoreBoardService.getLastGameScore(userName,new app42CallBack());
 			
 			
 			
-//			rewardService.getAllRewardsCount(new reward42CallBack());
-//			rewardService.getAllRewards(new reward42CallBack());
-//			rewardService.getAllRewardsByPaging(1,0,new reward42CallBack());
-//			rewardService.getRewardByName(rewardName,new reward42CallBack());
-//			rewardService.getGameRewardPointsForUser(gameName,userName1,new reward42CallBack());
-//			rewardService.getTopNRewardEarners(gameName,rewardName,3,new reward42CallBack());
-//			rewardService.getAllRewardsByUser(userName,rewardName,new reward42CallBack());
-//			rewardService.getUserRankingOnReward(gameName,rewardName,userName,new reward42CallBack());
+			//			rewardService.getAllRewardsCount(new reward42CallBack());
+			//			rewardService.getAllRewards(new reward42CallBack());
+			//			rewardService.getAllRewardsByPaging(1,0,new reward42CallBack());
+			//			rewardService.getRewardByName(rewardName,new reward42CallBack());
+			//			rewardService.getGameRewardPointsForUser(gameName,userName1,new reward42CallBack());
+			//			rewardService.getTopNRewardEarners(gameName,rewardName,3,new reward42CallBack());
+			//			rewardService.getAllRewardsByUser(userName,rewardName,new reward42CallBack());
+			//			rewardService.getUserRankingOnReward(gameName,rewardName,userName,new reward42CallBack());
 			/********************StorageService************************/
 			var jsonObject:Object = new Object;
 			jsonObject.name = "himanshu";
 			jsonObject.Age = 23;
 			storageService = serviceAPI.buildStorageServicee();
-//			storageService.findAllDocuments("test","foo",new app42CallBack());
-//			storageService.findAllDocumentsByPaging("test","foo",3,0,new app42CallBack());
-//			storageService.findAllCollections("test",new app42CallBack());
-//			storageService.findAllDocumentsCount("test","foo",new app42CallBack());
-//			storageService.findDocumentById("test","foo","51f76a86b1e7cf5bc75dc6a9",new app42CallBack());
-//			storageService.findDocumentByKeyValue("test","foo","name","himanshu",new app42CallBack());
+			//			storageService.findAllDocuments("test","foo",new app42CallBack());
+			//			storageService.findAllDocumentsByPaging("test","foo",3,0,new app42CallBack());
+			//			storageService.findAllCollections("test",new app42CallBack());
+			//			storageService.findAllDocumentsCount("test","foo",new app42CallBack());
+			//			storageService.findDocumentById("test","foo","51f76a86b1e7cf5bc75dc6a9",new app42CallBack());
+			//			storageService.findDocumentByKeyValue("test","foo","name","himanshu",new app42CallBack());
 			
 			/********************UserService************************/
 			
 			userService = serviceAPI.buildUserService();
-//			userService.getUser(userTextField.text,new app42CallBack());
-//			userService.getAllUsers(new app42CallBack());
+			//			userService.getUser(userTextField.text,new app42CallBack());
+			//			userService.getAllUsers(new app42CallBack());
 		}
 		
 		private function auth_click(e:MouseEvent):void
@@ -625,25 +655,28 @@ package
 			var rewardService:RewardService = serviceAPI.buildRewardService();
 			userService = serviceAPI.buildUserService();
 			scoreBoardService = serviceAPI.buildScoreBoardService();
-//			userService.authenticate(authUserTextField.text,authPassTextField.text,new auth42CallBack());
+			userService.getUser(userName,new auth42CallBack());
+			
+			//			userService.authenticate(authUserTextField.text,authPassTextField.text,new auth42CallBack());
+			//			userService.getAllUsers(new auth42CallBack());
 			var userList:Array = [];
 			userList.push("Nick");
 			userList.push("John");
-//			gameService.createGame(gameName,description,new app42CallBack());
-//			gameService.getGameByName(gameName,new app42CallBack());
-//			gameService.getAllGames(new app42CallBack());
-//			rewardService.getTopNRewardEarnersByGroup(gameName,rewardName,userList,new app42CallBack());
-//			userService.createUserWithRole(userName+ "hs1cau","hgsiahsah","hiii1ci@gmail.com",userList,new auth42CallBack());
+			//			gameService.createGame(gameName,description,new app42CallBack());
+			//			gameService.getGameByName(gameName,new app42CallBack());
+			//			gameService.getAllGames(new app42CallBack());
+			//			rewardService.getTopNRewardEarnersByGroup(gameName,rewardName,userList,new app42CallBack());
+			//			userService.createUserWithRole(userName+ "hs1cau","hgsiahsah","hiii1ci@gmail.com",userList,new auth42CallBack());
 			
-//			scoreBoardService.saveUserScore(gameName,userName+ "is 3rd User",1200,new app42CallBack());
-//			scoreBoardService.getHighestScoreByUser(gameName,userName,new app42CallBack());
-//			scoreBoardService.getTopNRankers(gameName,5,new app42CallBack());
+			//			scoreBoardService.saveUserScore(gameName,userName+ "is 3rd User",1200,new app42CallBack());
+			//			scoreBoardService.getHighestScoreByUser(gameName,userName,new app42CallBack());
+			//			scoreBoardService.getTopNRankers(gameName,5,new app42CallBack());
 			var jsonObject:Object = new Object;
 			jsonObject.name = "himanshu";
 			jsonObject.Age = 23;
 			storageService = serviceAPI.buildStorageServicee();
 //			storageService.insertJSONDocument("test","foo23",jsonObject,new app42CallBack());
-			storageService.findAllDocuments("test","foo23",new app42CallBack());
+//			storageService.findAllDocuments("test","foo23",new app42CallBack());
 		}
 		
 		private function earnReward_click(e:MouseEvent):void
@@ -651,7 +684,11 @@ package
 			serviceAPI = new ServiceAPI("02a75a1d13c1c7963d37d57f2ae0b572295653a8d41dd7e7c782e61224f9e5a1","6a4e1d048dc5396666e1b292ee1967aac7b24d6181699f3851867d0b98fa9c74"); ;
 			serviceAPI.setBaseURL("http://","localhost",8082);
 			rewardService = serviceAPI.buildRewardService();
-			rewardService.earnRewards(rewGameTextField.text,rewUserNameTextField.text,rewRewardTextField.text,rewPointsTextField.alpha,new earnReward42CallBack());
+//			rewardService.earnRewards(rewGameTextField.text,rewUserNameTextField.text,rewRewardTextField.text,rewPointsTextField.alpha,new earnReward42CallBack());
+			trace("user is in : "  + user);
+			trace("Profile is in : "  + user.getProfile());
+			
+			userService.createOrUpdateProfile(user,new app42CallBack());
 		}
 		
 		private function saveUserScore_click(e:MouseEvent):void
@@ -684,16 +721,16 @@ package
 			{
 				case FocusEvent.FOCUS_IN:
 					if (userTextField.text == User_Name || passTextField.text == Password || emailIdTextField.text == Email_id )
-						{
-							userTextField.text = "";userTextField.textColor = BLACK; passTextField.text = ""; passTextField.textColor = BLACK;	emailIdTextField.text = "";	emailIdTextField.textColor = BLACK;
-						}					 
-				break;
+					{
+						userTextField.text = "";userTextField.textColor = BLACK; passTextField.text = ""; passTextField.textColor = BLACK;	emailIdTextField.text = "";	emailIdTextField.textColor = BLACK;
+					}					 
+					break;
 				case FocusEvent.FOCUS_OUT:
 					if (userTextField.text == "" && passTextField.text == "" && emailIdTextField.text == "")
-						{
-							userTextField.text = User_Name;passTextField.text = Password; emailIdTextField.text =Email_id;
-						}
-				break;
+					{
+						userTextField.text = User_Name;passTextField.text = Password; emailIdTextField.text =Email_id;
+					}
+					break;
 			}
 		}
 		private function authFocusHandler(event:FocusEvent):void
@@ -701,21 +738,21 @@ package
 			switch (event.type) 
 			{
 				case FocusEvent.FOCUS_IN:
-					 if(authUserTextField.text == AUTHUser_Name || authPassTextField.text == AUTHPassword )
-					 	{
-							authUserTextField.text = "";
-							authUserTextField.textColor = BLACK; 
-							authPassTextField.text = "";
-							authPassTextField.textColor = BLACK;
-					 	}
-				break;
+					if(authUserTextField.text == AUTHUser_Name || authPassTextField.text == AUTHPassword )
+					{
+						authUserTextField.text = "";
+						authUserTextField.textColor = BLACK; 
+						authPassTextField.text = "";
+						authPassTextField.textColor = BLACK;
+					}
+					break;
 				case FocusEvent.FOCUS_OUT:
 					if (authUserTextField.text == "" && authPassTextField.text == "")
-						{
-							authUserTextField.text = AUTHUser_Name;
-							authPassTextField.text = AUTHPassword;
-						}
-				break;
+					{
+						authUserTextField.text = AUTHUser_Name;
+						authPassTextField.text = AUTHPassword;
+					}
+					break;
 			}
 		}	
 		
@@ -725,26 +762,26 @@ package
 			{
 				case FocusEvent.FOCUS_IN:
 					if(rewGameTextField.text == rewGAME_NAME || rewUserNameTextField.text == rewGAME_USER_NAME || rewRewardTextField.text == rewReward_NAME || rewPointsTextField.text ==rew_Points)
-						{
-							rewGameTextField.text = "";	
-							rewGameTextField.textColor = BLACK; 
-							rewUserNameTextField.text = "";
-							rewUserNameTextField.textColor = BLACK ;
-							rewRewardTextField.text = "";
-							rewRewardTextField.textColor = BLACK;
-							rewPointsTextField.text = "";
-							rewPointsTextField.textColor = BLACK;  
-						}
+					{
+						rewGameTextField.text = "";	
+						rewGameTextField.textColor = BLACK; 
+						rewUserNameTextField.text = "";
+						rewUserNameTextField.textColor = BLACK ;
+						rewRewardTextField.text = "";
+						rewRewardTextField.textColor = BLACK;
+						rewPointsTextField.text = "";
+						rewPointsTextField.textColor = BLACK;  
+					}
 					break;
 				case FocusEvent.FOCUS_OUT:
 					if (rewGameTextField.text == "" && rewUserNameTextField.text == "" && rewRewardTextField.text == "" && rewPointsTextField.text == "")
-						{
-							rewGameTextField.text = rewGAME_NAME; 
-							rewUserNameTextField.text = rewGAME_USER_NAME;
-							rewRewardTextField.text = rewReward_NAME;
-							rewPointsTextField.text = rew_Points;
-						}
-				break;
+					{
+						rewGameTextField.text = rewGAME_NAME; 
+						rewUserNameTextField.text = rewGAME_USER_NAME;
+						rewRewardTextField.text = rewReward_NAME;
+						rewPointsTextField.text = rew_Points;
+					}
+					break;
 			}
 		}
 		
