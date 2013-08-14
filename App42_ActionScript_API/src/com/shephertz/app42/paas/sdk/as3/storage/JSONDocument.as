@@ -9,8 +9,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		public var updatedAt:String;
 		
 		public var docId:String;
-		//	public var loc:GeoTag ;
-		private var owner:String;
+		public var loc:GeoTag ;
 		
 		//	public  var aclList:Array = new Array(ACL);
 		
@@ -78,52 +77,13 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		public function getUpdatedAt():String {
 			return updatedAt;
 		}
-		
-		
-		
-		/**
-		 * Returns the Storage Response in JSON format.
-		 * 
-		 * @return the response in JSON format.
-		 * 
-		 */
-		
-//		public function toString() {
-//			if (this.docId != null && this.jsonDoc != null)
-//				return this.docId + " : " + this.jsonDoc;
-//			else
-//				return super.toString();
-//		}
-		//	public function getLocation():GeoTag{
-		//		return loc;
-		//	}
-		//	public function setLocation(loc:GeoTag):void{
-		//		this.loc = loc;
-		//	}
-		/**
-		 * Get the ACL List on the document object
-		 * @return
-		 */
-//		public function getAclList():Array {
-//			return aclList;
-//		}
-//		
-//		/**
-//		 * Sets the ACL list on document object
-//		 * @param aclList
-//		 */
-//		public function setAclList(aclSet:Array):void {
-//			this.aclList = aclSet;
-//		}
-		
-		public function getOwner():String {
-			return owner;
+		public function getLocation():GeoTag{
+			return loc;
 		}
-		
-		public function setOwner(owner:String) {
-			this.owner = owner;
+		public function setLocation(loc:GeoTag):void{
+			this.loc = loc;
 		}
 	}
 }
-import com.shephertz.app42.paas.sdk.as3.storage.JSONDocument;
+
 

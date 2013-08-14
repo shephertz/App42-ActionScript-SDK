@@ -10,6 +10,13 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		 */
 		public function buildResponse(json:String) :Storage {
 			var storagesJSONObj :Object = getServiceJSONObject("storage", json);
+			if(storagesJSONObj == null){
+				var storageObjec:Storage = new Storage();
+				storageObjec.setStrResponse(json);
+				storageObjec.setResponseSuccess(isResponseSuccess(json));
+				storageObjec.setTotalRecords(new StorageResponseBuilder().getTotalRecords(json));
+				return storageObjec;
+			}
 			var storage:Storage = buildStorageObject(storagesJSONObj);
 			storage.setStrResponse(json);
 			storage.setResponseSuccess(isResponseSuccess(json));
@@ -34,8 +41,6 @@ package com.shephertz.app42.paas.sdk.as3.storage
 						buildJsonDocument(document, jsonsObjDoc);
 						array.push(document);
 						storage.setJsonDocList(array);
-						trace("doc is " + Util.toString(document));
-						trace("jsons Obj Doc is " + Util.toString(jsonsObjDoc));
 					}
 				}
 				else{
@@ -43,7 +48,6 @@ package com.shephertz.app42.paas.sdk.as3.storage
 					buildJsonDocument(docObj, jsonDocObj);
 					array.push(docObj);
 					storage.setJsonDocList(array);
-					trace("jsonsObj Doc is " + Util.toString(jsonDocObj));
 				}
 			return storage;
 		}
@@ -51,12 +55,14 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		
 		public function buildJsonDocument(obj:Object, json:Object):void {
 			if(obj is JSONDocument){
-				var document:JSONDocument = new JSONDocument;
+				trace("json is " + Util.toString(json));
+				var document:JSONDocument = JSONDocument(obj);
 				if(json["_id"] != null){
 					var idObj:Object = json["_id"];
 					var oIdObj:String = idObj["$oid"];
 					document.setDocId(oIdObj);
 					delete json["_id"];
+					trace("doc id is " + document.getDocId())
 				}
 				if(json["_updatedAt"] != null){
 					var updatedObj:String = json["_$updatedAt"];
@@ -70,7 +76,6 @@ package com.shephertz.app42.paas.sdk.as3.storage
 					delete json["_$createdAt"];
 				}
 				document.setJsonDoc(Util.toString(json));
-				trace("doc is " + document.getJsonDoc());
 			}
 		}
 		

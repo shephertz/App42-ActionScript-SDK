@@ -1,7 +1,7 @@
 package com.shephertz.app42.paas.sdk.as3.game
 {
 	import com.shephertz.app42.paas.sdk.as3.App42ResponseBuilder;
-
+	
 	/**
 	 * 
 	 */
@@ -12,8 +12,14 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 */
 		public function buildResponse(json:String) :Game {
 			var gamesJSONObj :Object = getServiceJSONObject("games", json);
-			var gameJSONObj:Object = gamesJSONObj["game"];
-			var game:Game = buildGameObject(gameJSONObj);
+			if(gamesJSONObj == null){
+				var gameObjec:Game = new Game();
+				gameObjec.setStrResponse(json);
+				gameObjec.setResponseSuccess(isResponseSuccess(json));
+				gameObjec.setTotalRecords(new GameResponseBuilder().getTotalRecords(json));
+				return gameObjec;
+			}
+			var game:Game = buildGameObject(gamesJSONObj["game"]);
 			game.setStrResponse(json);
 			game.setResponseSuccess(isResponseSuccess(json));
 			return game;
@@ -66,9 +72,11 @@ package com.shephertz.app42.paas.sdk.as3.game
 						}
 					}
 					else{
-						var sObj:Object = scoreJSONObj[i];
-						var seObj:Score = new Score();
-						buildObjectFromJSONTree(seObj, scoresObj);
+						var scoreJsonObj:Object = scoreJSONObj;
+						var scoreObj:Score = new Score();
+						buildObjectFromJSONTree(scoreObj, scoreJsonObj);		
+						array.push(scoreObj);
+						game.setScoreList(array);	
 					}
 				}
 			}
@@ -78,23 +86,35 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * 
 		 */
 		public function buildObjectFromJSONTree(obj:Object, json:Object):void {
-			if(obj is Game){
-				var game:Game = Game(obj);
+			
+			var game:Game
+			if(obj is Game){ 
+				game = Game(obj);
 				if(json["name"] != null || json["description"] != null){
 					game.setName(json["name"]);
 					game.setDescription(json["description"]);	
 				}
 			}
-			if(obj is Score) {
+		if(obj is Score) {
 				var score:Score = Score(obj);
-				if(json["userName"] != null || json["value"] != null ||json["createdOn"] != null || json["scoreId"] != null|| json["rank"] != null){
+				if(json["userName"] != null)
+				{
 					score.setUserName(json["userName"]);
+				}
+				if(json["value"] != null){
 					score.setValue(json["value"]);	
+				}
+//				if(json["createdOn"] != null){
+//					score.setCreatedOn(json["createdOn"]);
+//				}
+				if(json["scoreId"] != null){
 					score.setScoreId(json["scoreId"]);
+				}
+				if(json["rank"] != null){
 					score.setRank(json["rank"]);
-						
-				}	
-			}
+				}
+				
+			}	
 		}
 	}
 }

@@ -154,7 +154,7 @@ package com.shephertz.app42.paas.sdk.as3
 		 * @return storageService - StorageService Object  
 		 * @see	StorageService
 		 */ 
-		public function  buildStorageServicee() : StorageService {
+		public function  buildStorageService() : StorageService {
 			var storageService : StorageService  = new StorageService(apiKey, secretKey);
 			return storageService;
 		}

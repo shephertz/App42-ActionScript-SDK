@@ -129,7 +129,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/" + gameName + "/" + userName + "/highest";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 		}
 		/**
 		 * Retrieves the scores for a game for the specified name
@@ -161,7 +161,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/" + gameName + "/" + userName;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 		}
 		/**
 		 * Retrieves the lowest game score for the specified user in async mode.
@@ -193,7 +193,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/" + gameName + "/" + userName + "/lowest";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 		}
 		/**
 		 * Retrieves the average game score for the specified user in async mode.
@@ -225,7 +225,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/" + gameName + "/" + userName + "/average";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 		}
 	   /**
 		* Retrieves the Top Rankings for the specified game in async mode.
@@ -254,7 +254,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/" + gameName + "/ranking";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 		}
 		/**
 		 * Retrieves the Top N Rankings for the specified game in async mode.
@@ -285,7 +285,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/" + gameName  + "/ranking" + "/" + max;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 		}
 		/**
 		 * Retrieves the Top Rankings for the specified game in async mode.
@@ -322,7 +322,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 				+ gameName + "/ranking" + "/" + strStartDate + "/"
 				+ strEndDate;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 		}
 		/**
 		 * This function returns the specified number of top rankers in a specific
@@ -337,7 +337,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 			if(gameName == null || Util.trim(gameName) == "" )
 			{
 				Util.throwExceptionIfNullOrBlank(gameName,"GameName",callback);
-				
 				return;
 			}
 			var paramsDics:Dictionary = new Dictionary();
@@ -355,7 +354,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var resourceUrl:String = this.version + "/" + this.resource  + "/"
 				+ gameName + "/rankers" + "/" + max;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 		}
 		/**
 		 * Retrieves the User Ranking for the specified game in async mode.
@@ -387,7 +386,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/" + gameName   + "/" + userName+ "/ranking";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 		}
 		/**
 		 * This function returns the top score attained by the specified user in the game.
@@ -420,7 +419,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var resourceUrl:String = this.version + "/" + this.resource  + "/"
 				+ gameName + "/" + userName + "/lastscore";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 		}
 		/**
 		 * This function returns the score attained by the specified user in the
@@ -450,7 +449,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var resourceUrl:String = this.version + "/" + this.resource + "/"
 				+ userName + "/lastgame";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 		}
 
 		
@@ -483,7 +482,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var resourceUrl:String = this.version + "/" + this.resource+ "/"
 				+ gameName + "/group";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 		}
 		
 		/**
@@ -514,7 +513,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			var resourceUrl:String = this.version + "/" + this.resource + "/"
 				+ gameName + "/rankers/group";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 		}
 		
 		/**
@@ -549,7 +548,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 				+ gameName + "/rankers" + "/" + strStartDate + "/"
 				+ strEndDate + "/" + max;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 		}
 		
 		/**
@@ -565,6 +564,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			if(scoreId == null || Util.trim(scoreId) == "" )
 			{
 				Util.throwExceptionIfNullOrBlank(scoreId,"ScoreId",callback);
+				Util.throwExceptionIfNullOrBlank(gameScore,"gameScore",callback);
 				
 				return;
 			}

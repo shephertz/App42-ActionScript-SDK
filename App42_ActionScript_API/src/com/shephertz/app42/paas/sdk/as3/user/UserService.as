@@ -110,6 +110,7 @@ package com.shephertz.app42.paas.sdk.as3.user
 		 */
 		public function createUserWithRole(userName:String, password:String, emailId:String ,roleList:Array ,callback:App42CallBack) : void {
 			var response:String = null;
+			trace("rolelist is " + roleList);
 			var paramsDics:Dictionary = new Dictionary();
 			
 			if(userName == null || Util.trim(userName) == "" || password == null || Util.trim(password) == "" || emailId == null || Util.trim(emailId) == "")
@@ -138,7 +139,8 @@ package com.shephertz.app42.paas.sdk.as3.user
 			var app42Json:Object = new Object;
 			var roleObj:Object = new Object;
 			var userJson:Object = new Object;
-			roleObj.role = "[" + roleList+"]";
+			
+			roleObj.role = roleList;
 			userJson.email = emailId;
 			userJson.password = password;
 			userJson.userName = userName;
@@ -150,7 +152,7 @@ package com.shephertz.app42.paas.sdk.as3.user
 			App42Log.debug("Json String : " + jsonBody.toString());
 			var signature:String = Util.sign(this.secretKey,paramsDics);
 			App42Log.debug("Signature : " + signature);
-			var resourceUrl:String = this.version + "/" + this.resource;
+			var resourceUrl:String = this.version + "/" + this.resource + "/role";
 			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executePost(signature,resourceUrl,queryParams ,jsonBody,this,callback,false);
 		}
@@ -238,7 +240,7 @@ package com.shephertz.app42.paas.sdk.as3.user
 			var app42Json:Object = new Object;
 			var roleObj:Object = new Object;
 			var userJson:Object = new Object;
-			roleObj.role = "[" + roleList+"]";
+			roleObj.role = roleList;
 			userJson.userName = userName;
 			userJson.roles = roleObj;
 			json.app42 = app42Json;
@@ -620,7 +622,7 @@ package com.shephertz.app42.paas.sdk.as3.user
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/count/all";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 			
 		}
 		/**
@@ -707,7 +709,7 @@ package com.shephertz.app42.paas.sdk.as3.user
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource  + "/"	+ "locked";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 			
 		}
 		
@@ -782,7 +784,7 @@ package com.shephertz.app42.paas.sdk.as3.user
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/" + userName + "/roles";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 			
 		}
 		

@@ -10,11 +10,11 @@ package com.shephertz.app42.paas.sdk.as3
 		/**
 		 * @author Himanshu Sharma
 		 */
-		public var isResponseSuccess:Boolean;
+		public var isResponse:Boolean;
 		
-		private var strResponse:String;
+		public var strResponse:String;
 		
-		private var totalRecords:int = -1;
+		public var totalRecords:int;
 		
 		public function getTotalRecords():int {
 			return totalRecords;
@@ -32,8 +32,11 @@ package com.shephertz.app42.paas.sdk.as3
 			this.strResponse = strResponse;
 		}
 		
+		public function isResponseSuccess():Boolean {
+			return isResponse;
+		}
 		public function setResponseSuccess(isResponseSuccess:Boolean):void {
-			this.isResponseSuccess = isResponseSuccess;
+			this.isResponse = isResponseSuccess;
 		}
 		
 		public function toString():String {

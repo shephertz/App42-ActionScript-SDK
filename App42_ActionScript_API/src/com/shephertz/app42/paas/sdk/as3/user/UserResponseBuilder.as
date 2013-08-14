@@ -3,8 +3,6 @@ package com.shephertz.app42.paas.sdk.as3.user
 	import com.shephertz.app42.paas.sdk.as3.App42ResponseBuilder;
 	import com.shephertz.app42.paas.sdk.as3.util.Util;
 	
-	import flash.profiler.profile;
-	
 	public class UserResponseBuilder extends App42ResponseBuilder {
 		
 		/**
@@ -18,10 +16,17 @@ package com.shephertz.app42.paas.sdk.as3.user
 		 */
 		
 		public function buildResponse(json:String):User {
-			
+			var user:User;
 			var usersJSONObj:Object = getServiceJSONObject("users", json);
+			if(usersJSONObj == null){
+				var userObjec:User = new User();
+				userObjec.setStrResponse(json);
+				userObjec.setResponseSuccess(isResponseSuccess(json));
+				userObjec.setTotalRecords(new UserResponseBuilder().getTotalRecords(json));
+				return userObjec;
+			}
 			var userJSOnObj:Object = usersJSONObj["user"];
-			var user:User = buildUserObject(userJSOnObj);
+			user =  buildUserObject(userJSOnObj);
 			user.setStrResponse(json);
 			user.setResponseSuccess(isResponseSuccess(json));
 			return user;
@@ -46,11 +51,11 @@ package com.shephertz.app42.paas.sdk.as3.user
 				buildObjectFromJSONTree(profile, profileJSONObj);
 				trace("profile is : "+ Util.toString(profileJSONObj));
 			}
-			if (userJSONObj["role"] != null || Util.trim(userJSONObj["role"]) == "") {
+			if (userJSONObj["role"] != null ) {
 				var roleList:Array = new Array();
 				if (userJSONObj["role"] is Array) {
-					var roleArr:Array = userJSONObj["role"];
-					for (var i:int = 0; i < roleArr.length(); i++) {
+					var roleArr:Array =  userJSONObj["role"];
+					for (var i:int = 0; i < roleArr.length; i++) {
 						roleList.push(roleArr[i].toString());
 					}
 				} else {
@@ -98,10 +103,8 @@ package com.shephertz.app42.paas.sdk.as3.user
 		public function buildObjectFromJSONTree(obj:Object, json:Object):void {
 			
 			var user:User ;
-			
 			if(obj is Profile) {
 				var profile:Profile = new Profile(user);
-//				var profile:Profile = json[""]
 				trace("object is 1 : " + json["profile"]);
 			}
 			else if(obj is User){

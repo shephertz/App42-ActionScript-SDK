@@ -6,7 +6,6 @@
 package com.shephertz.app42.paas.sdk.as3
 {
 	import com.adobe.serialization.json.JSON;
-	import com.shephertz.app42.paas.sdk.as3.game.Game;
 
 	public class App42ResponseBuilder
 	{
@@ -24,17 +23,16 @@ package com.shephertz.app42.paas.sdk.as3
 			var jsonObj:Object = com.adobe.serialization.json.JSON.decode(json);
 			var jsonObjApp42:Object = jsonObj["app42"];
 			var jsonObjResponse:Object = jsonObjApp42["response"];
-			var jsonObjSuccess:Object = jsonObjResponse["success"];
+			var jsonObjSuccess:Boolean = jsonObjResponse["success"];
 			return jsonObjSuccess;
 		}
 		
-		public function getTotalRecords(serviceName:String, json:String):int {
-			var totalRecords:int  = -1;
+		public function getTotalRecords(json:String):int {
+			var totalRecords:int ;
 			var jsonObj:Object = com.adobe.serialization.json.JSON.decode(json);
 			var jsonObjApp42:Object = jsonObj["app42"];
 			var jsonObjResponse:Object = jsonObjApp42["response"];
 			totalRecords = jsonObjResponse["totalRecords"];
-			trace("totalRecords is " + totalRecords);
 			return totalRecords;
 		}
 	}

@@ -29,6 +29,8 @@
     <classEntry path="com.shephertz.app42.paas.sdk.as3.user.UserGender"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.game.Score"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.storage.JSONDocument"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.game.RewardResponseBuilder"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.game.Reward"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

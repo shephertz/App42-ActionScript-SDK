@@ -3,12 +3,11 @@ import com.shephertz.app42.paas.sdk.as3.App42Exception;
 import com.shephertz.app42.paas.sdk.as3.ServiceAPI;
 import com.shephertz.app42.paas.sdk.as3.game.Game;
 import com.shephertz.app42.paas.sdk.as3.game.GameService;
+import com.shephertz.app42.paas.sdk.as3.game.Reward;
 import com.shephertz.app42.paas.sdk.as3.game.RewardService;
 import com.shephertz.app42.paas.sdk.as3.game.Score;
 import com.shephertz.app42.paas.sdk.as3.game.ScoreBoardService;
 import com.shephertz.app42.paas.sdk.as3.game.ScoreService;
-import com.shephertz.app42.paas.sdk.as3.storage.JSONDocument;
-import com.shephertz.app42.paas.sdk.as3.storage.Storage;
 import com.shephertz.app42.paas.sdk.as3.storage.StorageService;
 import com.shephertz.app42.paas.sdk.as3.user.Profile;
 import com.shephertz.app42.paas.sdk.as3.user.User;
@@ -75,9 +74,10 @@ var WHITE:uint = 0xFFFFFF;
 var RED:uint = 0xDF0101;
 var serviceAPI:ServiceAPI ;
 var gameName:String =  "Nexus";
-var rewardName:String =  "rewardName";
+var rewardName:String =  "Golden Reward";
+var rewardName1:String =  "Golden Reward"+ new Date().getTime();
 var userName1:String =  "Himanshu";
-var userName:String = "Himanshu";
+var userName:String = "Himanshu123";
 var description:String =  "himanshu is going to Shimla";
 var gameService:GameService;
 var rewardService:RewardService;
@@ -86,43 +86,129 @@ var storageService:StorageService;
 var scoreBoardService:ScoreBoardService;
 var scoreService:ScoreService;
 var user:User;
-
+var reward:Reward;
 class app42CallBack implements App42CallBack{
 	
 	serviceAPI = new ServiceAPI("02a75a1d13c1c7963d37d57f2ae0b572295653a8d41dd7e7c782e61224f9e5a1","6a4e1d048dc5396666e1b292ee1967aac7b24d6181699f3851867d0b98fa9c74"); ;
 	serviceAPI.setBaseURL("http://","localhost",8082);
 	public function onSuccess(res:Object):void
 	{
-		trace("response is success : " + res);
+		
+//		if(res is Reward)
+//		{
+//			var reward:Reward = Reward(res);
+//			var rewardName:String = reward.getName();
+//			trace("rewardName : " + reward.getName());
+//			trace("gameName : " + reward.getGameName());
+//			trace("userName : " + reward.getUserName());
+//			trace("points : " + reward.getPoints());
+//			trace("rank : " + reward.getRank());
+//			trace("description : " + reward.getDescription());
+//			trace("totalRecords " + reward.getTotalRecords());
+//			outputField.text += "RewardName is  : "+  rewardName	
+//		}
+//		else if(res is Array){
+//			trace("" + res)
+//			for(var i:int = 0;i < res.length;i++){
+//				var rewards:Reward = Reward(res[i]);
+//				trace("rewardName : " + rewards.getName());
+//				trace("gameName : " + rewards.getGameName());
+//				trace("userName : " + rewards.getUserName());
+//				trace("points : " + rewards.getPoints());
+//				trace("rank : " + rewards.getRank());
+//				trace("description : " + rewards.getDescription());
+//				trace("totalRecords " + rewards.getTotalRecords());
+//			}
+//		}
 //		if(res is Storage)
 //		{
+//			
+//			var jsonDoc:JSONDocument = new JSONDocument(); 
 //			var storage:Storage = Storage(res);
+//			if(storage.getTotalRecords() == 0) {
 //			trace("dbName is " + storage.getDbName());
-//			if(storage.getJsonDocList() is JSONDocument){
-//				trace( "trace in json is " + storage.getJsonDocList());
-//				var jsonDocument:Array = storage.getJsonDocList();
-//				for(var j:int = 0; j <storage.getJsonDocList().length;j++){
-//					trace(""+ JSONDocument(jsonDocument[j]).getDocId());
+//			trace("dbName is " + storage.getJsonDocList());
+//			if(storage.getJsonDocList() is Array){
+//				jsonDoc = JSONDocument(storage.getJsonDocList()[0]);
+//				trace("here in json doc " + jsonDoc.getDocId());
 //				}
+//			} else {
+//				trace("total records : " + storage.getTotalRecords());
 //			}
 //			outputField.text += "storage is ..."+  storage	
 //		}
+////		if(res is Game)
+////		{
+////			var game:Game = Game(res);
+////			trace("game Name is " + game.getName());
+////			outputField.text += game.getName() + "game Description is   ..."+  game.getDescription()
+////			var scorring:Score = game.getScoreList()[0];
+////			trace();
+////			trace("Score class have " + Util.toString(scorring));
+////			if(scorring is Array){
+////				scorring = Score(game.getScoreList()[0]);
+////				trace("scores is in the  "+ scorring.getScoreId());
+////				//				}
+////			}
+////			else {
+////				scorring = Score(game.getScoreList()[0]);
+////				trace("scorring is " + scorring.getScoreId());
+////				trace("scorring is " + scorring.getRank());
+////			}
+////		}
+//		
+		
 //		if(res is Game)
 //		{
 //			var game:Game = Game(res);
 //			trace("game Name is " + game.getName());
-//			outputField.text += "game Description is   ..."+  game.getDescription()	
+//			trace("gameDescription  : " + game.getDescription());
+//			trace("totalRecords " + game.getTotalRecords());
+//			
+//			outputField.text += "GameName is  : "+  game.getName()	
 //		}
+//		else if(res is Array){
+//			trace("" + res)
+//			for(var i:int = 0;i < res.length;i++){
+//				var game:Game = Game(res[i]);
+//				trace("game Name is " + game.getName());
+//				trace("gameDescription  : " + game.getDescription());
+//				trace("totalRecords " + game.getTotalRecords());
+//				
+//			
+//			}			
+//		}
+//			
+		if(res is Score)
+		{
+			var score:Score=Score(res);	
+			trace("username  " +score.getUserName());
+			trace("value   " +score.value());
+			trace("rank  " +score.getRank());
+			outputField.text += "UserName is  : "+  score.getUserName()
+			outputField.text += "UserName is  : "+  score.getRank()
+		}
+		else if(res is Array){
+			trace("" + res)
+			for(var i:int = 0;i < res.length;i++){	
+				var scoreObj:Score = Score(res[i]);
+				trace("username  " +scoreObj.getUserName());
+				trace("value   " +scoreObj.value());
+				trace("rank  " +scoreObj.getRank());
+			}			
+		}
+		
 //		else if(res is Array)
 //		{
 //			for(var i:int = 0;i < res.length;i++){
 //				var games:Game = Game(res[i]);
-//				if(games.getScoreList() as Array){
-//					var scores:Array = games.getScoreList();
-//					for(var j:int = 0; j < 1;j++){
-//						trace("scores is in the  "+ Score(scores[0]).getUserName());
-//					}
-//				}
+//				trace("scores is in the  "+ games.getScoreList());
+//				//				if(games.getScoreList() as Array){
+//				//					var scores:Array = games.getScoreList();
+//				//					for(var j:int = 0; j <scores.length;j++){
+//				//						trace("scores is in the  "+ Score(scores[0]).getUserName());
+//				//					}
+//				//				}
 //			}
 //		}
 	}
@@ -213,7 +299,7 @@ class auth42CallBack implements App42CallBack{
 	serviceAPI.setBaseURL("http://","localhost",8082);
 	public function onSuccess(res:Object):void
 	{
-//		var user:User ;//= User(res);
+		//		var user:User ;//= User(res);
 		var userName:String;
 		var sessionId:String;
 		var profile:Profile;
@@ -222,26 +308,17 @@ class auth42CallBack implements App42CallBack{
 		{
 			for(var i:int = 0;i < res.length;i++){
 				user = User(res[0]);
-				profile=new  Profile(user);
-				profile.setFirstName("Himanshu");
-				profile.setLastName("Sharma");
-				profile.setState("Delhi");
-				trace("profile is " +profile.getFirstName());
-				trace("user is " + Util.toString(user));
 				userName  = user.getUserName();
 				sessionId  = user.getSessionId();
 			}
+			
 		}
 		else
 		{
 			user = User(res);;
-			trace("user is not array " + Util.toString(user));
-			profile = Profile(user);
-			profile.setFirstName("Himanshu");
-			profile.setLastName("Sharma");
-			profile.setState("Delhi");
 			userName  = user.getUserName();
 			sessionId  = user.getSessionId();
+			trace("roleList is  " + user.getRoleList()[0]);
 		}
 		
 		outputField.text += userName + " is successfully authenticated with " + sessionId;
@@ -288,9 +365,11 @@ class game42CallBack implements App42CallBack{
 
 package
 {
+	import com.shephertz.app42.paas.sdk.as3.App42CallBack;
 	import com.shephertz.app42.paas.sdk.as3.App42Log;
 	import com.shephertz.app42.paas.sdk.as3.ServiceAPI;
 	import com.shephertz.app42.paas.sdk.as3.game.RewardService;
+	import com.shephertz.app42.paas.sdk.as3.game.ScoreService;
 	
 	import flash.display.Sprite;
 	import flash.events.FocusEvent;
@@ -298,6 +377,8 @@ package
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+	
+	
 	
 	
 	public class App42_ActionScript_Test1 extends Sprite 
@@ -580,7 +661,7 @@ package
 			var jsonObject:Object = new Object;
 			jsonObject.name = "himanshu";
 			jsonObject.Age = 23;
-			storageService = serviceAPI.buildStorageServicee();
+			storageService = serviceAPI.buildStorageService();
 			//				storageService.insertJSONDocument("test","foo23",jsonObject,new app42CallBack());
 			
 			/********************UserService************************/
@@ -631,7 +712,7 @@ package
 			var jsonObject:Object = new Object;
 			jsonObject.name = "himanshu";
 			jsonObject.Age = 23;
-			storageService = serviceAPI.buildStorageServicee();
+			storageService = serviceAPI.buildStorageService();
 			//			storageService.findAllDocuments("test","foo",new app42CallBack());
 			//			storageService.findAllDocumentsByPaging("test","foo",3,0,new app42CallBack());
 			//			storageService.findAllCollections("test",new app42CallBack());
@@ -649,34 +730,130 @@ package
 		private function auth_click(e:MouseEvent):void
 		{
 			App42Log.setDebug(true);
-			serviceAPI = new ServiceAPI("02a75a1d13c1c7963d37d57f2ae0b572295653a8d41dd7e7c782e61224f9e5a1","6a4e1d048dc5396666e1b292ee1967aac7b24d6181699f3851867d0b98fa9c74"); ;
+			serviceAPI = new ServiceAPI("5c902e3470df12dd26456d2a0a486312464a80dd1c904f3805bc93c63ea1ea9d","4592f6ab7a48dc2e38bba7be62067dc5827ed1c504ba9a1acc3b845b117a3658"); ;
 			serviceAPI.setBaseURL("http://","localhost",8082);
 			gameService = serviceAPI.buildGameService();
 			var rewardService:RewardService = serviceAPI.buildRewardService();
 			userService = serviceAPI.buildUserService();
 			scoreBoardService = serviceAPI.buildScoreBoardService();
-			userService.getUser(userName,new auth42CallBack());
-			
-			//			userService.authenticate(authUserTextField.text,authPassTextField.text,new auth42CallBack());
-			//			userService.getAllUsers(new auth42CallBack());
+			 storageService = serviceAPI.buildStorageService();
+			 var scoreService:ScoreService = serviceAPI.buildScoreService();
+		
+			/****Usertestcase******/
 			var userList:Array = [];
-			userList.push("Nick");
-			userList.push("John");
-			//			gameService.createGame(gameName,description,new app42CallBack());
-			//			gameService.getGameByName(gameName,new app42CallBack());
-			//			gameService.getAllGames(new app42CallBack());
-			//			rewardService.getTopNRewardEarnersByGroup(gameName,rewardName,userList,new app42CallBack());
-			//			userService.createUserWithRole(userName+ "hs1cau","hgsiahsah","hiii1ci@gmail.com",userList,new auth42CallBack());
+			userList.push("Himanshu");
+			userList.push("Himanshu123");
+			trace("userList is " + userList);
+//			userService.createUser("samita","12345","samita.mahajan@yahoo.in",new auth42CallBack());
+//			userService.changeUserPassword("samita","12345","6789",new auth42CallBack());
+//			userService.createUserWithRole(username, "12345",emailId,userList ,new auth42CallBack());
+//			userService.deleteUser("samita",new auth42CallBack());
+//			userService.getAllUsers(new auth42CallBack());
+//			userService.getAllUsersByPaging(1,0,new auth42CallBack());
+//			userService.getAllUsersCount(new auth42CallBack());
+//			userService.getLockedUsers(new auth42CallBack());
+//			userService.getLockedUsersByPaging(1,0,new auth42CallBack());
+//			userService.getLockedUsersCount(new auth42CallBack());
+//			userService.assignRoles("samita",userList ,new auth42CallBack());
+//			userService.getRolesByUser("samita", new auth42CallBack());
+//			userService.getUser("samita",  new auth42CallBack());
+//			userService.getUserByEmailId("samita.mahajan@shephertz.co", new auth42CallBack());
+//			userService.getUsersByRole("Admin",new auth42CallBack());
+//			userService.lockUser("samita" ,new auth42CallBack());
+//			userService.logout("8d60cefe-82d9-44dc-8f9f-4bdf25a78c1f",new auth42CallBack());
+//			userService.resetUserPassword("samita", "45678",new auth42CallBack());
+//			userService.revokeAllRoles("samita", new auth42CallBack());
+//			userService.revokeRole("samita", "Admin",new auth42CallBack()); 		
+//			userService.unlockUser("samita" ,new auth42CallBack());
+//			userService.updateEmail("samita", "samita.mahajan@gameil.co.in" ,new auth42CallBack());
+			/****Game Service******/
 			
-			//			scoreBoardService.saveUserScore(gameName,userName+ "is 3rd User",1200,new app42CallBack());
-			//			scoreBoardService.getHighestScoreByUser(gameName,userName,new app42CallBack());
-			//			scoreBoardService.getTopNRankers(gameName,5,new app42CallBack());
+//			gameService.createGame("snake unwar","welcome in snake unwarwar game",new app42CallBack());
+//			gameService.getGameByName("snake unwar",new app42CallBack());
+//			gameService.getAllGames(new app42CallBack());
+//			gameService.getAllGamesByPaging(1,1,new app42CallBack());
+//			gameService.getAllGamesCount(new app42CallBack());
+			
+			/****Score Board Service******/
+//			scoreBoardService.getUserRanking("snake unwar","samitaa",new app42CallBack());
+//			scoreBoardService.saveUserScore("snake unwar","samitsssa",9823,new app42CallBack());
+//			scoreBoardService.editScoreValueById("HhpcIKS2GkdrQkvbgjhbHQdByKa4w4n4=", null ,new app42CallBack());
+//			scoreBoardService.getScoresByUser("snake unwar","samitaaa",new app42CallBack());
+//			scoreBoardService.getLowestScoreByUser("snake unwar","samita",new app42CallBack());
+//			scoreBoardService.getAverageScoreByUser("snake unwar","samita",new app42CallBack());
+//			scoreBoardService.getHighestScoreByUser("snake unwar","samita",new app42CallBack());
+			scoreBoardService.getTopNRankers("snake unwar",2,new app42CallBack());
+//			scoreBoardService.getLastGameScore(userName+ "is 3rd User",new app42CallBack());
+//			scoreBoardService.getLastScoreByUser(gameName,userName+ "is 3rd User",new app42CallBack());
+//			scoreBoardService.getTopRankingsByGroup(gameName,userList,new app42CallBack());
+//			scoreBoardService.getTopRankingsByDate(gameName:String, startDate:Date , endDate:Date ,callback:App42CallBack)
+//			scoreBoardService.getTopRankings(gameName,new app42CallBack());
+//			scoreBoardService.getTopNRankings(gameName,5,new app42CallBack());
+//			scoreBoardService.getTopNRankersByGroup(gameName,userList,new app42CallBack());
+//			scoreBoardService.getTopNRankers(gameName,5,new app42CallBack());
+//			scoreBoardService.getTopNRankersByDate(gameName:String ,startDate:Date , endDate:Date, max:int,callback:App42CallBack)
+//			scoreBoardService.getTopNRankersByGroup(gameName:String,userList:Array,callback:App42CallBack)
+		
+		//HhpcIKS2GkdrQkbHQdByKa4w4n4
+			
+				
+				
+			
+		
+				
+				
+				
+				
+				
+				
+			
+				
+			
+				
+						
+						
+			/****Score Service******/
+//			scoreService.addScore(
+//			scoreService.deductScore(
+			
+			/****Reward Service******/
+//			rewardService.createReward(rewardName1,description,new app42CallBack());
+//			rewardService.earnRewards(gameName,userName,"Golden Reward1376393708406",1000,new app42CallBack());
+//			rewardService.earnRewards(gameName,userName1,rewardName,200,new app42CallBack());
+//			rewardService.redeemRewards(gameName,userName,rewardName,1000,new app42CallBack());
+//			rewardService.getAllRewards(new app42CallBack());
+//			rewardService.getAllRewardsByPaging(5,0,new app42CallBack());
+//			rewardService.getAllRewardsByUser(userName,"Golden Reward1376393708406",new app42CallBack());
+//			rewardService.getAllRewardsCount(new app42CallBack());
+//			rewardService.getGameRewardPointsForUser(gameName,userName,new app42CallBack());
+//			rewardService.getRewardByName(rewardName,new app42CallBack());
+//			rewardService.getTopNRewardEarners(gameName,rewardName,5,new app42CallBack());
+//			rewardService.getUserRankingOnReward(gameName,rewardName,userName,new app42CallBack());
+//			rewardService.getTopNRewardEarnersByGroup(gameName,rewardName,userList,new app42CallBack());
+			
+			
+			/****Storage Service******/
 			var jsonObject:Object = new Object;
 			jsonObject.name = "himanshu";
 			jsonObject.Age = 23;
-			storageService = serviceAPI.buildStorageServicee();
-//			storageService.insertJSONDocument("test","foo23",jsonObject,new app42CallBack());
-//			storageService.findAllDocuments("test","foo23",new app42CallBack());
+			
+			var jsonObject1:Object = new Object;
+			jsonObject1.name = "newsamita";
+			jsonObject1.Age = 23;
+//			storageService.insertJSONDocument("test","mahajan",jsonObject,new app42CallBack());
+//			storageService.deleteAllDocuments("test","mahajan",new app42CallBack());
+//			storageService.deleteDocumentById("",null,"520b1f71f3a96576cdfc721c" , new app42CallBack());			
+//			storageService.deleteDocumentsByKeyValue("test","mahajan","name","himanshu",new app42CallBack());
+//			storageService.findAllCollections("test",new app42CallBack());
+//			storageService.findAllDocuments("test","mahajan",new app42CallBack());
+//			storageService.findAllDocumentsByPaging("test","mahajan",0,0 ,new app42CallBack());
+//			storageService.findAllDocumentsCount("test","mahajan",new app42CallBack());
+//			storageService.findDocumentById("test","mahajan","520b2d1ef3a96576cdfc7223", new app42CallBack())
+//			storageService.findDocumentByKeyValue("test","mahajan","name","himanshu",new app42CallBack());		
+//			storageService.updateDocumentByDocId( "test","mahajan","520b2d1ef3a96576cdfc7223",jsonObject1,new app42CallBack());		
+//			storageService.updateDocumentByKeyValue("test","mahajan","name","newsamita",jsonObject1,new app42CallBack());	
+			
+		
 		}
 		
 		private function earnReward_click(e:MouseEvent):void
@@ -685,10 +862,6 @@ package
 			serviceAPI.setBaseURL("http://","localhost",8082);
 			rewardService = serviceAPI.buildRewardService();
 //			rewardService.earnRewards(rewGameTextField.text,rewUserNameTextField.text,rewRewardTextField.text,rewPointsTextField.alpha,new earnReward42CallBack());
-			trace("user is in : "  + user);
-			trace("Profile is in : "  + user.getProfile());
-			
-			userService.createOrUpdateProfile(user,new app42CallBack());
 		}
 		
 		private function saveUserScore_click(e:MouseEvent):void

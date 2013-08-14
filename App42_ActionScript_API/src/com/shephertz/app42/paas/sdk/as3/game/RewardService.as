@@ -15,8 +15,6 @@ package com.shephertz.app42.paas.sdk.as3.game
 	
 	import flash.utils.Dictionary;
 	
-	import mx.collections.ArrayList;
-	
 	/**
 	 * Define a Reward e.g. Sword, Energy etc. Is needed for Reward Points
 	 * 
@@ -111,7 +109,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/count";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 			
 		}
 		/**
@@ -345,15 +343,12 @@ package com.shephertz.app42.paas.sdk.as3.game
 			paramsDics["apiKey"]=apiKey;
 			paramsDics["version"]=version;
 			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
-			
+			var queryParams:Dictionary = Util.clone(paramsDics);
 			paramsDics["userName"]=userName; 	
 			paramsDics["rewardName"]=rewardName; 	
-			var queryParams:Dictionary = Util.clone(paramsDics);
-			
 			var signature:String = Util.sign(this.secretKey,paramsDics);
 			App42Log.debug("Signature : " + signature);
-			var resourceUrl:String = this.version + "/" + this.resource + "/"
-				+ userName + "/points/" + rewardName;
+			var resourceUrl:String = this.version + "/" + this.resource  + "/"	+ userName + "/points/" + rewardName;
 			App42Log.debug("Http url : " + resourceUrl);
 			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
 		}
@@ -415,10 +410,17 @@ package com.shephertz.app42.paas.sdk.as3.game
 		}
 		override public function onSuccess(response:String, requestCall:App42CallBack,isArray:Boolean):void
 		{
-			App42Log.debug("Response From Server : " + response);
 			var object:Object;
-			object = com.adobe.serialization.json.JSON.decode(response);
+			if(isArray){
+				App42Log.debug("Array Response " + response);
+				object = new RewardResponseBuilder().buildArrayResponse(response);
+			} 
+			else {
+				App42Log.debug("Response : " + response);
+				object = new RewardResponseBuilder().buildResponse(response);
+			}
 			requestCall.onSuccess(object);
+			
 			
 		}
 		override public function onException(exception:App42Exception, requestCall:App42CallBack):void

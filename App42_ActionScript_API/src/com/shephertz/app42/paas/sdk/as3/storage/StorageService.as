@@ -108,6 +108,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 			{
 				Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
 				Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
+				return;
 			}
 			var paramsDics:Dictionary = new Dictionary();
 			
@@ -207,6 +208,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 			{
 				Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
 				Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
+				return;
 			}
 			var paramsDics:Dictionary = new Dictionary();
 			
@@ -224,7 +226,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 				+ "/findAll/count/dbName/" + dbName + "/collectionName/"
 				+ collectionName;
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 			
 		}
 		
@@ -541,6 +543,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 					Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
 					Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
 					Util.throwExceptionIfNullOrBlank(docId,"DocId",callback);
+					return ;
 				}
 				var paramsDics:Dictionary = new Dictionary();
 				
@@ -568,6 +571,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 				{
 					Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
 					Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
+					return ;
 				}
 				var paramsDics:Dictionary = new Dictionary();
 				
@@ -660,6 +664,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 				Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
 				Util.throwExceptionIfNullOrBlank(key,"Key",callback);
 				Util.throwExceptionIfNullOrBlank(value,"Value",callback);
+				return ;
 			}
 			paramsDics["apiKey"]= apiKey;
 			paramsDics["version"]= version;

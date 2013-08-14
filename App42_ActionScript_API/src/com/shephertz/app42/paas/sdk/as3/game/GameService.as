@@ -154,7 +154,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 			App42Log.debug("Signature : " + signature);
 			var resourceUrl:String = this.version + "/" + this.resource + "/count";
 			App42Log.debug("Http url : " + resourceUrl);
-			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,false);
 			
 		}
 		/**
