@@ -316,34 +316,32 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		 * 
 		 */
 		
-//		public function findDocumentsByQuery(dbName:String,collectionName:String,key:String,value:String,callback:App42CallBack) : void {
-//			var response:String = null;
-//			var paramsDics:Dictionary = new Dictionary();
-//			if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "" || key == null || Util.trim(key) == "" || value == null || Util.trim(value) == "")
-//			{
-//				Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
-//				Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
-//				Util.throwExceptionIfNullOrBlank(key,"Key",callback);
-//				Util.throwExceptionIfNullOrBlank(value,"Value",callback);
-//			}
-//			paramsDics["apiKey"]= apiKey;
-//			paramsDics["version"]= version;
-//			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
-//			
-//			var queryParams:Dictionary = Util.clone(paramsDics);
-//			paramsDics["dbName"] = dbName; 
-//			paramsDics["collectionName"] = collectionName; 
-//			paramsDics["key"] = key; 
-//			paramsDics["value"] = value; 
-//			
-//			var signature:String = Util.sign(this.secretKey,paramsDics);
-//			App42Log.debug("Signature : " + signature);
-//			var resourceUrl:String = this.version + "/" + this.resource	+ "/findDocByKV/dbName/" + dbName + "/collectionName/"
-//				+ collectionName + "/" + key + "/"	+ Util.urlEncode(value);
-//			App42Log.debug("Http url : " + resourceUrl);
-//			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
-//			
-//		}
+		public function findDocumentsByQuery(dbName:String,collectionName:String,query:Query,callback:App42CallBack) : void {
+			var response:String = null;
+			var paramsDics:Dictionary = new Dictionary();
+			if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "")
+			{
+				Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
+				Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
+			}
+			paramsDics["apiKey"]= apiKey;
+			paramsDics["version"]= version;
+			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp(); 
+			paramsDics["jsonQuery"] = query.getStr(); 
+			
+			var queryParams:Dictionary = Util.clone(paramsDics);
+			paramsDics["dbName"] = dbName; 
+			paramsDics["collectionName"] = collectionName; 
+			paramsDics["jsonQuery"] = query.getStr(); 
+			
+			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
+			var resourceUrl:String = this.version + "/" + this.resource	+ "/findDocsByQuery/dbName/" + dbName + "/collectionName/"
+				+ collectionName;
+			App42Log.debug("Http url : " + resourceUrl);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			
+		}
 		
 		/**
 		 * Find target document using Custom Query with paging.

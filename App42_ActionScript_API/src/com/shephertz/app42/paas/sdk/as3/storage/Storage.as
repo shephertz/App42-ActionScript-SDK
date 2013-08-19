@@ -29,7 +29,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		 * 
 		 */
 		
-		public function setDbName( dbName:String) {
+		public function setDbName( dbName:String):void {
 			this.dbName = dbName;
 		}
 		
@@ -51,7 +51,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		 * 
 		 */
 		
-		public function setCollectionName(collectionName:String) {
+		public function setCollectionName(collectionName:String):void {
 			this.collectionName = collectionName;
 		}
 		/**
@@ -72,7 +72,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		 * 
 		 */
 		
-		public function setRecordCount(recordCount:String) {
+		public function setRecordCount(recordCount:String):void {
 			this.recordCount = recordCount;
 		}
 		

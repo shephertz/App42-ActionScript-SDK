@@ -34,43 +34,40 @@ package com.shephertz.app42.paas.sdk.as3.storage
 				return storage;
 			
 			var jsonDocObj:Object = json["jsonDoc"];
-				if(jsonDocObj is Array){
-					for (var i:int = 0; i < jsonDocObj.length; i++) { 
-						var jsonsObjDoc:Object = jsonDocObj[i];
-						var document:JSONDocument= new JSONDocument;
-						buildJsonDocument(document, jsonsObjDoc);
-						array.push(document);
-						storage.setJsonDocList(array);
-					}
-				}
-				else{
-					var docObj:JSONDocument= new JSONDocument;
-					buildJsonDocument(docObj, jsonDocObj);
-					array.push(docObj);
+			if(jsonDocObj is Array){
+				for (var i:int = 0; i < jsonDocObj.length; i++) { 
+					var jsonsObjDoc:Object = jsonDocObj[i];
+					var document:JSONDocument= new JSONDocument;
+					buildJsonDocument(document, jsonsObjDoc);
+					array.push(document);
 					storage.setJsonDocList(array);
 				}
+			}
+			else{
+				var docObj:JSONDocument= new JSONDocument;
+				buildJsonDocument(docObj, jsonDocObj);
+				array.push(docObj);
+				storage.setJsonDocList(array);
+			}
 			return storage;
 		}
 		
 		
 		public function buildJsonDocument(obj:Object, json:Object):void {
 			if(obj is JSONDocument){
-				trace("json is " + Util.toString(json));
 				var document:JSONDocument = JSONDocument(obj);
 				if(json["_id"] != null){
 					var idObj:Object = json["_id"];
 					var oIdObj:String = idObj["$oid"];
 					document.setDocId(oIdObj);
 					delete json["_id"];
-					trace("doc id is " + document.getDocId())
 				}
-				if(json["_updatedAt"] != null){
+				if(json["_$updatedAt"] != null){
 					var updatedObj:String = json["_$updatedAt"];
 					document.setUpdatedAt(updatedObj);
 					delete json["_$updatedAt"];
 				}
-				if(json["_createdAt"] != null){
-					trace("json is " + json["_$createdAt"]);
+				if(json["_$createdAt"] != null){
 					var createdObj:String = json["_$createdAt"];
 					document.setCreatedAt(createdObj);
 					delete json["_$createdAt"];
@@ -85,13 +82,16 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		public function buildObjectFromJSONTree(obj:Object, json:Object):void {
 			if(obj is Storage){
 				var storage:Storage = Storage(obj);
-				if(json["dbName"] != null || json["collectionName"] != null){
+				if(json["dbName"] != null){
 					storage.setDbName(json["dbName"]);
+				}
+				if(json["collectionName"] != null){
 					storage.setCollectionName(json["collectionName"]);	
+				}
+				if(json["recordCount"] != null){
+					storage.setRecordCount(json["recordCount"]);	
 				}
 			}
 		}
 	}
 }
-
-

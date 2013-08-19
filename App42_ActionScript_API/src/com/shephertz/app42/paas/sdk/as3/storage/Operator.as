@@ -1,6 +1,6 @@
 package com.shephertz.app42.paas.sdk.as3.storage
 {
-	public class Operator
+	public final class Operator
 	{
 		public static const EQUALS:String = "$eq";
 		public static const NOT_EQUALS:String ="$ne";

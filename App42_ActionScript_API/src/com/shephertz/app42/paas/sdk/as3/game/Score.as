@@ -5,7 +5,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 		public var userName:String;
 		public var rank:String;
 		public var value:int;
-		public var createdOn:Date;
+		public var createdOn:String;
 		public var scoreId:String;
 		public function getRank():String {
 			return rank;
@@ -65,7 +65,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 * 
 		 * @return the time when the game was created.
 		 */
-		public function getCreatedOn():Date{
+		public function getCreatedOn():String{
 			return createdOn;
 		}
 		
@@ -76,7 +76,7 @@ package com.shephertz.app42.paas.sdk.as3.game
 		 *            - time when the game was created.
 		 * 
 		 */
-		public function setCreatedOn(createdOn:Date):void {
+		public function setCreatedOn(createdOn:String):void {
 			this.createdOn = createdOn;
 		}
 	}

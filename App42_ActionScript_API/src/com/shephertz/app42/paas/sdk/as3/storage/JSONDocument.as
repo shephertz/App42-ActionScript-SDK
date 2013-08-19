@@ -9,10 +9,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		public var updatedAt:String;
 		
 		public var docId:String;
-		public var loc:GeoTag ;
-		
-		//	public  var aclList:Array = new Array(ACL);
-		
+		private var owner:String;
 		
 		
 		/**
@@ -22,7 +19,6 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		 */
 		
 		public function getJsonDoc():String {
-			trace("trace is " + jsonDoc);
 			return jsonDoc;
 		}
 		
@@ -77,13 +73,13 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		public function getUpdatedAt():String {
 			return updatedAt;
 		}
-		public function getLocation():GeoTag{
-			return loc;
+		
+		public function getOwner():String {
+			return owner;
 		}
-		public function setLocation(loc:GeoTag):void{
-			this.loc = loc;
+		
+		public function setOwner(owner:String):void {
+			this.owner = owner;
 		}
 	}
 }
-
-

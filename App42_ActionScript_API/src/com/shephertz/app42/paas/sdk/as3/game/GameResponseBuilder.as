@@ -104,9 +104,9 @@ package com.shephertz.app42.paas.sdk.as3.game
 				if(json["value"] != null){
 					score.setValue(json["value"]);	
 				}
-//				if(json["createdOn"] != null){
-//					score.setCreatedOn(json["createdOn"]);
-//				}
+				if(json["createdOn"] != null){
+					score.setCreatedOn(json["createdOn"]);
+				}
 				if(json["scoreId"] != null){
 					score.setScoreId(json["scoreId"]);
 				}
