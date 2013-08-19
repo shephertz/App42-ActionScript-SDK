@@ -43,6 +43,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 				if (q1.getType() is Array){
 					jsonArrayInQuery.push(q1.getType()[0]);
 				}
+				
 				jsonArrayInQuery.push(object);
 				
 				if (q2.getType() is Array){

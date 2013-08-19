@@ -11,7 +11,6 @@ package com.shephertz.app42.paas.sdk.as3.storage
 	import com.shephertz.app42.paas.sdk.as3.App42Log;
 	import com.shephertz.app42.paas.sdk.as3.App42Service;
 	import com.shephertz.app42.paas.sdk.as3.connection.RESTConnector;
-	import com.shephertz.app42.paas.sdk.as3.game.GameResponseBuilder;
 	import com.shephertz.app42.paas.sdk.as3.util.Util;
 	
 	import flash.utils.Dictionary;
@@ -61,7 +60,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		 */
 		
 		public function insertJSONDocument( dbName:String,  collectionName:String,
-									   jsonObject:Object,callback:App42CallBack):void  {
+											jsonObject:Object,callback:App42CallBack):void  {
 			var response:String = null;
 			var paramsDics:Dictionary = new Dictionary();
 			if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "")
@@ -166,12 +165,12 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		}
 		
 		/**
-		* Find all collections stored in given database.
-		* @param dbName - Unique handler for storage name
-		* @param collectionName - Name of collection under which JSON doc needs to be searched
-		* @param calback - Callback object for success/exception result
-		* 
-		*/
+		 * Find all collections stored in given database.
+		 * @param dbName - Unique handler for storage name
+		 * @param collectionName - Name of collection under which JSON doc needs to be searched
+		 * @param calback - Callback object for success/exception result
+		 * 
+		 */
 		public function findAllCollections(dbName:String, callback:App42CallBack) : void {
 			var response:String = null;
 			if(dbName == null || Util.trim(dbName) == "" )
@@ -354,34 +353,34 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		 * 
 		 */
 		
-		//		public function findDocumentsByQueryWithPaging(dbName:String,collectionName:String,key:String,value:String,callback:App42CallBack) : void {
-		//			var response:String = null;
-		//			var paramsDics:Dictionary = new Dictionary();
-		//			if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "" || key == null || Util.trim(key) == "" || value == null || Util.trim(value) == "")
-		//			{
-		//				Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
-		//				Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
-		//				Util.throwExceptionIfNullOrBlank(key,"Key",callback);
-		//				Util.throwExceptionIfNullOrBlank(value,"Value",callback);
-		//			}
-		//			paramsDics["apiKey"]= apiKey;
-		//			paramsDics["version"]= version;
-		//			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
-		//			
-		//			var queryParams:Dictionary = Util.clone(paramsDics);
-		//			paramsDics["dbName"] = dbName; 
-		//			paramsDics["collectionName"] = collectionName; 
-		//			paramsDics["key"] = key; 
-		//			paramsDics["value"] = value; 
-		//			
-		//			var signature:String = Util.sign(this.secretKey,paramsDics);
-		//			App42Log.debug("Signature : " + signature);
-		//			var resourceUrl:String = this.version + "/" + this.resource	+ "/findDocByKV/dbName/" + dbName + "/collectionName/"
-		//				+ collectionName + "/" + key + "/"	+ Util.urlEncode(value);
-		//			App42Log.debug("Http url : " + resourceUrl);
-		//			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
-		//			
-		//		}
+		public function findDocumentsByQueryWithPaging(dbName:String,collectionName:String,query:Query,max:int,offset:int,callback:App42CallBack) : void {
+			var response:String = null;
+			var paramsDics:Dictionary = new Dictionary();
+			if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "")
+			{
+				Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
+				Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
+			}
+			paramsDics["apiKey"]= apiKey;
+			paramsDics["version"]= version;
+			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp(); 
+			paramsDics["jsonQuery"] = query.getStr(); 
+			
+			var queryParams:Dictionary = Util.clone(paramsDics);
+			paramsDics["dbName"] = dbName; 
+			paramsDics["collectionName"] = collectionName; 
+			paramsDics["max"] = max; 
+			paramsDics["offset"] = offset; 
+			paramsDics["jsonQuery"] = query.getStr(); 
+			
+			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
+			var resourceUrl:String = this.version + "/" + this.resource		+ "/findDocsByQuery/dbName/" + dbName + "/collectionName/"
+				+ collectionName + "/" + max + "/" + offset;
+			App42Log.debug("Http url : " + resourceUrl);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			
+		}
 		
 		/**
 		 * Find target document using Custom Query with paging and orderby in async mode.
@@ -390,38 +389,42 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		 * @param Query  - Query Object containing custom query for searching docs
 		 * @param max - max result parameter
 		 * @param offset - offset result parameter
+		 * @param orderByKey - Name of Key on which order by has to be applied
+		 * @param type - ASCENDING/DESCENDING mode
 		 * @param callback - Callback object for success/exception result
 		 * 
 		 */
 		
-		//		public function findDocsWithQueryPagingOrderBy(dbName:String,collectionName:String,key:String,value:String,callback:App42CallBack) : void {
-		//			var response:String = null;
-		//			var paramsDics:Dictionary = new Dictionary();
-		//			if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "" || key == null || Util.trim(key) == "" || value == null || Util.trim(value) == "")
-		//			{
-		//				Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
-		//				Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
-		//				Util.throwExceptionIfNullOrBlank(key,"Key",callback);
-		//				Util.throwExceptionIfNullOrBlank(value,"Value",callback);
-		//			}
-		//			paramsDics["apiKey"]= apiKey;
-		//			paramsDics["version"]= version;
-		//			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
-		//			
-		//			var queryParams:Dictionary = Util.clone(paramsDics);
-		//			paramsDics["dbName"] = dbName; 
-		//			paramsDics["collectionName"] = collectionName; 
-		//			paramsDics["key"] = key; 
-		//			paramsDics["value"] = value; 
-		//			
-		//			var signature:String = Util.sign(this.secretKey,paramsDics);
-		//			App42Log.debug("Signature : " + signature);
-		//			var resourceUrl:String = this.version + "/" + this.resource	+ "/findDocByKV/dbName/" + dbName + "/collectionName/"
-		//				+ collectionName + "/" + key + "/"	+ Util.urlEncode(value);
-		//			App42Log.debug("Http url : " + resourceUrl);
-		//			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
-		//			
-		//		}
+		public function findDocsWithQueryPagingOrderBy(dbName:String,collectionName:String,query:Query,max:int,offset:int, orderByKey:String, type:String,callback:App42CallBack) : void {
+			var response:String = null;
+			var paramsDics:Dictionary = new Dictionary();
+			if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "")
+			{
+				Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
+				Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
+			}
+			paramsDics["apiKey"]= apiKey;
+			paramsDics["version"]= version;
+			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp(); 
+			paramsDics["jsonQuery"] = query.getStr(); 
+			paramsDics["orderByKey"]= orderByKey;
+			paramsDics["orderByType"]= type;
+			
+			var queryParams:Dictionary = Util.clone(paramsDics);
+			paramsDics["dbName"] = dbName; 
+			paramsDics["collectionName"] = collectionName; 
+			paramsDics["max"] = max; 
+			paramsDics["offset"] = offset; 
+			paramsDics["jsonQuery"] = query.getStr(); 
+			
+			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
+			var resourceUrl:String = this.version + "/" + this.resource	+ "/findDocsByQuery/dbName/" + dbName + "/collectionName/"
+				+ collectionName + "/" + max + "/" + offset;
+			App42Log.debug("Http url : " + resourceUrl);
+			RESTConnector.getInstance().executeGet(signature,resourceUrl,queryParams,this,callback,true);
+			
+		}
 		
 		
 		/**
@@ -438,7 +441,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		 */
 		
 		public function updateDocumentByKeyValue( dbName:String,  collectionName:String,
-											key:String,value:Object,newJsonDoc:Object,callback:App42CallBack):void  {
+												  key:String,value:Object,newJsonDoc:Object,callback:App42CallBack):void  {
 			var response:String = null;
 			if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "")
 			{
@@ -487,160 +490,110 @@ package com.shephertz.app42.paas.sdk.as3.storage
 		 * @param callback - Callback object for success/exception result
 		 * 
 		 */
-			
-			public function updateDocumentByDocId( dbName:String,  collectionName:String,
-													  docId:String,newJsonDoc:Object,callback:App42CallBack):void  {
-				var response:String = null;
-				if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "")
-				{
-					Util.throwExceptionIfNullOrBlank(dbName,"DbName",callback);
-					Util.throwExceptionIfNullOrBlank(collectionName,"CollectionName",callback);
-					return ;
-				}
-				var paramsDics:Dictionary = new Dictionary();
-				paramsDics["apiKey"]=apiKey;
-				paramsDics["version"]=version;
-				paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
-				var queryParams:Dictionary = Util.clone(paramsDics);
-				
-				paramsDics["dbName"] = dbName;
-				paramsDics["collectionName"] = collectionName;
-				paramsDics["docId"] = docId;
-				var json:Object = new Object;
-				var app42Json:Object = new Object;
-				var storageJson:Object = new Object;
-				storageJson.jsonDoc = newJsonDoc;
-				app42Json.storage = storageJson;
-				json.app42 = app42Json;
-				
-				var jsonBody:String  = com.adobe.serialization.json.JSON.encode(json);
-				paramsDics["body"] = jsonBody.toString();
-				App42Log.debug("Json String : " + jsonBody.toString());
-				var signature:String = Util.sign(this.secretKey,paramsDics);
-				App42Log.debug("Signature : " + signature);
-				var resourceUrl:String = this.version + "/" + this.resource	+ "/updateByDocId/dbName/" + dbName + "/collectionName/"
-					+ collectionName + "/docId/" + docId;
-				App42Log.debug("Http url : " + resourceUrl);
-				RESTConnector.getInstance().executePut(signature,resourceUrl,queryParams ,jsonBody,this,callback,false);
+		
+		public function updateDocumentByDocId( dbName:String,  collectionName:String,
+											   docId:String,newJsonDoc:Object,callback:App42CallBack):void  {
+			var response:String = null;
+			if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "")
+			{
+				Util.throwExceptionIfNullOrBlank(dbName,"DbName",callback);
+				Util.throwExceptionIfNullOrBlank(collectionName,"CollectionName",callback);
+				return ;
 			}
+			var paramsDics:Dictionary = new Dictionary();
+			paramsDics["apiKey"]=apiKey;
+			paramsDics["version"]=version;
+			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
+			var queryParams:Dictionary = Util.clone(paramsDics);
 			
-			/**
-			 * Delete target document using Object Id from given db and collection. The
-			 * Object Id will be searched in the JSON doc stored on the cloud and
-			 * matching Doc will be deleted.
-			 * @param dbName - Unique handler for storage name
-			 * @param collectionName - Name of collection under which JSON doc needs to be searched
-			 * @param docId - Unique Object Id handler
-			 * @param calback - Callback object for success/exception result
-			 * 
-			 */
-			public function deleteDocumentById(dbName:String,collectionName:String,docId:String,callback:App42CallBack) : void {
-				var response:String = null;
-				if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "" || docId == null || Util.trim(docId) == "")
-				{
-					Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
-					Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
-					Util.throwExceptionIfNullOrBlank(docId,"DocId",callback);
-					return ;
-				}
-				var paramsDics:Dictionary = new Dictionary();
-				
-				paramsDics["apiKey"]= apiKey;
-				paramsDics["version"]= version;
-				paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
-				
-				var queryParams:Dictionary = Util.clone(paramsDics);
-				paramsDics["dbName"] = dbName; 
-				paramsDics["collectionName"] = collectionName; 
-				paramsDics["docId"] = docId; 
-				
-				var signature:String = Util.sign(this.secretKey,paramsDics);
-				App42Log.debug("Signature : " + signature);
-				var resourceUrl:String = this.version + "/" + this.resource + "/deleteDocById/dbName/" + dbName + "/collectionName/"
-					+ collectionName + "/docId/" + docId;
-				App42Log.debug("Http url : " + resourceUrl);
-				RESTConnector.getInstance().executeDelete(signature,resourceUrl,queryParams,this,callback,false);
-				
+			paramsDics["dbName"] = dbName;
+			paramsDics["collectionName"] = collectionName;
+			paramsDics["docId"] = docId;
+			var json:Object = new Object;
+			var app42Json:Object = new Object;
+			var storageJson:Object = new Object;
+			storageJson.jsonDoc = newJsonDoc;
+			app42Json.storage = storageJson;
+			json.app42 = app42Json;
+			
+			var jsonBody:String  = com.adobe.serialization.json.JSON.encode(json);
+			paramsDics["body"] = jsonBody.toString();
+			App42Log.debug("Json String : " + jsonBody.toString());
+			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
+			var resourceUrl:String = this.version + "/" + this.resource	+ "/updateByDocId/dbName/" + dbName + "/collectionName/"
+				+ collectionName + "/docId/" + docId;
+			App42Log.debug("Http url : " + resourceUrl);
+			RESTConnector.getInstance().executePut(signature,resourceUrl,queryParams ,jsonBody,this,callback,false);
+		}
+		
+		/**
+		 * Delete target document using Object Id from given db and collection. The
+		 * Object Id will be searched in the JSON doc stored on the cloud and
+		 * matching Doc will be deleted.
+		 * @param dbName - Unique handler for storage name
+		 * @param collectionName - Name of collection under which JSON doc needs to be searched
+		 * @param docId - Unique Object Id handler
+		 * @param calback - Callback object for success/exception result
+		 * 
+		 */
+		public function deleteDocumentById(dbName:String,collectionName:String,docId:String,callback:App42CallBack) : void {
+			var response:String = null;
+			if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "" || docId == null || Util.trim(docId) == "")
+			{
+				Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
+				Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
+				Util.throwExceptionIfNullOrBlank(docId,"DocId",callback);
+				return ;
 			}
-
-			public function deleteAllDocuments(dbName:String,collectionName:String, callback:App42CallBack) : void {
-				var response:String = null;
-				if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "")
-				{
-					Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
-					Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
-					return ;
-				}
-				var paramsDics:Dictionary = new Dictionary();
-				
-				paramsDics["apiKey"]= apiKey;
-				paramsDics["version"]= version;
-				paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
-				
-				var queryParams:Dictionary = Util.clone(paramsDics);
-				paramsDics["dbName"] = dbName; 
-				paramsDics["collectionName"] = collectionName; 
-				
-				var signature:String = Util.sign(this.secretKey,paramsDics);
-				App42Log.debug("Signature : " + signature);
-				var resourceUrl:String = this.version + "/" + this.resource	+ "/deleteAll/dbName/" + dbName + "/collectionName/"
-					+ collectionName;
-				App42Log.debug("Http url : " + resourceUrl);
-				RESTConnector.getInstance().executeDelete(signature,resourceUrl,queryParams,this,callback,false);
-				
+			var paramsDics:Dictionary = new Dictionary();
+			
+			paramsDics["apiKey"]= apiKey;
+			paramsDics["version"]= version;
+			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
+			
+			var queryParams:Dictionary = Util.clone(paramsDics);
+			paramsDics["dbName"] = dbName; 
+			paramsDics["collectionName"] = collectionName; 
+			paramsDics["docId"] = docId; 
+			
+			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
+			var resourceUrl:String = this.version + "/" + this.resource + "/deleteDocById/dbName/" + dbName + "/collectionName/"
+				+ collectionName + "/docId/" + docId;
+			App42Log.debug("Http url : " + resourceUrl);
+			RESTConnector.getInstance().executeDelete(signature,resourceUrl,queryParams,this,callback,false);
+			
+		}
+		
+		public function deleteAllDocuments(dbName:String,collectionName:String, callback:App42CallBack) : void {
+			var response:String = null;
+			if(dbName == null || Util.trim(dbName) == "" || collectionName == null || Util.trim(collectionName) == "")
+			{
+				Util.throwExceptionIfNullOrBlank(dbName,"dbName",callback);
+				Util.throwExceptionIfNullOrBlank(collectionName,"collectionName",callback);
+				return ;
 			}
+			var paramsDics:Dictionary = new Dictionary();
 			
-//			/**
-//			 * Find target document using Custom Query.
-//			 * 
-//			 * @param dbName
-//			 *            - Unique handler for storage name
-//			 * @param collectionName
-//			 *            - Name of collection under which JSON doc needs to be searched
-//			 * @param Query
-//			 *            - Query Object containing custom query for searching docs
-//			 * 
-//			 * @return Storage object
-//			 * 
-//			 * @throws App42Exception
-//			 * 
-//			 */
-//			
-//			public Storage findDocumentsByLocation(String dbName,
-//				String collectionName, GeoQuery query) throws App42Exception {
-//					String response = null;
-//					Storage storage = null;
-//					Util.throwExceptionIfNullOrBlank(dbName, "DbName");
-//					Util.throwExceptionIfNullOrBlank(collectionName, "CollectionName");
-//					Util.throwExceptionIfNullOrBlank(query, "Query");
-//					try {
-//						Hashtable<String, String> queryParams = new Hashtable<String, String>();
-//						Hashtable<String, String> headerParams = new Hashtable<String, String>();
-//						Hashtable<String, String> signParams = populateSignParams();
-//						Hashtable<String, String> metaHeaders = populateMetaHeaderParams();
-//						headerParams.putAll(signParams);
-//						headerParams.putAll(metaHeaders);
-//						signParams.put("dbName", dbName);
-//						signParams.put("collectionName", collectionName);
-//						signParams.put("jsonQuery", query.getStr());
-//						
-//						queryParams.put("jsonQuery", query.getStr());
-//						String signature = Util.sign(this.secretKey, signParams);
-//						headerParams.put("signature", signature);
-//						String resourceURL = this.version + "/" + this.resource
-//							+ "/findDocsBylocation/dbName/" + dbName
-//							+ "/collectionName/" + collectionName;
-//						response = RESTConnectorAsync.getInstance().executeGet(resourceURL,
-//							queryParams, headerParams);
-//						storage = new StorageResponseBuilder().buildResponse(response);
-//					} catch (App42Exception e) {
-//						throw e;
-//					} catch (Exception e) {
-//						throw new App42Exception(e);
-//					}
-//					return storage;
-//				}
+			paramsDics["apiKey"]= apiKey;
+			paramsDics["version"]= version;
+			paramsDics["timeStamp"]= Util.getUTCFormattedTimestamp();
 			
+			var queryParams:Dictionary = Util.clone(paramsDics);
+			paramsDics["dbName"] = dbName; 
+			paramsDics["collectionName"] = collectionName; 
+			
+			var signature:String = Util.sign(this.secretKey,paramsDics);
+			App42Log.debug("Signature : " + signature);
+			var resourceUrl:String = this.version + "/" + this.resource	+ "/deleteAll/dbName/" + dbName + "/collectionName/"
+				+ collectionName;
+			App42Log.debug("Http url : " + resourceUrl);
+			RESTConnector.getInstance().executeDelete(signature,resourceUrl,queryParams,this,callback,false);
+			
+		}
+		
+		
 		/**
 		 * Delete target document using key and value from given db and collection.
 		 * The key value will be searched in the JSON doc stored on the cloud and
@@ -684,7 +637,7 @@ package com.shephertz.app42.paas.sdk.as3.storage
 			RESTConnector.getInstance().executeDelete(signature,resourceUrl,queryParams,this,callback,false);
 			
 		}
-
+		
 		override public function onSuccess(response:String, requestCall:App42CallBack,isArray:Boolean):void
 		{
 			var object:Object;

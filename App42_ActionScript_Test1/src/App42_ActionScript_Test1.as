@@ -128,11 +128,11 @@ class app42CallBack implements App42CallBack{
 			var jsonDoc:JSONDocument = new JSONDocument(); 
 			var storage:Storage = Storage(res);
 			if(storage.getTotalRecords() == 0) {
-				if(storage.getJsonDocList() is Array){
+//				if(storage.getJsonDocList() is Array){
 					jsonDoc = JSONDocument(storage.getJsonDocList()[0]);
 					trace(" doc " + jsonDoc.getDocId());
 					trace("here in json doc " + jsonDoc.getJsonDoc());
-				}
+//				}
 			} else {
 				trace("total records : " + storage.getTotalRecords());
 			}
@@ -670,8 +670,8 @@ package
 		
 		private function auth_click(e:MouseEvent):void
 		{
-			App42Log.setDebug(true);
-			serviceAPI = new ServiceAPI("4af8eb7326d5ee04d6741a1bd8f8b2c1e5954c7b8ffebf8acbae3f6c8c194e7e","7a9e94977ee99407935b705807ffd1ce9e1995cd92e2a5bea1720572dd1d1269"); ;
+//			App42Log.setDebug(true);
+			serviceAPI = new ServiceAPI("575bcda18e3de592f70de36b619ce03f945f39d9ac5ff60391269068a221dbcf","751d335a0545507834bd329078813e55ec683023a262a0e528ed75c4a270f20d"); ;
 			serviceAPI.setBaseURL("http://","localhost",8082);
 			gameService = serviceAPI.buildGameService();
 			var rewardService:RewardService = serviceAPI.buildRewardService();
@@ -770,11 +770,11 @@ package
 			
 			var q6:Query = QueryBuilder.build("name", "shar", Operator.LIKE);
 			var q7:Query = QueryBuilder.compoundOperator(q5, Operator.OR, q6);
-						trace("q7 is : " + q7.getStr());
-			//			storageService.findDocumentsByQuery("queryTest", "query", q3, new app42CallBack());
+			trace("q7 is : " + q7.getStr());
+//				storageService.findDocumentsByQuery("queryTest", "query", q3, new app42CallBack());
 			
 			//			
-			//			storageService.insertJSONDocument("test","mahajan",jsonObject,new app42CallBack());
+						storageService.insertJSONDocument("queryTest","query",jsonObject,new app42CallBack());
 			//			storageService.deleteAllDocuments("test","mahajan",new app42CallBack());
 			//			storageService.deleteDocumentById("",null,"520b1f71f3a96576cdfc721c" , new app42CallBack());			
 			//			storageService.deleteDocumentsByKeyValue("test","mahajan","name","himanshu",new app42CallBack());

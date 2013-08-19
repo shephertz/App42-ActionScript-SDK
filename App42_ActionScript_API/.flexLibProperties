@@ -31,6 +31,7 @@
     <classEntry path="com.shephertz.app42.paas.sdk.as3.storage.JSONDocument"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.game.RewardResponseBuilder"/>
     <classEntry path="com.shephertz.app42.paas.sdk.as3.game.Reward"/>
+    <classEntry path="com.shephertz.app42.paas.sdk.as3.storage.OrderByType"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
