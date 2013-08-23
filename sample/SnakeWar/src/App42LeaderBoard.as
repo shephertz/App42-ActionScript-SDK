@@ -7,7 +7,7 @@ import com.shephertz.app42.paas.sdk.as3.game.ScoreBoardService;
 
 import starling.text.TextField;
 
-var serviceAPI:ServiceAPI = new ServiceAPI("Enter Your API KEY","Enter Your SECRET KEY");
+var serviceAPI:ServiceAPI = new ServiceAPI("30de7e0dcf044cb4c5b46b606868a619a7057e727312392a0f346aafb3036e0f","80375913972b990a07495686c40ebe012672aa9821d1999e19b9459a3f133191");
 var firstUser:TextField;
 var firstUserRank:TextField;
 var firstUserScore:TextField;
@@ -25,8 +25,8 @@ var fifthUserRank:TextField;
 var fifthUserScore:TextField;
 var clearbtn:TextField;
 var scoreBoardService:ScoreBoardService;
-var gameName:String = "Enter Your Game Name";
-var userName:String = "Enter Your User Name";
+var gameName:String = "TestGame";
+var userName:String = "Nick";
 class app42CallBack implements App42CallBack{
 	
 	public function onSuccess(res:Object):void
