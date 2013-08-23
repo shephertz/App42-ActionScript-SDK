@@ -9,21 +9,21 @@
 3. If you are already registered, login to [AppHQ] (http://apphq.shephertz.com/register/app42Login) console and create an app from App Manager Tab
 4. [Download](https://github.com/shephertz/App42-ActionScript-SDK/archive/master.zip) the action script sdk .
 5. Open the Sample project as flash builder project.
-6. Open the App42Leaderboard.as file in your sample code.
-7. Pass your apiKey and secretKey which you have recieve after the success of app creation.
+6. Open the App42Leaderboard.as file from your src folder.
+7. Pass your apiKey and secretKey which you have receive after the success of app creation.
 8. Create a game from appHq by clicking __Business service -> Game Service -> Game -> Add Game__.
 9. Pass your game name and user name for which you have to score.
 9. Save and run.
 
-In App42Leaderboard.as file we have used SaveUserScore or GetTopNRankings which is exlained below in design details :-
+In App42Leaderboard.as file we have used SaveUserScore and GetTopNRankings which is explained below in design details :-
 
 ## Design Details:
 
-__Initialize Services:__
+## Initialize Services
 
 ```
 var serviceAPI:ServiceAPI = new ServiceAPI("YOUR_API_KEY", "YOUR_SECRET_KEY");
-var scoreBoardService:ScoreBoardService = sp.buildScoreBoardService();
+var scoreBoardService:ScoreBoardService = serviceAPI.buildScoreBoardService();
 ```
 
 
