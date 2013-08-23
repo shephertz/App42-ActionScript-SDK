@@ -4,7 +4,7 @@
 * [Tutorial] (http://api.shephertz.com/tutorial/Creating-User-For-Your-App/)
 * [Download](https://github.com/shephertz/App42-ActionScript-SDK/archive/master.zip) this repo's contents
 * Import the sample project as a Flash Builder project
-* Add the reference of App42_ActionScript_SDK.swc in your project properties.
+* Add the reference of App42_ActionScript_SDK_x.x.swc in your project properties.
 * Build the project.
 * Run :-)
 
