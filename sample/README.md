@@ -49,11 +49,11 @@ var gameScore:int = 40000;
 scoreBoardService.saveUserScore(gameName,userName,gameScore, new callback());  
 public class callback implements App42Callback  
 {  
-	void App42Callback.onException(exception:App42Exception)  
+	public function onException(excption:App42Exception):void  
 	{  
 		trace("Exception Message");  
 	}  
-	void App42Callback.onSuccess(response:Object)  
+	public function onSuccess(response:Object):void  
 	{  
 		var game:Game = Game(response);  
 		trace("response is : " + game);
@@ -79,11 +79,11 @@ var max:int = 5;
 scoreBoardService.getTopNRankings(gameName,max, new callback());  
 public class callback implements App42Callback  
 {  
-	void App42Callback.onException(exception:App42Exception)  
+	public function onException(excption:App42Exception):void  
 	{  
 		trace("Exception Message");  
 	}  
-	void App42Callback.onSuccess(response:Object)  
+	public function onSuccess(response:Object):void  
 	{  
 		var game:Game = Game(response);  
 		trace("response is : " + game);
