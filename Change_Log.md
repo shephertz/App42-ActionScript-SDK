@@ -1,4 +1,4 @@
-* [Release Version 1.2](https://github.com/shephertz/App42_ActionScript_SDK/blob/master/Change_Log.md#version-12)
+* [Release Version 1.2](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-12)
 
 ## Version 1.2
 
