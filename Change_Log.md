@@ -13,7 +13,6 @@ Buddy Service
 Social Service
 Session Service
 Review Service
-Achievement Service
 ```
 
 **This release contains the following bug fix:**
