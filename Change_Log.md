@@ -18,7 +18,5 @@ Review Service
 **This release contains the following bug fix:**
 
 ```
-Multiple Query in Storage
-Date Issue
-User Profile
+None
 ```
