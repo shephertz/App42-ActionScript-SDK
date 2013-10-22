@@ -31,7 +31,7 @@
         </excludedEntries>
       </libraryPathEntry>
       <libraryPathEntry kind="3" linkType="1" path="libs/starling.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="3" linkType="1" path="libs/App42_ActionScript_SDK_1.2.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="libs/App42_ActionScript_SDK_1.8.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>

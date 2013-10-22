@@ -1,3 +1,4 @@
+import com.adobe.serialization.json.JSON;
 import com.shephertz.app42.paas.sdk.as3.App42CallBack;
 import com.shephertz.app42.paas.sdk.as3.App42Exception;
 import com.shephertz.app42.paas.sdk.as3.ServiceAPI;
@@ -7,8 +8,9 @@ import com.shephertz.app42.paas.sdk.as3.game.ScoreBoardService;
 
 import starling.text.TextField;
 
-var serviceAPI:ServiceAPI = new ServiceAPI("30de7e0dcf044cb4c5b46b606868a619a7057e727312392a0f346aafb3036e0f","80375913972b990a07495686c40ebe012672aa9821d1999e19b9459a3f133191");
+var serviceAPI:ServiceAPI = new ServiceAPI("<Enter_your_api_key>","<Enter_your_secret_key>");
 var firstUser:TextField;
+var exceptionMessage:TextField;
 var firstUserRank:TextField;
 var firstUserScore:TextField;
 var secondUser:TextField;
@@ -66,6 +68,12 @@ class app42CallBack implements App42CallBack{
 	public function onException(excption:App42Exception):void
 	{
 		trace("Exception is : " + excption);
+		if(excption.getAppErrorCode() == 1401)
+		{
+			var objectMessage:Object = com.adobe.serialization.json.JSON.decode(excption.message);
+			var message:String  = objectMessage["app42Fault"]["details"];
+			exceptionMessage.text = message + " please check your credentials.";
+		}
 	}
 }
 
@@ -88,6 +96,8 @@ class saveUserScoreCallBack implements App42CallBack{
 
 package
 {
+	import com.shephertz.app42.paas.sdk.as3.App42Log;
+	
 	import Screens.Menu;
 	
 	import starling.display.Button;
@@ -95,12 +105,14 @@ package
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
+	import starling.utils.Color;
 	
 	
 	public class App42LeaderBoard extends Sprite
 	{
 		public function App42LeaderBoard() {
 			super();
+			App42Log.setDebug(true);
 			var bg:Image = new Image(Assets.getTextue("bg"));
 			this.addChild(bg);
 			
@@ -148,6 +160,9 @@ package
 			
 			fifthUserRank = new TextField(100,350,"","Verdana",14,0x000000,false);
 			this.addChild(fifthUserRank);
+			
+			exceptionMessage = new TextField(650,200,"","Verdana",20,Color.GRAY,true);
+			this.addChild(exceptionMessage);
 			
 			
 			var btn:Button = new Button(Assets.getTextue("menubtn"));
