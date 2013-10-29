@@ -1,10 +1,50 @@
-###App42 ActionScript library for Flash and Flex applications.
-[![Overview](https://github-camo.global.ssl.fastly.net/f703c82720fddccaf01b29e8cfb7ad950fbe9efe/687474703a2f2f777777696d616765732e61646f62652e636f6d2f7777772e61646f62652e636f6d2f646f776e6c6f616463656e7465722f696d616765732f666c6173682f666c6173685f3132382e6a7067)](https://github.com/shephertz/App42-ActionScript-SDK/wiki/AS3-Home)
-* [Registration Process](https://github.com/shephertz/App42-ActionScript-SDK/wiki/Registration-Process)
-* [Tutorial] (http://api.shephertz.com/tutorial/Creating-User-For-Your-App/)
-* [Download](https://github.com/shephertz/App42-ActionScript-SDK/archive/master.zip) this repo's contents
-* Import the sample project as a Flash Builder project
-* Add the reference of App42_ActionScript_SDK_x.x.swc in your project properties.
-* Build the project.
-* Run :-)
+App42_BPaaS_ACTIONSCRIPT_SDK
+==============
 
+App42 BPaaS Cloud API Client SDK JAR files for ACTIONSCRIPT
+
+- Download the App42 BPaaS ACTIONSCRIPT SDK
+- Unzip the file and open **App42 ACTIONSCRIPT Sample** project.
+- Add the **App42_BPaaS_ActionScript_SDK_x.x.x.swc** into library path. **Properties -> ActionScript Build Path -> Liabrary Path -> Add SWC**
+- Initialize the library using :-
+
+```
+var api:ServiceAPI = new ServiceAPI("<YOUR_API_KEY>","<YOUR_SECRET_KEY>");
+api.setBaseURL("<YOUR_API_SERVER_URL>");
+```
+
+- Instantiate the service that one wants to use in the App, e.g. using LeaderBoard service one has to do the following :-
+
+```
+var scoreBoardService:ScoreBoardService = api.buildScoreBoardService(); 
+```
+
+- Now one can call associated method of that service e.g. saving the score of the user can be done with the following snipped :-
+
+```
+var gameName:String = "<Enter_your_game_name>";	
+var userName:String = "userName";
+var gameScore:int = 40000;		
+scoreBoardService.saveUserScore(gameName,userName,gameScore, new callback());  
+public class callback implements App42CallBack  
+{  
+	public function onException(excption:App42Exception):void  
+	{  
+		trace("Exception : " + excption);  
+	}  
+	public function onSuccess(response:Object):void  
+	{  
+		var scoreClass:Score = new Score();
+		var game:Game   = Game(res);
+		trace("gameName is : " + game.getName());
+		for(var i:int=0;i<game.getScoreList().length;i++)
+		{
+			trace("username is :  " + Score(game.getScoreList()[i]).getUserName());
+			trace("value is : " + Score(game.getScoreList()[i]).getValue());
+			trace("scoreId is :  " + Score(game.getScoreList()[i]).getScoreId());
+		}
+	}  
+}  
+```
+
+- Build the project and run.
