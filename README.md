@@ -1,7 +1,7 @@
-App42_BPaaS_ACTIONSCRIPT_SDK
+App42_BPaaS_ActionScript_SDK
 ==============
 
-App42 BPaaS Cloud API Client SDK JAR files for ACTIONSCRIPT
+App42 BPaaS Cloud API Client SDK for ACTIONSCRIPT
 
 - Download the App42 BPaaS ACTIONSCRIPT SDK
 - Unzip the file and open **App42 ACTIONSCRIPT Sample** project.
