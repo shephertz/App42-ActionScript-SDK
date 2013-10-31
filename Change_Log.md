@@ -1,18 +1,15 @@
-* [Release Version 1.2](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-12)
+* [Release Version 1.2](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-18)
 
 ## Version 1.2
 
 **Release Date:** 17-09-2013
 
-**Release Version:** 1.2
+**Release Version:** 1.8
 
 **The following Services have been pushed to the latest :**
 
 ```
-Buddy Service
-Social Service
-Session Service
-Review Service
+AB Testing Service
 ```
 
 **This release contains the following bug fix:**
