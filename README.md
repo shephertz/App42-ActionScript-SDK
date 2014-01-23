@@ -13,7 +13,7 @@ __Download And Set Up SDK :-__
 
 2). Unzip downloaded Zip file. Unzip folder contains version folder of swc and sample folder.
 
-3). Version folder will contain App42_ActionScript_SDK_x.x.x.swc and docs.
+3). Version folder will contain App42_ActionScript_SDK_x.x.x.swc.
 
 4).Add the reference of App42_ActionScript_SDK_x.x.x.swc in your project properties **(Project Properties -> Build Path -> Add swc File)**.
 
