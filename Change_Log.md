@@ -11,6 +11,12 @@
 
 **The following features have been pushed to the services :**
 
+**USER SERVICE**
+
+```
+resetAppUserPassword
+```
+
 **STORAGE SERVICE**
 
 ```
