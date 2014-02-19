@@ -1,6 +1,34 @@
+* [Release Version 2.0](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-20)
 * [Release Version 1.9](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-19)
 * [Release Version 1.8](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-18)
 * [Release Version 1.2](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-12)
+
+## Version 2.0
+
+**Release Date:** 19-02-2014 
+
+**Release Version:** 2.0
+
+
+**The following Services have been pushed to the latest :**
+
+```
+PUSH NOTIFICATION SERVICE
+```
+
+**The following feature has been deleted to the service :**
+
+**USER SERVICE**
+
+```
+resetUserPassword
+```
+
+**This release contains the following bug fix:**
+
+```
+None
+```
 
 ## Version 1.9
 
