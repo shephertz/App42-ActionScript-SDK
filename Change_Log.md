@@ -1,9 +1,55 @@
+* [Release Version 2.3](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-23)
 * [Release Version 2.2](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-22)
 * [Release Version 2.1](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-21)
 * [Release Version 2.0](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-20)
 * [Release Version 1.9](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-19)
 * [Release Version 1.8](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-18)
 * [Release Version 1.2](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-12)
+
+
+## Version 2.3
+
+**Release Date:** 21-05-2014 
+
+**Release Version:** 2.3
+
+**The following features have been changed :**
+
+
+```
+If you are upgrading from previous version of App42_ActionScript_SDK and have used getRecordCount() method on storage service, you have to change its return type as Number instead of string, because the return type of this method is changed.
+
+**OlD Code Snippet:
+var  recordCount:String =storageResponse.getRecordCount();
+
+**New Code Snippet :
+var  recordCount:Number = storageResponse.getRecordCount();
+```
+
+
+**The following features have been pushed to the services :**
+
+
+**PUSH NOTIFICATION SERVICE**
+
+
+```
+updatePushBadgeforDevice
+updatePushBadgeforUser
+clearAllBadgeCount
+```
+**SCOREBOARD SERVICE**
+
+```
+getUsersWithScoreRange
+```
+
+
+**This release contains the following bug fix:**
+
+```
+None
+```
 
 ## Version 2.2
 
