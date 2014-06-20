@@ -1,4 +1,4 @@
-* [Release Version 2.3](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-24)
+* [Release Version 2.4](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-24)
 * [Release Version 2.3](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-23)
 * [Release Version 2.2](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-22)
 * [Release Version 2.1](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-21)
