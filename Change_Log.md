@@ -1,3 +1,4 @@
+* [Release Version 2.3](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-24)
 * [Release Version 2.3](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-23)
 * [Release Version 2.2](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-22)
 * [Release Version 2.1](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-21)
@@ -6,6 +7,25 @@
 * [Release Version 1.8](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-18)
 * [Release Version 1.2](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-12)
 
+
+## Version 2.4
+
+**Release Date:** 20-06-2014 
+
+**Release Version:** 2.4
+
+**The following Services have been pushed to the latest :**
+
+```
+Timer Service
+Gift Service
+```
+
+**This release contains the following bug fix:**
+
+```
+None
+```
 
 ## Version 2.3
 
