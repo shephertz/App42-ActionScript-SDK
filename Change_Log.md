@@ -18,7 +18,7 @@
 
 ```
 Timer Service
-Gift Service
+Gift Service(API Only for Desktop and mobile application)
 ```
 
 **This release contains the following bug fix:**
