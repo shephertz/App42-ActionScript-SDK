@@ -31,3 +31,6 @@ __Using App42 Services :-__
 var userService:UserService = App42API.buildUserService();
 //Similarly you can build other services like App42API.buildXXXXService()
 ```
+
+__Documentation :__
+Gift Service API Only for Desktop and mobile application.
