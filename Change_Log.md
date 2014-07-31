@@ -1,3 +1,4 @@
+* [Release Version 2.5](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-25)
 * [Release Version 2.4.1](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-241)
 * [Release Version 2.4](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-24)
 * [Release Version 2.3](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-23)
@@ -7,6 +8,38 @@
 * [Release Version 1.9](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-19)
 * [Release Version 1.8](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-18)
 * [Release Version 1.2](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-12)
+
+## Version 2.5
+
+**Release Date:** 31-07-2014 
+
+**Release Version:** 2.5
+
+**The following features have been pushed to the services :**
+
+
+**PUSH NOTIFICATION SERVICE**
+
+```
+deleteChannel
+getChannelUsersCount
+getChannelUsers
+getUserSubscribedChannelsCount
+getUserSubscribedChannels
+```
+**AVATAR SERVICE**
+
+```
+updateAvatar
+deleteAvatarByName
+deleteAllAvatars
+```
+
+**This release contains the following bug fix:**
+
+```
+None
+```
 
 ## Version 2.4.1
 
