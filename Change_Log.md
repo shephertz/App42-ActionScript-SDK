@@ -12,7 +12,7 @@
 
 ## Version 2.6
 
-**Release Date:** 26-09-2014 
+**Release Date:** 24-09-2014 
 
 **Release Version:** 2.6
 
