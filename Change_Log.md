@@ -1,3 +1,4 @@
+* [Release Version 2.6](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-25)
 * [Release Version 2.5](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-25)
 * [Release Version 2.4.1](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-241)
 * [Release Version 2.4](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-24)
@@ -8,6 +9,48 @@
 * [Release Version 1.9](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-19)
 * [Release Version 1.8](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-18)
 * [Release Version 1.2](https://github.com/shephertz/App42-ActionScript-SDK/blob/master/Change_Log.md#version-12)
+
+## Version 2.6
+
+**Release Date:** 26-09-2014 
+
+**Release Version:** 2.6
+
+**The following Service has been pushed to the latest :**
+
+```
+BravoBoard Service
+```
+
+**The following features have been pushed to the services :**
+
+**PUSH NOTIFICATION SERVICE**
+
+```
+getAllDevicesOfUser
+```
+
+**BUDDY SERVICE**
+
+```
+deleteAllMessages
+getBlockedBuddyList
+```
+
+**QUERY BUILDER**
+
+```
+setCreatedOn
+setUpdatedOn
+setDocumentId
+```
+
+
+**This release contains the following bug fix:**
+
+```
+None
+```
 
 ## Version 2.5
 
