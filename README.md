@@ -33,4 +33,9 @@ var userService:UserService = App42API.buildUserService();
 ```
 
 __Documentation :__
-Gift Service API Only for Desktop and mobile application.
+Gift Service and File Upload API's Only for Desktop and mobile application
+
+__SDK Structure:__
+Gift Service and File Upload API's Only for Desktop and mobile application you can find the SWC file inside the (App42-ActionScript-SDK-Mobile)
+For Web you can find the SWC file inside the (App42-ActionScript-SDK-Web)
+
