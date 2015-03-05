@@ -36,6 +36,7 @@ __Documentation :__
 Gift Service and File Upload API's Only for Desktop and mobile application
 
 __SDK Structure:__
-Gift Service and File Upload API's Only for Desktop and mobile application you can find the SWC file inside the (App42-ActionScript-SDK-Mobile)
+Gift Service and File Upload API's Only for Desktop and mobile application you can find the SWC file inside the (App42-ActionScript-SDK-Mobile) .
+
 For Web you can find the SWC file inside the (App42-ActionScript-SDK-Web)
 
