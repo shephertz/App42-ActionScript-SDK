@@ -11,7 +11,7 @@
 5. Open the Sample project as flash builder project.
 6. Open the App42Leaderboard.as file from your src folder.
 7. Pass your apiKey and secretKey which you have receive after the success of app creation.
-8. Create a game from appHq by clicking __Business service -> Game Service -> Game -> Add Game__.
+8. Create a game from appHq by clicking __Gaming -> Games -> Add Game__.
 9. Pass your game name and user name for which you have to score.
 9. Save and run.
 
